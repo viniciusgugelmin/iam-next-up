@@ -1,0 +1,5 @@
+(Portuguese)
+
+O gerenciamento de identidade e acesso (IAM) é a prática de garantir que pessoas tenham o nível certo de acesso aos recursos da empresa, é um serviço que ajuda você a controlar o acesso aos recursos. Usado para controlar quem é autenticado (fez login) e autorizado (tem permissões) a usar os recursos.
+
+e.g. Firebase, AWS, Google Cloud
