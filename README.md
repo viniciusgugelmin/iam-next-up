@@ -58,5 +58,8 @@ Vinícius Kruchelski Gugelmin - vinigugelmin@gmail.com
 
 Lucas Rodrigues Leite
 
+Gabriel Zanin
+
+Carlos
 
 Project Link: [https://github.com/viniciusgugelmin/iam-up](https://github.com/viniciusgugelmin/iam-up)
