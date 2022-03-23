@@ -1,7 +1,8 @@
 {
-  "printWidth": 160,
+  "printWidth": 80,
   "arrowParens": "always",
   "semicolonParens": "always",
   "tabWidth": 2,
-  "doubleQuote": true
+  "doubleQuote": true,
+  "endOfLine": "auto"
 }
