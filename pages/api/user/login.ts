@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import RouteNotFoundError from "../../errors/RouteNotFoundError";
+import RouteNotFoundError from "../../../src/errors/RouteNotFoundError";
 import { sign } from "jsonwebtoken";
-import authConfig from "../../config/auth";
+import authConfig from "../../../src/config/auth";
 
 type IData = {
   user: {

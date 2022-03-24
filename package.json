@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev+": "concurrently \"npm run dev\" \"npm run sass-watch\"",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "sass-watch": "sass --watch src/styles/style.scss:pages/style.css"
   },
   "dependencies": {
     "jsonwebtoken": "^8.5.1",

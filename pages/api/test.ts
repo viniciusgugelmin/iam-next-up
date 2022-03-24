@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import AppError from "../errors/AppError";
+import AppError from "../../src/errors/AppError";
 import { verify } from "jsonwebtoken";
-import authConfig from "../config/auth";
+import authConfig from "../../src/config/auth";
 
 interface ITokenPayload {
   iat: number;
