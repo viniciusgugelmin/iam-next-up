@@ -8,12 +8,15 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method === "GET") {
-    const { message, statusCode } = new RouteNotFoundError();
-
-    return res.status(statusCode).json({ message });
+  if (req.method === "POST") {
+    await handlePost(req, res);
   }
 
+  const { message, statusCode } = new RouteNotFoundError();
+  return res.status(statusCode).json({ message });
+}
+
+async function handlePost(req: NextApiRequest, res: NextApiResponse) {
   const { email, password } = req.body;
   const createUserSession = new CreateUserSessionsService();
 
@@ -30,7 +33,6 @@ export default async function handler(
     }
 
     const { message, statusCode } = new InternalServerError();
-
     return res.status(statusCode).json({ message: message });
   }
 }
