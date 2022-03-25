@@ -1,43 +1,36 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import RouteNotFoundError from "../../../src/errors/RouteNotFoundError";
-import { sign } from "jsonwebtoken";
-import authConfig from "../../../src/config/auth";
+import CreateUserSessionsService from "../../../src/api/services/CreateUserSessionService";
+import AppError from "../../../src/errors/AppError";
+import InternalServerError from "../../../src/errors/InternalServerError";
 
-type IData = {
-  user: {
-    id: string;
-    name: string;
-  };
-  token: string;
-};
-
-// TODO segregate this into separated files
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   if (req.method === "GET") {
     const { message, statusCode } = new RouteNotFoundError();
 
-    res.status(statusCode).json({ message });
-    return;
+    return res.status(statusCode).json({ message });
   }
 
-  const { username, password } = req.body;
+  const { email, password } = req.body;
+  const createUserSession = new CreateUserSessionsService();
 
-  if (username === "admin" && password === "admin") {
-    const token = sign({}, authConfig.jwt.secret, {
-      subject: username,
-      expiresIn: authConfig.jwt.expiresIn,
+  try {
+    const { user, token } = await createUserSession.execute({
+      email,
+      password,
     });
 
-    const data: IData = {
-      user: {
-        id: "432436546452",
-        name: username,
-      },
-      token: token,
-    };
+    return res.json({ user, token });
+  } catch (e) {
+    if (e instanceof AppError) {
+      return res.status(e.statusCode).json({ message: e.message });
+    }
 
-    res.status(200).json(data);
-  } else {
-    res.status(401).json({ message: "Invalid username or password" });
+    const { message, statusCode } = new InternalServerError();
+
+    return res.status(statusCode).json({ message: message });
   }
 }
