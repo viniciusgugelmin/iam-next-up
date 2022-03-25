@@ -12,10 +12,8 @@
     <a href="https://github.com/viniciusgugelmin/iam-up"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <!--
-    <a href="https://github.com/viniciusgugelmin/iam-up">View Demo</a>
+    <a href="https://iam-up.vercel.app/">View Demo</a>
     ·
-    -->
     <a href="https://github.com/viniciusgugelmin/iam-up/issues">Report Bug</a>
     ·
     <a href="https://github.com/viniciusgugelmin/iam-up/issues">Request Feature</a>
@@ -40,7 +38,8 @@ Project - Corporate Systems (Positivo University)
 
 ## Roadmap
 
-See the [open issues](https://github.com/viniciusgugelmin/iam-up/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/viniciusgugelmin/iam-up/issues) for a list of proposed features (and known
+issues).
 
 ## Contributing
 

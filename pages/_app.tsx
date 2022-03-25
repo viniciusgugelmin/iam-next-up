@@ -1,8 +1,13 @@
-import './style.css'
-import type { AppProps } from 'next/app'
+import "./style.css";
+import type { AppProps } from "next/app";
+import { AuthContextProvider } from "../stores/AuthContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  return (
+    <AuthContextProvider>
+      <Component {...pageProps} />
+    </AuthContextProvider>
+  );
 }
 
-export default MyApp
+export default MyApp;
