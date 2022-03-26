@@ -3,13 +3,14 @@ import RouteNotFoundError from "../../../src/errors/RouteNotFoundError";
 import CreateUserSessionsService from "../../../src/api/services/CreateUserSessionService";
 import AppError from "../../../src/errors/AppError";
 import InternalServerError from "../../../src/errors/InternalServerError";
+import SendRequesError from "../../../src/api/services/SendRequestError";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    await handlePost(req, res);
+    return await handlePost(req, res);
   }
 
   const { message, statusCode } = new RouteNotFoundError();
@@ -27,12 +28,8 @@ async function handlePost(req: NextApiRequest, res: NextApiResponse) {
     });
 
     return res.json({ user, token });
-  } catch (e) {
-    if (e instanceof AppError) {
-      return res.status(e.statusCode).json({ message: e.message });
-    }
-
-    const { message, statusCode } = new InternalServerError();
-    return res.status(statusCode).json({ message: message });
+  } catch (error) {
+    const sendRequestError = new SendRequesError();
+    return sendRequestError.execute({ res, error });
   }
 }
