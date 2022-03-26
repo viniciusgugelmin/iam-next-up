@@ -1,23 +1,25 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import RouteNotFoundError from "../../../src/errors/RouteNotFoundError";
 import CreateUserSessionsService from "../../../src/api/services/CreateUserSessionService";
-import AppError from "../../../src/errors/AppError";
-import InternalServerError from "../../../src/errors/InternalServerError";
 import SendRequesError from "../../../src/api/services/SendRequestError";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
-) {
+): Promise<void> {
   if (req.method === "POST") {
-    return await handlePost(req, res);
+    await handlePost(req, res);
+    return;
   }
 
   const { message, statusCode } = new RouteNotFoundError();
-  return res.status(statusCode).json({ message });
+  res.status(statusCode).json({ message });
 }
 
-async function handlePost(req: NextApiRequest, res: NextApiResponse) {
+async function handlePost(
+  req: NextApiRequest,
+  res: NextApiResponse
+): Promise<void> {
   const { email, password } = req.body;
   const createUserSession = new CreateUserSessionsService();
 
@@ -27,9 +29,9 @@ async function handlePost(req: NextApiRequest, res: NextApiResponse) {
       password,
     });
 
-    return res.json({ user, token });
+    res.json({ user, token });
   } catch (error) {
     const sendRequestError = new SendRequesError();
-    return sendRequestError.execute({ res, error });
+    sendRequestError.execute({ res, error });
   }
 }

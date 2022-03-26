@@ -13,6 +13,7 @@ interface IResponse {
     id: string;
     name: string;
     email: string;
+    roles: string[];
   };
   token: string;
 }
@@ -28,6 +29,7 @@ export default class CreateUserSessionsService {
           name: "Admin",
           email: "admin",
           password: await hash(password, 8),
+          roles: ["admin"],
         };
       },
     };
@@ -48,6 +50,8 @@ export default class CreateUserSessionsService {
       expiresIn: authConfig.jwt.expiresIn,
     });
 
-    return { user, token };
+    const userResponse = { ...user, password: undefined };
+
+    return { user: userResponse, token };
   }
 }

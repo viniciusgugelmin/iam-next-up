@@ -8,12 +8,13 @@ interface IRequest {
 }
 
 export default class SendRequesError {
-  public execute({ res, error }: IRequest) {
+  public execute({ res, error }: IRequest): void {
     if (error instanceof AppError) {
-      return res.status(error.statusCode).json({ message: error.message });
+      res.status(error.statusCode).json({ message: error.message });
+      return;
     }
 
     const { message, statusCode } = new InternalServerError();
-    return res.status(statusCode).json({ message: message });
+    res.status(statusCode).json({ message: message });
   }
 }

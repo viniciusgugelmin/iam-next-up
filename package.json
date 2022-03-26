@@ -5,14 +5,16 @@
   "scripts": {
     "dev": "next dev",
     "dev+": "concurrently \"npm run dev\" \"npm run sass-watch\"",
-    "build": "next build",
+    "build": "npm run sass && next build",
     "start": "next start",
     "lint": "next lint",
-    "sass-watch": "sass --watch src/styles/style.scss:pages/style.css"
+    "sass-watch": "sass --watch src/styles/style.scss:pages/style.css",
+    "sass": "sass src/styles/style.scss:pages/style.css"
   },
   "dependencies": {
     "jsonwebtoken": "^8.5.1",
     "next": "12.1.0",
+    "next-auth": "^4.3.1",
     "react": "17.0.2",
     "react-dom": "17.0.2"
   },
