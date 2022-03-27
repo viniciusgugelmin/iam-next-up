@@ -1,0 +1,24 @@
+(portuguese)
+
+Como usuário, eu quero uma interface com acessibilidade gráfica para guiar durante a execução do programa.
+Como usuário, eu quero copos para colocar as bebidas solicitadas.
+Como usuário, eu quero vários dispensers para colocar as bebidas e ter menos fila.
+Como usuário, eu quero uma interface para escolher idioma e fazer a tradução de textos.
+Como usuário, eu quero uma interface para escolher o tipo de bebida e quantidade como meu pedido.
+Como usuário, eu quero pouco passos no sistema para poder concluir o meu pedido.
+Como usuário, eu quero um botão de ajuda para chamar um operador de suporte.
+Como usuário, eu quero uma resposta da solicitação de ajuda para saber a demora para a solução do problema.
+Como usuário, eu quero uma informação no visor do dispenser de bebida para saber a disponibilidade de bebida.
+Como usuário, eu quero uma maquininha de pagamento para pagar a conta com pix e cartão.
+Como usuário, eu quero poder fazer o pedido de uma bebida não alcoólica sem cadastro para evitar demora na realização do pedido.
+Como operador, eu quero um curso inicial para entender o funcionamento do sistema e enteder a conservação das bebidas.
+Como operador, eu quero ter controle do meu estoque para saber quais bebidas estão disponíveis para venda no totem que cuido.
+Como operador, eu quero uma notificação do pedido de ajuda para atender o cliente com eficiência.
+Como operador, eu quero uma câmera para monitorar o ambiente/abertura do pedido de ajuda.
+Como operador, eu quero uma notificação do estoque para saber quais bebidas precisam de reposição.
+Como gerente, eu quero um painel administrativo para controle de funcionários, clientes, financeiro, estoque e bebidas.
+Como gerente, eu quero um controle acesso ao painel administrativo para dar permissão de acesso a determinados funcionários realizarem determinadas ações.
+Como gerente, eu quero um controle ações no painel administrativo para saber quais ações foram realizadas e quem as fez.
+Como gerente, eu quero um feedback dos clientes em formato de estrela (0/5) para aprimorar a qualidade da experiência do cliente.
+Como gerente, eu quero um feedback dos clientes em formato de texto e opcional parater mais detalhes da avalição dos clientes.
+Como gerente, eu quero um bloqueio de bebidas alcoólicas sem cadastro para evitar a venda de bebidas alcoólicas para menores de idade.
