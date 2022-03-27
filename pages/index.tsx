@@ -4,7 +4,8 @@ import authContext from "../stores/AuthContext";
 
 const Home: NextPage = (props) => {
   const context = useContext(authContext);
-  console.log(context);
+  context;
+  props;
 
   return <div>Home</div>;
 };
