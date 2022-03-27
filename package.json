@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "dev+": "concurrently \"npm run dev\" \"npm run sass-watch\"",
-    "build": "npm run sass && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "sass-watch": "sass --watch src/styles/style.scss:pages/style.css",
