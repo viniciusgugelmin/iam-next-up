@@ -8,13 +8,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "sass-watch": "sass --watch src/styles/style.scss:pages/style.css",
-    "sass": "sass src/styles/style.scss:pages/style.css"
+    "sass-watch": "sass --watch src/styles/style.scss:pages/style.css --style compressed",
+    "sass": "sass src/styles/style.scss:pages/style.css --style compressed"
   },
   "dependencies": {
     "jsonwebtoken": "^8.5.1",
     "next": "12.1.0",
     "next-auth": "^4.3.1",
+    "prop-types": "^15.8.1",
     "react": "17.0.2",
     "react-dom": "17.0.2"
   },

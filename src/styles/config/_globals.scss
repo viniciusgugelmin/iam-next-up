@@ -1,8 +1,15 @@
+@use "../variables/colors";
+
 html,
 body {
   height: 100%;
-  background: #010d24;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+  background: colors.$gray-1;
+  font-size: 18px;
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen,
   Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   color: white;
+}
+
+#__next {
+  height: 100%;
 }

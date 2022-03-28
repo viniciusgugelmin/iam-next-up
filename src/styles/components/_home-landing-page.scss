@@ -1,0 +1,116 @@
+@use "../variables/screens";
+@use "../variables/colors";
+
+.up-home-entry-page {
+  height: 100%;
+  background-size: cover;
+  position: relative;
+  overflow: hidden;
+
+  &--disabled {
+    &:before {
+      filter: blur(7px);
+    }
+
+    .up-home-entry-page {
+      &__container {
+        animation: fade-out 0.5s ease-in-out forwards;
+      }
+
+      @keyframes fade-out {
+        0% {
+          opacity: 1;
+          filter: blur(0px);
+        }
+        100% {
+          opacity: 0;
+          filter: blur(7px);
+        }
+      }
+    }
+  }
+
+  &:before {
+    content: "";
+    z-index: 1;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: url(../public/images/home-entry-page-bg.jpg) no-repeat center center;
+    animation: fade-in 0.5s ease-in-out;
+    animation-fill-mode: forwards;
+    transition: filter 0.5s ease-in-out;
+  }
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0.8;
+    }
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 20px;
+    height: 100%;
+    padding: 0 40px;
+    position: relative;
+    z-index: 2;
+    text-shadow: -4px 4px 10px rgb(0 0 0 / 60%);
+
+    @media (min-width: screens.$medium) {
+      padding: 0 200px 0 0;
+    }
+
+    @media (min-width: screens.$large) {
+      padding: 0 300px 0 0;
+    }
+
+    @media (min-width: screens.$xlarge) {
+      padding: 0 500px 0 0;
+    }
+  }
+
+  &__title {
+    font-weight: bold;
+    font-size: 68px;
+  }
+
+  &__button-container {
+    display: flex;
+    gap: 10px;
+  }
+
+  &__button-login {
+    font-size: 16px;
+    box-shadow: -4px 4px 10px rgb(0 0 0 / 60%);
+
+    &:first-child {
+      border-bottom-left-radius: 0;
+      border-top-right-radius: 0;
+      background: colors.$purple-3;
+      border: 2px solid colors.$purple-3;
+
+      &:after {
+        border-bottom-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+    }
+
+    &:last-child {
+      border-bottom-right-radius: 0;
+      border-top-left-radius: 0;
+
+      &:after {
+        border-bottom-right-radius: 0;
+        border-top-left-radius: 0;
+      }
+    }
+  }
+
+}
