@@ -1,24 +1,53 @@
 import type { NextPage } from "next";
-import { FC, useContext, useEffect, useState } from "react";
-import authContext from "../stores/AuthContext";
-import { Button } from "../comps/Button";
+import { useContext, useEffect, useState } from "react";
+import authContext from "../src/stores/AuthContext";
+import { useRouter } from "next/router";
+import { HomeEntryPage } from "../src/components/Template/Home/HomeEntryPage";
 
-const Home: NextPage = (props) => {
+interface IHomeProps {
+  setPageSubtitle: (subtitle: string) => void;
+}
+
+const Home: NextPage<IHomeProps> = ({ setPageSubtitle }: IHomeProps) => {
   const [page, setPage] = useState("");
   // TODO check if user is logged in and redirect to home logged page
   const context = useContext(authContext);
   context;
-  props;
+  const router = useRouter();
+  const isRouteAvailable = ["login", "signup"].includes(page);
 
   useEffect(() => {
-    if (!["login", "signup", ""].includes(page)) {
+    if (!isRouteAvailable) {
       setPage("");
+      return;
     }
+
+    router.push({ pathname: "/", query: { page: page } });
   }, [page]);
+
+  useEffect(() => {
+    let pageSubtitle = "";
+
+    if (router.query.page === "login") {
+      setPage("login");
+      pageSubtitle = "Login";
+    }
+
+    if (router.query.page === "signup") {
+      setPage("signup");
+      pageSubtitle = "Signup";
+    }
+
+    setPageSubtitle(pageSubtitle);
+  }, [router.query]);
 
   return (
     <>
-      <HomeEntryPage page={page} setPage={setPage}>
+      <HomeEntryPage
+        page={page}
+        setPage={setPage}
+        isRouteAvailable={isRouteAvailable}
+      >
         <div>{page}</div>
       </HomeEntryPage>
     </>
@@ -26,49 +55,3 @@ const Home: NextPage = (props) => {
 };
 
 export default Home;
-
-interface IHomeEntryPageProps {
-  page: string;
-  setPage: (page: string) => void;
-  children: any;
-}
-
-const HomeEntryPage: FC<IHomeEntryPageProps> = ({
-  page,
-  setPage,
-  children,
-}) => {
-  const [isPageChanged, setIsPageChanged] = useState(false);
-  const className = page ? "up-home-entry-page--disabled" : "";
-
-  if (page && !isPageChanged) {
-    setTimeout(() => {
-      setIsPageChanged(true);
-    }, 500);
-  }
-
-  return (
-    <div className={`up-home-entry-page ${className}`}>
-      {!isPageChanged && (
-        <div className="up-home-entry-page__container">
-          <h1 className="up-home-entry-page__title">Go Drink</h1>
-          <div className="up-home-entry-page__button-container">
-            <Button
-              className="up-home-entry-page__button-login"
-              onClick={() => setPage("login")}
-            >
-              Log in
-            </Button>
-            <Button
-              className="up-home-entry-page__button-login"
-              onClick={() => setPage("signup")}
-            >
-              Sign up
-            </Button>
-          </div>
-        </div>
-      )}
-      {isPageChanged && children}
-    </div>
-  );
-};

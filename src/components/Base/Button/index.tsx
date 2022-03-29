@@ -1,4 +1,10 @@
-import PropTypes from "prop-types";
+interface IButtonProps {
+  children: any;
+  onClick: () => void;
+  className?: string;
+  disabled?: boolean;
+  type?: "button" | "submit" | "reset";
+}
 
 export const Button = ({
   children,
@@ -6,7 +12,7 @@ export const Button = ({
   className = "",
   disabled,
   type = "button",
-}) => {
+}: IButtonProps) => {
   return (
     <button
       type={type}
@@ -17,12 +23,4 @@ export const Button = ({
       {children}
     </button>
   );
-};
-
-Button.propTypes = {
-  children: PropTypes.node.isRequired,
-  onClick: PropTypes.func.isRequired,
-  className: PropTypes.string,
-  disabled: PropTypes.bool,
-  type: PropTypes.string,
 };
