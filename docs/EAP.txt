@@ -1,0 +1,72 @@
+(portuguese)
+
+Projeto Go Drink
+
+1.Gerenciamento
+1.1.Planejamento
+1.2.Reuniões
+1.3.Engenharia de requisitos
+1.3.1.Levantamento de requisitos
+1.3.1.1.Brainstorming
+1.3.1.2.Questionário
+1.3.1.3.Análise de documentos
+1.3.2.Especificação de requisitos
+1.3.2.1.Requisitos não-funcionais
+1.3.2.2.Requisitos funcionais
+1.3.3.Validação de requisitos
+1.3.3.1.Revisão dos requisitos
+1.3.3.2.Prototipagem
+1.4.Criar EAP
+1.5.Controle
+1.5.1.Relatório de desempenho
+2.Identidade
+2.1.Conhecimento do mercado
+2.1.1.Identificação do que é
+2.1.2.Diferenciação dos outros
+2.1.3.Análise SWOT
+2.1.3.1.Identificação das forças
+2.1.3.2.Identificação das fraquezas
+2.1.3.3.Identificação das oportunidades
+2.1.3.4.Identificação das ameaças
+3.Design
+3.1.Definição das cores
+3.2.Criação da logo
+3.3.Criação das telas do painel administrativo
+3.3.1.Cadastro
+3.3.2.Login
+3.3.3.Central
+3.3.3.1.Barra de menu
+3.3.3.1.1.Ícones de navegação
+3.3.3.1.2.Organização dos items
+3.3.3.2.Botões genéricos
+3.3.3.3.Gráficos genéricos
+3.3.3.4.Listagens genéricas
+3.3.3.5.Formulários genéricos
+3.3.3.6.Balões de alerta genéricos
+3.3.3.7.Balões de notificação genéricos
+4.Dados
+4.1.Pedidos técnicos
+4.2.Criação de diagramas
+4.2.1.Diagrama de classes
+4.2.2.Diagrama de componentes
+4.2.3.Diagrama de casos de uso
+4.2.4.Diagrama de sequência
+4.3.Seleção da alocação do banco
+4.4.Criação do banco
+5.Desenvolvimento
+5.1.Seleção da alocação da aplicação
+5.2.Seleção de serviços de terceiros
+5.3.Criação do back-end
+5.4.Criação do front-end
+5.5.Processo de deploy
+6.Treinamento
+6.1.Treinamento sobre os produtos
+6.1.1.Treinamento sobre fabricação
+6.1.2.Treinamento sobre armazenamento
+6.2.Treinamento sobre operação
+6.2.1.Treinamento sobre trabalho de reabastecimento
+6.2.2.Treinamento sobre processo de ajuda
+6.2.3.Treinamento sobre o sistema
+---Construção
+---Contratação
+---Teste de avaliação
