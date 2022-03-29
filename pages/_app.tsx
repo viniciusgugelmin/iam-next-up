@@ -11,7 +11,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <title>
-          {process.env.NEXT_PUBLIC_APP_NAME}
+          Go Drink
           {pageSubttitle ? ` - ${pageSubttitle}` : ""}
         </title>
       </Head>
