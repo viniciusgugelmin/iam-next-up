@@ -1,0 +1,64 @@
+.up-home-section-page {
+  position: relative;
+  z-index: 2;
+  transition: filter 0.5s ease-in-out;
+  height: 100%;
+
+  &--disabled {
+    animation: fade-out 0.5s ease-in-out forwards;
+
+    @keyframes fade-out {
+      0% {
+        opacity: 1;
+        filter: blur(0px);
+      }
+      100% {
+        opacity: 0;
+        filter: blur(7px);
+      }
+    }
+  }
+
+  &__button-back {
+    background: transparent;
+    border: none;
+    padding: 0;
+    font-size: 40px;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    animation: fade-in 0.5s ease-in-out;
+
+    @keyframes fade-in {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+
+    &:after {
+      width: 32.5px;
+      height: 32.5px;
+      border-radius: 50%;
+    }
+  }
+
+  &__container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: move-to 0.5s ease-in-out;
+
+    @keyframes move-to {
+      0% {
+        transform: translateX(100%);
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
+  }
+}

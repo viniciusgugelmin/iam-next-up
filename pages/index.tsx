@@ -3,6 +3,8 @@ import { useContext, useEffect, useState } from "react";
 import authContext from "../src/stores/AuthContext";
 import { useRouter } from "next/router";
 import { HomeEntryPage } from "../src/components/Template/Home/HomeEntryPage";
+import { HomeLoginPage } from "../src/components/Template/Home/HomeLoginPage";
+import { HomeSignupPage } from "../src/components/Template/Home/HomeSignupPage";
 
 interface IHomeProps {
   setPageSubtitle: (subtitle: string) => void;
@@ -19,10 +21,15 @@ const Home: NextPage<IHomeProps> = ({ setPageSubtitle }: IHomeProps) => {
   useEffect(() => {
     if (!isRouteAvailable) {
       setPage("");
-      return;
     }
 
-    router.push({ pathname: "/", query: { page: page } });
+    const routeUrl = { pathname: "/", query: {} };
+
+    if (page) {
+      routeUrl.query = { page: page };
+    }
+
+    router.push({ ...routeUrl });
   }, [page]);
 
   useEffect(() => {
@@ -48,7 +55,8 @@ const Home: NextPage<IHomeProps> = ({ setPageSubtitle }: IHomeProps) => {
         setPage={setPage}
         isRouteAvailable={isRouteAvailable}
       >
-        <div>{page}</div>
+        {page === "login" && <HomeLoginPage />}
+        {page === "signup" && <HomeSignupPage />}
       </HomeEntryPage>
     </>
   );

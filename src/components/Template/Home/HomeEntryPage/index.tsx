@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "../../../Base/Button";
+import { IoIosArrowDropleftCircle as GoBackIcon } from "react-icons/io";
 
 interface IHomeEntryPageProps {
   page: string;
@@ -15,16 +16,33 @@ export const HomeEntryPage = ({
   isRouteAvailable,
 }: IHomeEntryPageProps) => {
   const [isPageChanged, setIsPageChanged] = useState(false);
-  const className = page ? "up-home-entry-page--disabled" : "";
+  const [isPageUnmounting, setIsPageUnmounting] = useState(false);
+  const entryPageClassName = page ? "up-home-entry-page--disabled" : "";
+  const sectionPageClassName = isPageUnmounting
+    ? "up-home-section-page--disabled"
+    : "";
 
-  if (page && !isPageChanged && isRouteAvailable) {
+  useEffect(() => {
+    if (!isRouteAvailable && page !== "") return;
+
+    changePage(page, true);
+  }, [page]);
+
+  function changePage(newPage: string, initPage: boolean = false) {
+    !initPage && setIsPageUnmounting(true);
+
     setTimeout(() => {
-      setIsPageChanged(true);
+      setIsPageChanged(!!newPage);
+
+      if (!initPage) {
+        setPage(newPage);
+        setIsPageUnmounting(false);
+      }
     }, 500);
   }
 
   return (
-    <div className={`up-home-entry-page ${className}`}>
+    <div className={`up-home-entry-page ${entryPageClassName}`}>
       {!isPageChanged && (
         <div className="up-home-entry-page__container">
           <h1 className="up-home-entry-page__title">Go Drink</h1>
@@ -44,7 +62,17 @@ export const HomeEntryPage = ({
           </div>
         </div>
       )}
-      {isPageChanged && children}
+      {isPageChanged && (
+        <div className={`up-home-section-page ${sectionPageClassName}`}>
+          <Button
+            className="up-home-section-page__button-back"
+            onClick={() => changePage("")}
+          >
+            <GoBackIcon />
+          </Button>
+          <div className="up-home-section-page__container">{children}</div>
+        </div>
+      )}
     </div>
   );
 };
