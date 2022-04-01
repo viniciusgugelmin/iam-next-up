@@ -1,7 +1,7 @@
 @use "../variables/colors";
 
 .up-input {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 
   &__container {
     background: colors.$gray-3;
@@ -11,6 +11,24 @@
     width: 100%;
     position: relative;
     font-size: 14px;
+    transition: border-color 0.3s ease-in-out;
+    padding: 4px 0;
+
+    &--purple {
+      &.up-input__container--active {
+        border-color: colors.$purple-3;
+      }
+    }
+
+    &--blue {
+      &.up-input__container--active {
+        border-color: colors.$blue-3;
+      }
+    }
+
+    &--active {
+      border-color: colors.$white;
+    }
 
     &--error {
       margin-bottom: 5px;
@@ -22,12 +40,32 @@
     color: colors.$gray-5;
     font-size: 11px;
     top: -6px;
-    left: 6px;
+    left: 8px;
+    transform: translateY(22px);
     background: colors.$gray-3;
     padding: 0 5px;
+    transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
+
+    &--blue {
+      &.up-input__label--active {
+        color: colors.$blue-3;
+      }
+    }
+
+    &--purple {
+      &.up-input__label--active {
+        color: colors.$purple-3;
+      }
+    }
+
+    &--active {
+      transform: translateY(0);
+      color: colors.$white;
+    }
   }
 
   &__el {
+    position: relative;
     appearance: none;
     background: transparent;
     outline: none;

@@ -115,6 +115,8 @@
     &:last-child {
       border-bottom-right-radius: 0;
       border-top-left-radius: 0;
+      background: colors.$blue-3;
+      border: 2px solid colors.$blue-3;
 
       &:after {
         border-bottom-right-radius: 0;

@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 interface IInputProps {
   placeholder?: string;
   className?: string;
@@ -6,6 +8,8 @@ interface IInputProps {
   value: string;
   onChange: (event: any) => void;
   error?: string;
+  color?: string;
+  required?: boolean;
 }
 
 export const Input = ({
@@ -16,16 +20,30 @@ export const Input = ({
   value,
   onChange,
   error = "",
+  color = "",
+  required = false,
 }: IInputProps) => {
+  const [isFocused, setIsFocused] = useState(false);
+
+  const inputContainerClasses = [
+    color ? ` up-input__container--${color}` : "",
+    error ? " up-input__container--error" : "",
+    isFocused || value ? " up-input__container--active" : "",
+  ];
+
+  const inputLabelClasses = [
+    color ? ` up-input__label--${color}` : "",
+    isFocused || value ? " up-input__label--active" : "",
+  ];
+
   return (
     <div className="up-input">
-      <div
-        className={`up-input__container ${
-          error ? "up-input__container--error" : ""
-        }`}
-      >
+      <div className={`up-input__container${inputContainerClasses.join("")}`}>
         {placeholder && (
-          <label className="up-input__label" htmlFor={name}>
+          <label
+            className={`up-input__label${inputLabelClasses.join("")}`}
+            htmlFor={name}
+          >
             {placeholder}
           </label>
         )}
@@ -35,6 +53,9 @@ export const Input = ({
           name={name}
           value={value}
           onChange={onChange}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          required={required}
         />
       </div>
       {error && (
