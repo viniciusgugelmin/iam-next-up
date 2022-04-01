@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import GetAuthenticatedUser from "../../src/api/services/GetAuthenticatedUser";
+import GetAuthenticatedUserService from "../../src/api/services/GetAuthenticatedUserService";
 import AppError from "../../src/errors/AppError";
 import RouteNotFoundError from "../../src/errors/RouteNotFoundError";
 
@@ -20,7 +20,7 @@ async function handleGet(
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> {
-  const getAuthenticatedUser = new GetAuthenticatedUser();
+  const getAuthenticatedUser = new GetAuthenticatedUserService();
   const authResponse = await getAuthenticatedUser.execute({ req });
 
   if (authResponse instanceof AppError) {

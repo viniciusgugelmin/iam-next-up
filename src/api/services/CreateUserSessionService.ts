@@ -1,7 +1,8 @@
 import AppError from "../../errors/AppError";
-import { hash, compare } from "bcryptjs";
+import { compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import authConfig from "../config/auth";
+import { UsersRepositories } from "../../repositories/UsersRepositories";
 
 interface IRequest {
   email: string;
@@ -20,20 +21,7 @@ interface IResponse {
 
 export default class CreateUserSessionsService {
   public async execute({ email, password }: IRequest): Promise<IResponse> {
-    const usersRepository = {
-      findByEmail: async (email: string) => {
-        if (email !== "admin") return null;
-
-        return {
-          id: "1",
-          name: "Admin",
-          email: "admin",
-          password: await hash(password, 8),
-          roles: ["admin"],
-        };
-      },
-    };
-
+    const usersRepository = new UsersRepositories();
     const user = await usersRepository.findByEmail(email);
 
     if (!user) {

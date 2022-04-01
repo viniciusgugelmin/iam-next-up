@@ -1,17 +1,18 @@
 import React, { createContext, useEffect, useState } from "react";
-import IAuthContextProvider from "./interfaces/IAuthContextProvider";
+import IAuthContextProvider from "../../services/IAuthContextProvider";
 import { postLoginUser } from "../../requests/postLoginUser";
-import IUser from "./interfaces/IUser";
+import { IUserAuth, IUserLogin } from "../../services/IUser";
 import AppError from "../../errors/AppError";
+import { IError } from "../../services/IError";
+import { useRouter } from "next/router";
+import { getAuthUser } from "../../requests/getAuthUser";
 
 const contextValue = {
   isAuthenticated: false,
   user: {},
   token: "",
-  login: (user?: IUser, token?: string) => {
-    user;
-    token;
-  },
+  login: ({ email, password }: IUserLogin) => {},
+  getUser: ({ token }: IUserAuth) => {},
   logout: () => {},
 };
 
@@ -19,46 +20,82 @@ const AuthContext = createContext({ ...contextValue });
 
 export const AuthContextProvider = ({ children }: IAuthContextProvider) => {
   const [context, setContext] = useState({ ...contextValue });
+  const router = useRouter();
 
   useEffect(() => {
-    setContext({ ...context, login, logout });
+    setContext({ ...context, login, getUser, logout });
   }, []);
 
-  const login = async (user: IUser = {}, token: string = "") => {
-    if ((!user.email || !user.password) && !token) {
-      throw new AppError("Email and password are required");
+  const login = async ({ email, password }: IUserLogin) => {
+    if (!email || !password) {
+      throw new AppError("Email and password are required", 422);
     }
 
-    let tokenToSet = token;
+    let user = {};
+    let token = "";
 
     try {
-      if (user.email && user.password) {
-        const loginResponse = await postLoginUser({
-          email: user.email,
-          password: user.password,
-        });
+      const loginResponse = await postLoginUser({
+        email,
+        password,
+      });
 
-        tokenToSet = loginResponse.token;
-      }
+      user = loginResponse.user;
+      token = loginResponse.token;
     } catch (error) {
-      throw new AppError(error.response.data.message);
+      throw new AppError(
+        (error as IError).response.data.message,
+        (error as IError).response.status
+      );
     }
 
     setContext({
       ...context,
       isAuthenticated: true,
       user,
-      token: tokenToSet,
+      token,
+    });
+  };
+
+  const getUser = async ({ token }: IUserAuth) => {
+    if (!token) {
+      throw new AppError("Token is required", 422);
+    }
+
+    let user = {};
+
+    try {
+      const getUserResponse = await getAuthUser({ token });
+
+      user = getUserResponse.user;
+    } catch (error) {
+      throw new AppError(
+        (error as IError).response.data.message,
+        (error as IError).response.status
+      );
+    }
+
+    setContext({
+      ...context,
+      isAuthenticated: true,
+      user,
+      token,
     });
   };
 
   const logout = () => {
+    router.push("/");
+
     setContext({
       ...context,
       isAuthenticated: false,
       user: {},
       token: "",
     });
+
+    setTimeout(() => {
+      router.reload();
+    }, 500);
   };
 
   return (

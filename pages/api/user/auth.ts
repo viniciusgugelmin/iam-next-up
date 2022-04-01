@@ -2,13 +2,16 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import RouteNotFoundError from "../../../src/errors/RouteNotFoundError";
 import CreateUserSessionsService from "../../../src/api/services/CreateUserSessionService";
 import SendRequesError from "../../../src/api/services/SendRequestErrorService";
+import GetAuthenticatedUserService from "../../../src/api/services/GetAuthenticatedUserService";
+import AppError from "../../../src/errors/AppError";
+import { UsersRepositories } from "../../../src/repositories/UsersRepositories";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> {
-  if (req.method === "POST") {
-    await handlePost(req, res);
+  if (req.method === "GET") {
+    await handleGet(req, res);
     return;
   }
 
@@ -16,20 +19,22 @@ export default async function handler(
   res.status(statusCode).json({ message });
 }
 
-async function handlePost(
+async function handleGet(
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> {
-  const { email, password } = req.body;
-  const createUserSession = new CreateUserSessionsService();
+  const getAuthenticatedUserService = new GetAuthenticatedUserService();
 
   try {
-    const { user, token } = await createUserSession.execute({
-      email,
-      password,
-    });
+    const { userId } = await getAuthenticatedUserService.execute({ req });
+    const usersRepository = new UsersRepositories();
+    const user = await usersRepository.find(userId);
 
-    res.json({ user, token });
+    if (!user) {
+      throw new AppError("User not found", 404);
+    }
+
+    res.json({ user: { ...user, password: undefined } });
   } catch (error) {
     const sendRequestError = new SendRequesError();
     sendRequestError.execute({ res, error });

@@ -1,0 +1,22 @@
+@use "../variables/colors";
+
+.up-alert {
+  width: 100%;
+  padding: 12px 9px;
+  background: colors.$gray-3;
+  border: 1px solid colors.$gray-5;
+  border-radius: 6px;
+  color: colors.$white;
+  font-size: 13px;
+
+  &--small {
+    padding: 8px 9px;
+    font-size: 10px;
+  }
+
+  &--danger {
+    background: colors.$red-1;
+    border-color: colors.$red-2;
+    color: colors.$red-2;
+  }
+}
