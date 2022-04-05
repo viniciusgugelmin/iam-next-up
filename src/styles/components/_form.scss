@@ -1,0 +1,38 @@
+@use "../variables/colors";
+
+.up-form {
+  background: colors.$gray-3;
+  padding: 20px;
+  border-radius: 6px;
+  border: 1px solid colors.$gray-1;
+  box-shadow: -4px 4px 10px rgb(0 0 0 / 60%);
+
+  &__title {
+    margin-bottom: 10px;
+    font-size: 16px;
+    text-align: center;
+    padding: 10px 0;
+    position: relative;
+    background: radial-gradient(circle, colors.$gray-4, colors.$gray-3) 10%;
+  }
+
+  &--purple {
+    border: 1px solid colors.$purple-3;
+
+    & .up-form__title {
+      background: radial-gradient(circle, colors.$purple-3, colors.$gray-3) 10%;
+    }
+  }
+
+  &--blue {
+    border: 1px solid colors.$blue-3;
+
+    & .up-form__title {
+      background: radial-gradient(circle, colors.$blue-3, colors.$gray-3) 10%;
+    }
+  }
+
+  button {
+    margin-left: auto;
+  }
+}

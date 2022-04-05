@@ -6,14 +6,32 @@
   align-items: center;
   justify-content: center;
   color: colors.$white;
-  background: colors.$blue-3;
+  background: colors.$blue-1;
   border-radius: 8px;
   padding: 8px 20px;
-  border: 2px solid colors.$blue-3;
+  border: 2px solid colors.$blue-1;
   position: relative;
   cursor: pointer;
+  transition: all 0.4s ease-in-out;
 
-  &:after {
+  &--blue {
+    background: colors.$blue-3;
+    border-color: colors.$blue-3;
+  }
+
+  &--purple {
+    background: colors.$purple-3;
+    border-color: colors.$purple-3;
+  }
+
+  &[disabled] {
+    background: colors.$gray-5;
+    border-color: colors.$gray-5;
+    cursor: default;
+    opacity: 0.5;
+  }
+
+  &:after:not([disabled]) {
     content: '';
     position: absolute;
     width: 100%;
