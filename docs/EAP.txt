@@ -2,71 +2,195 @@
 
 Projeto Go Drink
 
-1.Gerenciamento
-1.1.Planejamento
-1.2.Reuniões
-1.3.Engenharia de requisitos
-1.3.1.Levantamento de requisitos
-1.3.1.1.Brainstorming
-1.3.1.2.Questionário
-1.3.1.3.Análise de documentos
-1.3.2.Especificação de requisitos
-1.3.2.1.Requisitos não-funcionais
-1.3.2.2.Requisitos funcionais
-1.3.3.Validação de requisitos
-1.3.3.1.Revisão dos requisitos
-1.3.3.2.Prototipagem
+1.Gerenciar a integração
+1.1.Planejar reuniões e passos iniciais
+1.2.Fazer reuniões iniciais
+1.3.Gerenciar o escopo
+1.3.1.Levantar requisitos
+1.3.1.1.Realizar brainstorming
+1.3.1.2.Criar e aplicar questionários
+1.3.1.3.Análisar de documentos
+1.3.2.Especificar requisitos
+1.3.2.1.Coletar requisitos não-funcionais
+1.3.2.2.Coletar requisitos funcionais
+1.3.3.Validar requisitos
+1.3.3.1.Revisar requisitos
+1.3.3.2.Prototipar
 1.4.Criar EAP
-1.5.Controle
-1.5.1.Relatório de desempenho
-2.Identidade
-2.1.Conhecimento do mercado
-2.1.1.Identificação do que é
-2.1.2.Diferenciação dos outros
-2.1.3.Análise SWOT
-2.1.3.1.Identificação das forças
-2.1.3.2.Identificação das fraquezas
-2.1.3.3.Identificação das oportunidades
-2.1.3.4.Identificação das ameaças
-3.Design
-3.1.Definição das cores
-3.2.Criação da logo
-3.3.Criação das telas do painel administrativo
-3.3.1.Cadastro
-3.3.2.Login
-3.3.3.Central
-3.3.3.1.Barra de menu
-3.3.3.1.1.Ícones de navegação
-3.3.3.1.2.Organização dos items
-3.3.3.2.Botões genéricos
-3.3.3.3.Gráficos genéricos
-3.3.3.4.Listagens genéricas
-3.3.3.5.Formulários genéricos
-3.3.3.6.Balões de alerta genéricos
-3.3.3.7.Balões de notificação genéricos
-4.Dados
-4.1.Pedidos técnicos
-4.2.Criação de diagramas
-4.2.1.Diagrama de classes
-4.2.2.Diagrama de componentes
-4.2.3.Diagrama de casos de uso
-4.2.4.Diagrama de sequência
-4.3.Seleção da alocação do banco
-4.4.Criação do banco
-5.Desenvolvimento
-5.1.Seleção da alocação da aplicação
-5.2.Seleção de serviços de terceiros
-5.3.Criação do back-end
-5.4.Criação do front-end
-5.5.Processo de deploy
-6.Treinamento
-6.1.Treinamento sobre os produtos
-6.1.1.Treinamento sobre fabricação
-6.1.2.Treinamento sobre armazenamento
-6.2.Treinamento sobre operação
-6.2.1.Treinamento sobre trabalho de reabastecimento
-6.2.2.Treinamento sobre processo de ajuda
-6.2.3.Treinamento sobre o sistema
----Construção
----Contratação
----Teste de avaliação
+1.5.Estimar tempo
+1.5.1.Estimar tempo das atividades
+1.5.2.Criar cronograma
+1.6.Mapear custos e recursos para atividades
+1.7.Fazer relatório de desempenho
+2.Identificar negócio
+2.1.Conhecer o mercado
+2.1.1.Identificar o que o projeto é
+2.1.2.Diferenciar o projeto dos outros
+2.1.3.Fazer a análise SWOT
+2.1.3.1.Identificar as forças
+2.1.3.2.Identificar as fraquezas
+2.1.3.3.Identificar as oportunidades
+2.1.3.4.Identificar as ameaças
+3.Mapear modelos de negócio
+3.1.Analisar pedidos técnicos
+3.2.Criar diagramas
+3.2.1.Criar diagrama de classes
+3.2.2.Criar diagrama de componentes
+3.2.3.Criar diagrama de casos de uso
+3.2.4.Criar diagrama de sequência
+3.3.Selecionar a alocação do banco
+3.4.Preparar a base de dados
+3.4.1.Criar as tabelas
+3.4.2.Definir acessos ao banco
+4.Fazer o design de marca
+4.1.Definir as cores
+4.2.Criar a logo
+5.Desenvolver o sistema
+5.1.Desenvolver a interface de cliente
+5.1.1.Desenvolver o cadastro de usuários
+5.1.1.1.Desenhar a interface
+5.1.1.2.Desenhar a lógica
+5.1.1.3.Desenvolver o front-end
+5.1.1.4.Desenvolver o back-end
+5.1.2.Desenvolver o login de usuários
+5.1.2.1.Desenhar a interface
+5.1.2.2.Desenhar a lógica
+5.1.2.3.Desenvolver o front-end
+5.1.2.4.Desenvolver o back-end
+5.1.3.Desenvolver o menu com listagem de bebidas
+5.1.3.1.Desenhar a interface
+5.1.3.2.Desenhar a lógica
+5.1.3.3.Desenvolver o front-end
+5.1.3.4.Desenvolver o back-end
+5.1.4.Desenvolver tela para selecionar quantidade da bebida
+5.1.4.1.Desenhar a interface
+5.1.4.2.Desenhar a lógica
+5.1.4.3.Desenvolver o front-end
+5.1.5.Desenvolver tela de finalização de pedido
+5.1.5.1.Desenhar a interface
+5.1.5.2.Desenhar a lógica
+5.1.5.3.Desenvolver o front-end
+5.1.5.4.Desenvolver o back-end
+5.1.6.Desenvolver a tela de pagamento
+5.1.6.1.Desenhar a interface
+5.1.6.2.Desenhar a lógica
+5.1.6.3.Desenvolver o front-end
+5.1.6.4.Desenvolver o back-end
+5.1.7.Desenvolver a tela de confirmação de pagamento
+5.1.7.1.Desenhar a interface
+5.1.7.2.Desenvolver o front-end
+5.1.8.Desenvolver a tela de ajuda
+5.1.8.1.Desenhar a interface
+5.1.8.2.Desenvolver o front-end
+5.1.8.3.Desenvolver o back-end
+5.1.9.Desenvolver tela de guia de usuário
+5.1.9.1.Desenhar a interface
+5.1.9.2.Desenhar a lógica
+5.1.9.3.Desenvolver o front-end
+5.2.Desenvolver o painel administrativo
+5.2.1.Desenvolver o cadastro de usuários administrativos
+5.2.1.1.Desenhar a interface
+5.2.1.2.Desenhar a lógica
+5.2.1.3.Desenvolver o front-end
+5.2.1.4.Desenvolver o back-end
+5.2.2.Desenvolver o login de usuários administrativos
+5.2.2.1.Desenhar a interface
+5.2.2.2.Desenhar a lógica
+5.2.2.3.Desenvolver o front-end
+5.2.2.4.Desenvolver o back-end
+5.2.3.Desenvolver IAM (Identity and Access Management)
+5.2.3.1.Planejar controle de acesso
+5.2.3.2.Desenvolver o controle de acesso
+5.2.3.2.1.Desenvolver o controle no front-end
+5.2.3.2.2.Desenvolver o controle no back-end
+5.2.3.3.Desenvolver a listagem de ações
+5.2.3.3.1.Desenhar a interface
+5.2.3.3.2.Desenhar a lógica
+5.2.3.3.3.Desenvolver o front-end
+5.2.3.3.4.Desenvolver o back-end
+5.2.4.Desenvolver a home do sistema administrativo
+5.2.4.1.Desenhar a interface
+5.2.4.2.Desenhar a lógica
+5.2.4.3.Desenvolver o front-end
+5.2.5.Desenvolver o menu do sistema administrativo
+5.2.5.1.Desenhar a interface
+5.2.5.2.Desenvolver a lógica
+5.2.5.3.Desenvolver o front-end
+5.2.6.Desenvolver a listagem de usuários
+5.2.6.1.Desenhar a interface
+5.2.6.2.Desenhar a lógica
+5.2.6.3.Desenvolver o front-end
+5.2.6.4.Desenvolver o back-end
+5.2.7.Desenvolver o cadastro de usuários
+5.2.7.1.Desenhar a interface
+5.2.7.2.Desenhar a lógica
+5.2.7.3.Desenvolver o front-end
+5.2.7.4.Desenvolver o back-end
+5.2.8.Desenvolver a listagem de bebidas
+5.2.8.1.Desenhar a interface
+5.2.8.2.Desenhar a lógica
+5.2.8.3.Desenvolver o front-end
+5.2.8.4.Desenvolver o back-end
+5.2.9.Desenvolver o cadastro de bebidas
+5.2.9.1.Desenhar a interface
+5.2.9.2.Desenhar a lógica
+5.2.9.3.Desenvolver o front-end
+5.2.9.4.Desenvolver o back-end
+5.2.10.Desenvolver controle de financeiro
+5.2.10.1.Desenhar a interface
+5.2.10.2.Desenhar a lógica
+5.2.10.3.Desenvolver o front-end
+5.2.10.4.Desenvolver o back-end
+5.2.11.Desenvolver controle de estoque
+5.2.11.1.Desenhar a interface
+5.2.11.2.Desenhar a lógica
+5.2.11.3.Desenvolver o front-end
+5.2.11.4.Desenvolver o back-end
+5.2.12.Desenvolver controle de vendas
+5.2.12.1.Desenhar a interface
+5.2.12.2.Desenhar a lógica
+5.2.12.3.Desenvolver o front-end
+5.2.12.4.Desenvolver o back-end
+5.2.13.Desenvolver listagem de feedbacks
+5.2.13.1.Desenhar a interface
+5.2.13.2.Desenhar a lógica
+5.2.13.3.Desenvolver o front-end
+5.2.13.4.Desenvolver o back-end
+5.3.Desenvolver controle de tradução de textos
+5.3.1.Desenhar a interface
+5.3.2.Desenhar a lógica
+5.3.3.Desenvolver o front-end
+5.3.4.Desenvolver o back-end
+5.4.Desenvolver controle de notificações
+5.4.1.Desenhar a interface
+5.4.2.Desenhar a lógica
+5.4.3.Desenvolver o front-end
+5.4.4.Desenvolver o back-end
+6.Fazer testes
+6.1.Fazer testes de integração
+6.1.1.Fazer testes de integração sobre fabricação
+6.1.2.Fazer testes de integração sobre armazenamento
+6.1.3.Fazer testes de integração sobre operação
+6.2.Fazer testes de unidade
+6.2.1.Fazer testes de unidade sobre trabalho de reabastecimento
+6.2.2.Fazer testes de unidade sobre processo de ajuda
+6.2.3.Fazer testes de unidade sobre o sistema
+6.3.Fazer testes de usabilidade do sistema
+6.4.Fazer testes de qualidade
+6.5.Fazer testes de performance
+6.6.Fazer testes de segurança
+6.7.Fazer testes de qualidade de documentação
+6.8.Fazer testes de qualidade de código
+7.Fazer o deploy
+7.1.Selecionar a alocação da aplicação
+7.2.Iniciar o deploy
+8.Fazer Treinamento
+8.1.Fazer o treinamento sobre os produtos
+8.1.1.Fazer o treinamento sobre fabricação
+8.1.2.Fazer o treinamento sobre armazenamento
+8.2.Fazer o treinamento sobre operação
+8.2.1.Fazer o treinamento sobre trabalho de reabastecimento
+8.2.2.Fazer o treinamento sobre processo de ajuda
+8.2.3.Fazer o treinamento sobre o sistema
+9.Iniciar construção do local
+10.Iniciar contratação
