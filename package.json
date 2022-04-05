@@ -10,7 +10,7 @@
     "lint": "next lint",
     "sass-watch": "sass --watch src/styles/style.scss:pages/style.css --style compressed",
     "sass": "sass src/styles/style.scss:pages/style.css --style compressed",
-    "migration": "node migrations/index.js"
+    "migration": "tsc migrations/index.ts && node migrations/index.js"
   },
   "dependencies": {
     "axios": "^0.26.1",
