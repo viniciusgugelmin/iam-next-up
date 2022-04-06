@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import RouteNotFoundError from "../../../src/errors/RouteNotFoundError";
-import CreateUserSessionsService from "../../../src/api/services/CreateUserSessionService";
 import SendRequesError from "../../../src/api/services/SendRequestErrorService";
 import GetAuthenticatedUserService from "../../../src/api/services/GetAuthenticatedUserService";
 import AppError from "../../../src/errors/AppError";

@@ -8,14 +8,14 @@ export class UsersRepositories {
     return {
       id: "1",
       name: "Admin",
-      email: "admin@admin",
+      email: "admin@admin.com",
       password: await hash("123", 8),
       roles: ["admin"],
     };
   }
 
   public async findByEmail(email: string): Promise<IUser | undefined> {
-    if (email !== "admin@admin") return;
+    if (email !== "admin@admin.com") return;
 
     return {
       id: "1",
