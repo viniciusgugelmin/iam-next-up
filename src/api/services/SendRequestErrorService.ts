@@ -7,11 +7,10 @@ interface IRequest {
   error: unknown;
 }
 
-export default class SendRequesError {
+export default class SendRequestError {
   public execute({ res, error }: IRequest): void {
     if (error instanceof AppError) {
-      res.status(error.statusCode).json({ message: error.message });
-      return;
+      return res.status(error.statusCode).json({ message: error.message });
     }
 
     const { message, statusCode } = new InternalServerError();

@@ -15,7 +15,6 @@ export const HomeLoginPage = () => {
   function login(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     context.login({ email, password });
-    console.log(context);
   }
 
   return (

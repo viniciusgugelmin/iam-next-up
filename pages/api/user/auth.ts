@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import RouteNotFoundError from "../../../src/errors/RouteNotFoundError";
-import CreateUserSessionsService from "../../../src/api/services/CreateUserSessionService";
-import SendRequesError from "../../../src/api/services/SendRequestErrorService";
+import SendRequestError from "../../../src/api/services/SendRequestErrorService";
 import GetAuthenticatedUserService from "../../../src/api/services/GetAuthenticatedUserService";
 import AppError from "../../../src/errors/AppError";
 import { UsersRepositories } from "../../../src/repositories/UsersRepositories";
@@ -28,7 +27,9 @@ async function handleGet(
   try {
     const { userId } = await getAuthenticatedUserService.execute({ req });
     const usersRepository = new UsersRepositories();
-    const user = await usersRepository.find(userId);
+    const user = await usersRepository.call(() =>
+      usersRepository.collection?.findOne({ _id: userId })
+    );
 
     if (!user) {
       throw new AppError("User not found", 404);
@@ -36,7 +37,7 @@ async function handleGet(
 
     res.json({ user: { ...user, password: undefined } });
   } catch (error) {
-    const sendRequestError = new SendRequesError();
+    const sendRequestError = new SendRequestError();
     sendRequestError.execute({ res, error });
   }
 }

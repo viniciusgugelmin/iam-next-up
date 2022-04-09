@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import RouteNotFoundError from "../../../src/errors/RouteNotFoundError";
 import CreateUserSessionsService from "../../../src/api/services/CreateUserSessionService";
-import SendRequesError from "../../../src/api/services/SendRequestErrorService";
+import SendRequestError from "../../../src/api/services/SendRequestErrorService";
+import joi from "joi";
 
 export default async function handler(
   req: NextApiRequest,
@@ -20,8 +21,19 @@ async function handlePost(
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> {
+  const reqSchema = joi.object({
+    email: joi.string().required(),
+    password: joi.string().required(),
+  });
+
   const { email, password } = req.body;
   const createUserSession = new CreateUserSessionsService();
+
+  const validation = reqSchema.validate({ email, password });
+  if (validation.error) {
+    const sendRequestError = new SendRequestError();
+    return sendRequestError.execute({ res, error: validation.error.details });
+  }
 
   try {
     const { user, token } = await createUserSession.execute({
@@ -31,7 +43,7 @@ async function handlePost(
 
     res.json({ user, token });
   } catch (error) {
-    const sendRequestError = new SendRequesError();
+    const sendRequestError = new SendRequestError();
     sendRequestError.execute({ res, error });
   }
 }

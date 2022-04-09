@@ -1,28 +1,20 @@
 import { hash } from "bcryptjs";
-import IUser from "../services/IUser";
+import { Collection } from "mongodb";
+import { mongoDatabase } from "../api/config/mongoDatabase";
 
 export class UsersRepositories {
-  public async find(id: string): Promise<IUser | undefined> {
-    if (id !== "1") return;
+  public collection: Collection | undefined;
 
-    return {
-      id: "1",
-      name: "Admin",
-      email: "admin@admin",
-      password: await hash("123", 8),
-      roles: ["admin"],
-    };
+  public async call(callback: Function) {
+    await mongoDatabase.openInstance();
+    this.collection = mongoDatabase.db?.collection("users");
+    const response = await callback();
+    await mongoDatabase.closeInstance();
+
+    return response;
   }
 
-  public async findByEmail(email: string): Promise<IUser | undefined> {
-    if (email !== "admin@admin") return;
-
-    return {
-      id: "1",
-      name: "Admin",
-      email: "admin@admin",
-      password: await hash("123", 8),
-      roles: ["admin"],
-    };
+  public async hashPassword(password: string): Promise<string> {
+    return await hash(password, 8);
   }
 }

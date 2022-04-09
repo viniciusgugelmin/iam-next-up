@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
-import { useContext, useEffect, useState } from "react";
-import authContext from "../src/stores/AuthContext";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { HomeEntryPage } from "../src/components/Template/Home/HomeEntryPage";
 import { HomeLoginPage } from "../src/components/Template/Home/HomeLoginPage";
@@ -12,9 +11,6 @@ interface IHomeProps {
 
 const Home: NextPage<IHomeProps> = ({ setPageSubtitle }: IHomeProps) => {
   const [page, setPage] = useState("");
-  // TODO check if user is logged in and redirect to home logged page
-  const context = useContext(authContext);
-  context;
   const router = useRouter();
   const isRouteAvailable = ["login", "signup"].includes(page);
 
@@ -56,7 +52,7 @@ const Home: NextPage<IHomeProps> = ({ setPageSubtitle }: IHomeProps) => {
         isRouteAvailable={isRouteAvailable}
       >
         {page === "login" && <HomeLoginPage />}
-        {page === "signup" && <HomeSignupPage />}
+        {page === "signup" && <HomeSignupPage setPage={setPage} />}
       </HomeEntryPage>
     </>
   );

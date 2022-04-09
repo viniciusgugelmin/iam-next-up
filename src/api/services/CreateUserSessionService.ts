@@ -22,7 +22,9 @@ interface IResponse {
 export default class CreateUserSessionsService {
   public async execute({ email, password }: IRequest): Promise<IResponse> {
     const usersRepository = new UsersRepositories();
-    const user = await usersRepository.findByEmail(email);
+    const user = await usersRepository.call(() => {
+      usersRepository.collection?.findOne({ email });
+    });
 
     if (!user) {
       throw new AppError("Incorrect email/password combination", 401);

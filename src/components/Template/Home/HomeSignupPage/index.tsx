@@ -2,19 +2,44 @@ import { FormEvent, useState } from "react";
 import { Input } from "../../../Base/Input";
 import { Button } from "../../../Base/Button";
 import { Form } from "../../../Base/Form";
+import AppError from "../../../../errors/AppError";
+import { IError } from "../../../../interfaces/IError";
+import { postSignupUser } from "../../../../requests/postSingupUser";
 
-export const HomeSignupPage = () => {
+interface IHomeSignupPageProps {
+  setPage: (page: string) => void;
+}
+
+export const HomeSignupPage = ({ setPage }: IHomeSignupPageProps) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [adminCode, setAdminCode] = useState("");
 
   const color = "blue";
-  const isFormFilled = name && email && password && confirmPassword;
+  const isFormFilled =
+    name && email && password && confirmPassword && adminCode;
 
-  function signup(e: FormEvent<HTMLFormElement>) {
+  async function signup(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log(name, email, password, confirmPassword);
+
+    try {
+      await postSignupUser({
+        name,
+        email,
+        password,
+        confirmPassword,
+        adminCode,
+      });
+
+      setPage("signup");
+    } catch (error) {
+      throw new AppError(
+        (error as IError).response.data.message,
+        (error as IError).response.status
+      );
+    }
   }
 
   return (
@@ -52,6 +77,15 @@ export const HomeSignupPage = () => {
         name="confirm_password"
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.target.value)}
+        color={color}
+        required
+      />
+      <Input
+        type="password"
+        placeholder="Admin code"
+        name="admin_code"
+        value={adminCode}
+        onChange={(e) => setAdminCode(e.target.value)}
         color={color}
         required
       />
