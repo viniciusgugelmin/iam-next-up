@@ -11,9 +11,10 @@ const contextValue = {
   isAuthenticated: false,
   user: {},
   token: "",
-  login: ({ email, password }: IUserLogin) => {},
-  getUser: ({ token }: IUserAuth) => {},
+  login: async ({ email, password }: IUserLogin) => {},
+  getUser: async ({ token }: IUserAuth) => {},
   logout: () => {},
+  init: false,
 };
 
 const AuthContext = createContext({ ...contextValue });
@@ -23,7 +24,7 @@ export const AuthContextProvider = ({ children }: IAuthContextProvider) => {
   const router = useRouter();
 
   useEffect(() => {
-    setContext({ ...context, login, getUser, logout });
+    setContext({ ...context, login, getUser, logout, init: true });
   }, []);
 
   const login = async ({ email, password }: IUserLogin) => {
@@ -42,19 +43,26 @@ export const AuthContextProvider = ({ children }: IAuthContextProvider) => {
 
       user = loginResponse.user;
       token = loginResponse.token;
+      localStorage.setItem("iam-token", token);
     } catch (error) {
+      if (!(error as { response?: any }).response) {
+        throw new AppError("Server error", 500);
+      }
+
       throw new AppError(
         (error as IError).response.data.message,
         (error as IError).response.status
       );
     }
 
-    setContext({
-      ...context,
+    setContext((c) => ({
+      ...c,
       isAuthenticated: true,
       user,
       token,
-    });
+    }));
+
+    await router.push("/home");
   };
 
   const getUser = async ({ token }: IUserAuth) => {
@@ -75,27 +83,23 @@ export const AuthContextProvider = ({ children }: IAuthContextProvider) => {
       );
     }
 
-    setContext({
-      ...context,
+    setContext((c) => ({
+      ...c,
       isAuthenticated: true,
       user,
       token,
-    });
+    }));
   };
 
   const logout = () => {
-    router.push("/");
+    localStorage.removeItem("iam-token");
 
-    setContext({
-      ...context,
+    setContext((c) => ({
+      ...c,
       isAuthenticated: false,
       user: {},
       token: "",
-    });
-
-    setTimeout(() => {
-      router.reload();
-    }, 500);
+    }));
   };
 
   return (

@@ -5,10 +5,12 @@ interface IPostAuthUserRequest {
 }
 
 export const getAuthUser = async ({ token }: IPostAuthUserRequest) => {
-  const request = await axios.post(
+  const request = await axios.get(
     `${process.env.NEXT_PUBLIC_API_URL}/user/auth`,
     {
-      token,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     }
   );
 
