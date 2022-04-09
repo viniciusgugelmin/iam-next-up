@@ -8,10 +8,8 @@ export class UsersRepositories {
   public async call(callback: Function) {
     await mongoDatabase.openInstance();
     this.collection = mongoDatabase.db?.collection("users");
-    const response = await callback();
-    await mongoDatabase.closeInstance();
 
-    return response;
+    return await callback();
   }
 
   public async hashPassword(password: string): Promise<string> {

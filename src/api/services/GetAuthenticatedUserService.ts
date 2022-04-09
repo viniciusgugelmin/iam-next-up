@@ -2,14 +2,15 @@ import { NextApiRequest } from "next";
 import AppError from "../../errors/AppError";
 import { verify } from "jsonwebtoken";
 import authConfig from "../config/auth";
-import IAuthResponse from "../../services/IAuthResponse";
+import { UsersRepositories } from "../../repositories/UsersRepositories";
+import IUser from "../../interfaces/IUser";
 
 interface IRequest {
   req: NextApiRequest;
 }
 
 export default class GetAuthenticatedUserService {
-  public async execute({ req }: IRequest): Promise<IAuthResponse> {
+  public async execute({ req }: IRequest): Promise<IUser> {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
@@ -23,8 +24,21 @@ export default class GetAuthenticatedUserService {
 
       const { sub } = decodedToken;
 
-      return { userId: sub } as IAuthResponse;
+      const usersRepository = new UsersRepositories();
+      const user = await usersRepository.call(() =>
+        usersRepository.collection?.findOne({ _id: sub })
+      );
+
+      if (!user) {
+        throw new AppError("User not found", 404);
+      }
+
+      return user;
     } catch (error) {
+      if (error instanceof AppError) {
+        throw error;
+      }
+
       throw new AppError(error as string);
     }
   }

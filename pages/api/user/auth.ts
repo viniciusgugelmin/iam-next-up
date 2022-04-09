@@ -4,6 +4,7 @@ import SendRequestError from "../../../src/api/services/SendRequestErrorService"
 import GetAuthenticatedUserService from "../../../src/api/services/GetAuthenticatedUserService";
 import AppError from "../../../src/errors/AppError";
 import { UsersRepositories } from "../../../src/repositories/UsersRepositories";
+import { mongoDatabase } from "../../../src/api/config/mongoDatabase";
 
 export default async function handler(
   req: NextApiRequest,
@@ -22,22 +23,15 @@ async function handleGet(
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> {
-  const getAuthenticatedUserService = new GetAuthenticatedUserService();
-
   try {
-    const { userId } = await getAuthenticatedUserService.execute({ req });
-    const usersRepository = new UsersRepositories();
-    const user = await usersRepository.call(() =>
-      usersRepository.collection?.findOne({ _id: userId })
-    );
-
-    if (!user) {
-      throw new AppError("User not found", 404);
-    }
+    const getAuthenticatedUserService = new GetAuthenticatedUserService();
+    const user = await getAuthenticatedUserService.execute({ req });
 
     res.json({ user: { ...user, password: undefined } });
   } catch (error) {
     const sendRequestError = new SendRequestError();
     sendRequestError.execute({ res, error });
+  } finally {
+    await mongoDatabase.closeInstance();
   }
 }

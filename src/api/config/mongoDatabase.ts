@@ -5,12 +5,12 @@ export default class Mongo {
   public db: Db | undefined;
 
   constructor() {
-    this.mongo = new MongoClient(`${process.env.MONGO_URI}`);
+    this.mongo = new MongoClient(`${process.env.NEXT_PUBLIC_MONGO_URI}`);
   }
 
   public async openInstance() {
     await this.mongo.connect();
-    this.db = this.mongo.db(`${process.env.MONGO_DB}`);
+    this.db = this.mongo.db(`${process.env.NEXT_PUBLIC_MONGO_DB}`);
   }
 
   public async closeInstance() {
