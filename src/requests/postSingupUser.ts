@@ -15,13 +15,16 @@ export const postSignupUser = async ({
   confirmPassword,
   adminCode,
 }: IPostSignupUserRequest) => {
-  const request = await axios.post(`/api/user`, {
-    name,
-    email,
-    password,
-    confirmPassword,
-    adminCode,
-  });
+  const request = await axios.post(
+    `${process.env.NEXT_PUBLIC_API_URL ?? `/api`}/api/user`,
+    {
+      name,
+      email,
+      password,
+      confirmPassword,
+      adminCode,
+    }
+  );
 
   return await request.data;
 };
