@@ -9,13 +9,10 @@ export const postLoginUser = async ({
   email,
   password,
 }: IPostLoginUserRequest) => {
-  const request = await axios.post(
-    `${process.env.NEXT_PUBLIC_API_URL}/user/login`,
-    {
-      email,
-      password,
-    }
-  );
+  const request = await axios.post(`/api/user/login`, {
+    email,
+    password,
+  });
 
   return await request.data;
 };
