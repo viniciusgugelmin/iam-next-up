@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { HomeEntryPage } from "../src/components/Template/Home/HomeEntryPage";
 import { HomeLoginPage } from "../src/components/Template/Home/HomeLoginPage";
 import { HomeSignupPage } from "../src/components/Template/Home/HomeSignupPage";
-import IsAuthenticated from "../src/hooks/IsAuthenticated";
+import useAuthentication from "../src/hooks/UseAuthentication";
 
 interface IHomeProps {
   setPageSubtitle: (subtitle: string) => void;
@@ -12,7 +12,7 @@ interface IHomeProps {
 
 const Home: NextPage<IHomeProps> = ({ setPageSubtitle }: IHomeProps) => {
   const [page, setPage] = useState("");
-  const isAuthenticated = IsAuthenticated(false);
+  const isAuthenticated = useAuthentication(false);
   const router = useRouter();
   const isRouteAvailable = ["login", "signup"].includes(page);
 
