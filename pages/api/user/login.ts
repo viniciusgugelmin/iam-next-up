@@ -3,7 +3,6 @@ import RouteNotFoundError from "../../../src/errors/RouteNotFoundError";
 import CreateUserSessionsService from "../../../src/api/services/CreateUserSessionService";
 import SendRequestError from "../../../src/api/services/SendRequestErrorService";
 import joi from "joi";
-import { mongoDatabase } from "../../../src/api/config/mongoDatabase";
 
 export default async function handler(
   req: NextApiRequest,
@@ -46,7 +45,5 @@ async function handlePost(
   } catch (error) {
     const sendRequestError = new SendRequestError();
     sendRequestError.execute({ res, error });
-  } finally {
-    await mongoDatabase.closeInstance();
   }
 }

@@ -2,7 +2,8 @@ import AppError from "../../errors/AppError";
 import { compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import authConfig from "../config/auth";
-import { UsersRepositories } from "../../repositories/UsersRepositories";
+import { UsersRepository } from "../../repositories/UsersRepository";
+import connectMongoDB from "../config/mongoDatabase";
 
 interface IRequest {
   email: string;
@@ -10,21 +11,17 @@ interface IRequest {
 }
 
 interface IResponse {
-  user: {
-    id: string;
-    name: string;
-    email: string;
-    roles: string[];
-  };
+  user: Object;
   token: string;
 }
 
 export default class CreateUserSessionsService {
   public async execute({ email, password }: IRequest): Promise<IResponse> {
-    const usersRepository = new UsersRepositories();
-    const user = await usersRepository.call(() => {
-      usersRepository.collection?.findOne({ email });
-    });
+    const usersRepository = new UsersRepository();
+    const { db } = await connectMongoDB();
+    const user = await db
+      .collection(usersRepository.collection)
+      .findOne({ email });
 
     if (!user) {
       throw new AppError("Incorrect email/password combination", 401);
@@ -36,7 +33,7 @@ export default class CreateUserSessionsService {
     }
 
     const token = sign({}, authConfig.jwt.secret, {
-      subject: user.id,
+      subject: user._id.toString(),
       expiresIn: authConfig.jwt.expiresIn,
     });
 

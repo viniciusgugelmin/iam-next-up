@@ -16,7 +16,7 @@ export const postSignupUser = async ({
   adminCode,
 }: IPostSignupUserRequest) => {
   const request = await axios.post(
-    `${process.env.NEXT_PUBLIC_API_URL ?? `/api`}/api/user`,
+    `${process.env.NEXT_PUBLIC_API_URL ?? `/api`}/user`,
     {
       name,
       email,

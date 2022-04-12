@@ -1,21 +1,27 @@
 import { Db, MongoClient } from "mongodb";
 
-export default class Mongo {
-  private mongo: MongoClient;
-  public db: Db | undefined;
-
-  constructor() {
-    this.mongo = new MongoClient(`${process.env.NEXT_PUBLIC_MONGO_URI}`);
-  }
-
-  public async openInstance() {
-    await this.mongo.connect();
-    this.db = this.mongo.db(`${process.env.NEXT_PUBLIC_MONGO_DB}`);
-  }
-
-  public async closeInstance() {
-    await this.mongo.close();
-  }
+interface IConnectType {
+  db: Db;
+  client: MongoClient;
 }
 
-export const mongoDatabase = new Mongo();
+let cachedDb: Db;
+
+const client = new MongoClient(`${process.env.NEXT_PUBLIC_MONGO_URI}`, {
+  // @ts-ignore
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+export default async function connectMongoDB(): Promise<IConnectType> {
+  if (cachedDb) {
+    return { db: cachedDb, client };
+  }
+
+  await client.connect();
+
+  const db = client.db(process.env.NEXT_PUBLIC_MONGO_DB);
+  cachedDb = db;
+
+  return { db, client };
+}

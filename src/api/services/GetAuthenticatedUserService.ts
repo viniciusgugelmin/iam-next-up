@@ -2,15 +2,16 @@ import { NextApiRequest } from "next";
 import AppError from "../../errors/AppError";
 import { verify } from "jsonwebtoken";
 import authConfig from "../config/auth";
-import { UsersRepositories } from "../../repositories/UsersRepositories";
-import IUser from "../../interfaces/IUser";
+import { UsersRepository } from "../../repositories/UsersRepository";
+import connectMongoDB from "../config/mongoDatabase";
+import { ObjectId } from "mongodb";
 
 interface IRequest {
   req: NextApiRequest;
 }
 
 export default class GetAuthenticatedUserService {
-  public async execute({ req }: IRequest): Promise<IUser> {
+  public async execute({ req }: IRequest): Promise<object> {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
@@ -24,10 +25,11 @@ export default class GetAuthenticatedUserService {
 
       const { sub } = decodedToken;
 
-      const usersRepository = new UsersRepositories();
-      const user = await usersRepository.call(() =>
-        usersRepository.collection?.findOne({ _id: sub })
-      );
+      const usersRepository = new UsersRepository();
+      const { db } = await connectMongoDB();
+      const user = await db
+        .collection(usersRepository.collection)
+        .findOne({ _id: new ObjectId(sub as string) });
 
       if (!user) {
         throw new AppError("User not found", 404);

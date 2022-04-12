@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import GetAuthenticatedUserService from "../../src/api/services/GetAuthenticatedUserService";
-import AppError from "../../src/errors/AppError";
 import RouteNotFoundError from "../../src/errors/RouteNotFoundError";
+import SendRequestError from "../../src/api/services/SendRequestErrorService";
+import { mongoDatabase } from "../../src/api/config/mongoDatabase";
 
 export default async function handler(
   req: NextApiRequest,
@@ -20,17 +21,15 @@ async function handleGet(
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> {
-  const getAuthenticatedUser = new GetAuthenticatedUserService();
-  const authResponse = await getAuthenticatedUser.execute({ req });
+  try {
+    const getAuthenticatedUser = new GetAuthenticatedUserService();
+    const authResponse = await getAuthenticatedUser.execute({ req });
 
-  if (authResponse instanceof AppError) {
-    res.status(401).json({
-      message: authResponse.message,
+    res.status(200).json({
+      ...authResponse,
     });
-    return;
+  } catch (error) {
+    const sendRequestError = new SendRequestError();
+    sendRequestError.execute({ res, error });
   }
-
-  res.status(200).json({
-    ...authResponse,
-  });
 }

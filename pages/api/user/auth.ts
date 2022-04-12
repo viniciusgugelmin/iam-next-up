@@ -2,9 +2,6 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import RouteNotFoundError from "../../../src/errors/RouteNotFoundError";
 import SendRequestError from "../../../src/api/services/SendRequestErrorService";
 import GetAuthenticatedUserService from "../../../src/api/services/GetAuthenticatedUserService";
-import AppError from "../../../src/errors/AppError";
-import { UsersRepositories } from "../../../src/repositories/UsersRepositories";
-import { mongoDatabase } from "../../../src/api/config/mongoDatabase";
 
 export default async function handler(
   req: NextApiRequest,
@@ -31,7 +28,5 @@ async function handleGet(
   } catch (error) {
     const sendRequestError = new SendRequestError();
     sendRequestError.execute({ res, error });
-  } finally {
-    await mongoDatabase.closeInstance();
   }
 }
