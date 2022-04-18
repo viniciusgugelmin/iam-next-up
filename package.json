@@ -8,8 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "sass-watch": "sass --watch src/styles/style.scss:pages/style.css --style compressed",
-    "sass": "sass src/styles/style.scss:pages/style.css --style compressed"
+    "sass-watch": "sass --watch src/front/styles/style.scss:src/pages/style.css --style compressed",
+    "sass": "sass src/front/styles/style.scss:src/pages/style.css --style compressed"
   },
   "dependencies": {
     "axios": "^0.26.1",

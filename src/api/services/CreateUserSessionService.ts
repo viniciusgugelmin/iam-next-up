@@ -2,7 +2,7 @@ import AppError from "../../errors/AppError";
 import { compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import authConfig from "../config/auth";
-import { UsersRepository } from "../../repositories/UsersRepository";
+import { UsersRepository } from "../repositories/UsersRepository";
 import connectMongoDB from "../config/mongoDatabase";
 
 interface IRequest {
