@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 import GetAuthenticatedUserService from "../../src/api/services/GetAuthenticatedUserService";
 import RouteNotFoundError from "../../src/errors/RouteNotFoundError";
 import SendRequestError from "../../src/api/services/SendRequestErrorService";
-import { mongoDatabase } from "../../src/api/config/mongoDatabase";
 
 export default async function handler(
   req: NextApiRequest,
@@ -22,8 +21,8 @@ async function handleGet(
   res: NextApiResponse
 ): Promise<void> {
   try {
-    const getAuthenticatedUser = new GetAuthenticatedUserService();
-    const authResponse = await getAuthenticatedUser.execute({ req });
+    const getAuthenticatedUserService = new GetAuthenticatedUserService();
+    const authResponse = await getAuthenticatedUserService.execute({ req });
 
     res.status(200).json({
       ...authResponse,

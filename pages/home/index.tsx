@@ -1,7 +1,7 @@
 import { NextPage } from "next";
-import { Navbar } from "../../src/components/Utils/Navbar";
 import useAuthentication from "../../src/hooks/UseAuthentication";
 import { PageLoading } from "../../src/components/Base/PageLoading";
+import { HomeLoggedPage } from "../../src/components/Template/HomeLoggedPage";
 
 const HomeLogged: NextPage = () => {
   const isAuthenticated = useAuthentication();
@@ -10,11 +10,7 @@ const HomeLogged: NextPage = () => {
     return <PageLoading />;
   }
 
-  return (
-    <div>
-      Hello Next.js <Navbar />
-    </div>
-  );
+  return <HomeLoggedPage>Hello Next.js</HomeLoggedPage>;
 };
 
 export default HomeLogged;
