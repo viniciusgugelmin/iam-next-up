@@ -19,9 +19,6 @@ interface IResponse {
 
 export default class InitDatabaseService {
   public async execute({ req }: IRequest): Promise<IResponse> {
-    const { db } = await connectMongoDB();
-    await db.dropDatabase();
-
     const authHeader = req.headers.authorization;
     if (!authHeader) {
       throw new AppError("Auth token is missing", 422);
@@ -32,6 +29,9 @@ export default class InitDatabaseService {
     if (token !== process.env.NEXT_PUBLIC_SESSION_ADMIN_PASSWORD) {
       throw new AppError("Invalid token", 422);
     }
+
+    const { db } = await connectMongoDB();
+    await db.dropDatabase();
 
     const rolesRepository = new RolesRepository();
     const rolesToInsert = [getAdminRole(), getCommonRole()];
