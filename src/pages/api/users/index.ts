@@ -26,7 +26,7 @@ async function handleGet(req: NextApiRequest, res: NextApiResponse) {
     const users = await getUsersService.execute({ user });
 
     res.json({
-      ...users,
+      users,
     });
   } catch (error) {
     const sendRequestError = new SendRequestError();

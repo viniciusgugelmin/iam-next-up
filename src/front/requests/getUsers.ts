@@ -1,12 +1,12 @@
 import axios from "axios";
 
-interface IGetAuthUserRequest {
+interface IGetUsersRequest {
   token: string;
 }
 
-export const getAuthUser = async ({ token }: IGetAuthUserRequest) => {
+export const getUsers = async ({ token }: IGetUsersRequest) => {
   const request = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL || `/api`}/user`,
+    `${process.env.NEXT_PUBLIC_API_URL || `/api`}/users`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
