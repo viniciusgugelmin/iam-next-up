@@ -17,7 +17,7 @@ export const getAdminRole = () =>
   new Role({
     name: "admin",
     description: "Administrator",
-    permissions: getAllPermissions(),
+    permissions: [],
   });
 
 export const getCommonRole = () =>

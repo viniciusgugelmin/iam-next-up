@@ -5,22 +5,29 @@ import authConfig from "../config/auth";
 import { UsersRepository } from "../repositories/UsersRepository";
 import connectMongoDB from "../config/mongoDatabase";
 import { ObjectId } from "mongodb";
+import IUser from "../../interfaces/IUser";
 
 interface IRequest {
   req: NextApiRequest;
 }
 
 export default class GetAuthenticatedUserService {
-  public async execute({ req }: IRequest): Promise<object> {
+  public async execute({ req }: IRequest): Promise<IUser> {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
       throw new AppError("Auth token is missing", 422);
     }
 
-    const [, token] = authHeader.split(" ");
+    let decodedToken = null;
 
-    const decodedToken = verify(token, authConfig.jwt.secret);
+    try {
+      const [, token] = authHeader.split(" ");
+
+      decodedToken = verify(token, authConfig.jwt.secret);
+    } catch (err) {
+      throw new AppError("Invalid token", 422);
+    }
 
     const { sub } = decodedToken;
 
@@ -34,6 +41,10 @@ export default class GetAuthenticatedUserService {
       throw new AppError("User not found", 404);
     }
 
-    return user;
+    if (!user._active) {
+      throw new AppError("User is not active", 401);
+    }
+
+    return user as unknown as IUser;
   }
 }

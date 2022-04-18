@@ -3,6 +3,8 @@ import AppError from "../../errors/AppError";
 import { Db } from "mongodb";
 import { RolesRepository } from "./RolesRepository";
 import IRole from "../../interfaces/IRole";
+import IUser from "../../interfaces/IUser";
+import { getAdminRole } from "../models/Role";
 
 export class UsersRepository {
   collection = "users";
@@ -30,6 +32,27 @@ export class UsersRepository {
     await db
       .collection(this.collection)
       .updateMany({ "role.name": role.name }, { $set: { role: { ...role } } });
+  }
+
+  public checkIfHasPermission(
+    user: IUser,
+    permissionName: string,
+    permissionValue: string
+  ) {
+    if (
+      user.role.name === getAdminRole().name ||
+      user.role.permissions?.find(
+        (permission) =>
+          // @ts-ignore
+          permission.name === permissionName && permission[permissionValue]
+      )
+    )
+      return;
+
+    throw new AppError(
+      "You don't have permission to access this resource",
+      403
+    );
   }
 
   public async hashPassword(password: string): Promise<string> {
