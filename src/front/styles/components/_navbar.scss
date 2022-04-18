@@ -1,0 +1,16 @@
+@use "../variables/colors";
+
+.up-navbar {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 25px;
+  min-height: 100vh;
+  max-height: 100vh;
+  max-width: 100px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: colors.$blue-2;
+}

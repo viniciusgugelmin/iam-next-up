@@ -2,7 +2,7 @@ import { NextApiRequest } from "next";
 import AppError from "../../errors/AppError";
 import { verify } from "jsonwebtoken";
 import authConfig from "../config/auth";
-import { UsersRepository } from "../../repositories/UsersRepository";
+import { UsersRepository } from "../repositories/UsersRepository";
 import connectMongoDB from "../config/mongoDatabase";
 import { ObjectId } from "mongodb";
 
@@ -20,28 +20,20 @@ export default class GetAuthenticatedUserService {
 
     const [, token] = authHeader.split(" ");
 
-    try {
-      const decodedToken = verify(token, authConfig.jwt.secret);
+    const decodedToken = verify(token, authConfig.jwt.secret);
 
-      const { sub } = decodedToken;
+    const { sub } = decodedToken;
 
-      const usersRepository = new UsersRepository();
-      const { db } = await connectMongoDB();
-      const user = await db
-        .collection(usersRepository.collection)
-        .findOne({ _id: new ObjectId(sub as string) });
+    const usersRepository = new UsersRepository();
+    const { db } = await connectMongoDB();
+    const user = await db
+      .collection(usersRepository.collection)
+      .findOne({ _id: new ObjectId(sub as string) });
 
-      if (!user) {
-        throw new AppError("User not found", 404);
-      }
-
-      return user;
-    } catch (error) {
-      if (error instanceof AppError) {
-        throw error;
-      }
-
-      throw new AppError(error as string);
+    if (!user) {
+      throw new AppError("User not found", 404);
     }
+
+    return user;
   }
 }
