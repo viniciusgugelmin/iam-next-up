@@ -31,7 +31,11 @@ export default class InitDatabaseService {
     }
 
     const { db } = await connectMongoDB();
-    await db.dropDatabase();
+    const collections = await db.collections();
+
+    for (const collection of collections) {
+      await collection.drop();
+    }
 
     const rolesRepository = new RolesRepository();
     const rolesToInsert = [getAdminRole(), getCommonRole()];
