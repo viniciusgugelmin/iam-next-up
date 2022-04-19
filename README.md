@@ -75,14 +75,17 @@ Connect to MongoDB.
 API:
 
 ```
-- GET /api/user (authenticated)
+- GET /api/user
   - Route to get the user authenticated in the session
-- POST /api/user
+- POST /api/user (not authenticated)
   - Route to login the user
-- GET /api/users (authenticated)
+- GET /api/users
   - Route to get all users
-- POST /api/users (authenticated)
+- GET /api/users/:id
+  - Route to get a user by id
+- POST /api/users
   - Route to create a new user
+
 ```
 
 Routes:

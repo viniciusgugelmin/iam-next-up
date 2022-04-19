@@ -8,7 +8,7 @@ import joi from "joi";
 import SanitizeEveryWordService from "../../../api/services/app/SanitizeEveryWordService";
 import AppError from "../../../errors/AppError";
 
-export default async function getUsers(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
