@@ -1,14 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import RouteNotFoundError from "../../errors/RouteNotFoundError";
-import SendRequestError from "../../api/services/SendRequestErrorService";
-import InitDatabaseService from "../../api/services/InitDatabaseService";
+import SendRequestError from "../../api/services/app/SendRequestErrorService";
+import InitDatabaseService from "../../api/services/app/InitDatabaseService";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    await handleGet(req, res);
+    await handlePost(req, res);
     return;
   }
 
@@ -16,7 +16,7 @@ export default async function handler(
   res.status(statusCode).json({ message });
 }
 
-async function handleGet(req: NextApiRequest, res: NextApiResponse) {
+async function handlePost(req: NextApiRequest, res: NextApiResponse) {
   try {
     const initDatabaseService = new InitDatabaseService();
     const initDatabaseResponse = await initDatabaseService.execute({ req });

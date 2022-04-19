@@ -1,5 +1,4 @@
 import IRole from "../../interfaces/IRole";
-import { getAllPermissions } from "./Permission";
 
 export default class Role implements IRole {
   name;

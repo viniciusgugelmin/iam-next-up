@@ -1,12 +1,12 @@
-import connectMongoDB from "../config/mongoDatabase";
+import connectMongoDB from "../../config/mongoDatabase";
 import { NextApiRequest } from "next";
-import AppError from "../../errors/AppError";
-import { UsersRepository } from "../repositories/UsersRepository";
-import User from "../models/User";
-import IUser from "../../interfaces/IUser";
-import { getAdminRole, getCommonRole } from "../models/Role";
-import { RolesRepository } from "../repositories/RolesRepository";
-import IRole from "../../interfaces/IRole";
+import AppError from "../../../errors/AppError";
+import { UsersRepository } from "../../repositories/UsersRepository";
+import User from "../../models/User";
+import IUser from "../../../interfaces/IUser";
+import { getAdminRole, getCommonRole } from "../../models/Role";
+import { RolesRepository } from "../../repositories/RolesRepository";
+import IRole from "../../../interfaces/IRole";
 
 interface IRequest {
   req: NextApiRequest;

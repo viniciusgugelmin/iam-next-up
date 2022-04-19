@@ -1,9 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import RouteNotFoundError from "../../../errors/RouteNotFoundError";
-import SendRequestError from "../../../api/services/SendRequestErrorService";
-import GetAuthenticatedUserService from "../../../api/services/GetAuthenticatedUserService";
+import SendRequestError from "../../../api/services/app/SendRequestErrorService";
+import GetAuthenticatedUserService from "../../../api/services/user/GetAuthenticatedUserService";
 import joi from "joi";
-import CreateUserSessionsService from "../../../api/services/CreateUserSessionService";
+import CreateUserSessionsService from "../../../api/services/user/CreateUserSessionService";
+import AppError from "../../../errors/AppError";
 
 export default async function handler(
   req: NextApiRequest,
@@ -51,8 +52,7 @@ async function handlePost(
 
   const validation = reqSchema.validate({ email, password });
   if (validation.error) {
-    const sendRequestError = new SendRequestError();
-    return sendRequestError.execute({ res, error: validation.error.details });
+    throw new AppError(validation.error.details[0].message);
   }
 
   try {

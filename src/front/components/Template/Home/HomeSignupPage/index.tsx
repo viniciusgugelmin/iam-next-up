@@ -4,7 +4,7 @@ import { Button } from "../../../Base/Button";
 import { Form } from "../../../Base/Form";
 import AppError from "../../../../../errors/AppError";
 import { IError } from "../../../../../interfaces/IError";
-import { postSignupUser } from "../../../../requests/postSingupUser";
+import { postSignupUser } from "../../../../requests/user/postSingupUser";
 
 interface IHomeSignupPageProps {
   setPage: (page: string) => void;

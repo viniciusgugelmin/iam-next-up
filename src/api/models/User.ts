@@ -10,7 +10,7 @@ export default class User implements IUser {
   private _active = true;
   private _statusDescription: string | null = null;
   private _gender = "";
-  hiredAt = new Date();
+  private _hiredAt = new Date();
   role: IRole | { name: string } = { name: getCommonRole().name };
   private _createdAt = new Date();
   private _updatedAt = new Date();
@@ -18,19 +18,19 @@ export default class User implements IUser {
 
   // Getters and Setters
 
-  get active(): boolean {
+  public get active(): boolean {
     return this._active;
   }
 
-  get statusDescription(): string | null {
+  public get statusDescription(): string | null {
     return this._statusDescription;
   }
 
-  get gender(): string {
+  public get gender(): string {
     return this._gender;
   }
 
-  set gender(value: string) {
+  public set gender(value: string) {
     let _value = value;
 
     if (!genderOptions.includes(value)) {
@@ -40,36 +40,44 @@ export default class User implements IUser {
     this._gender = _value;
   }
 
-  get createdAt(): Date {
+  public get hiredAt(): Date {
+    return this._hiredAt;
+  }
+
+  public set hiredAt(value: Date) {
+    this._hiredAt = new Date(value);
+  }
+
+  public get createdAt(): Date {
     return this._createdAt;
   }
 
-  get updatedAt(): Date {
+  public get updatedAt(): Date {
     return this._updatedAt;
   }
 
-  get deletedAt(): Date | null {
+  public get deletedAt(): Date | null {
     return this._deletedAt;
   }
 
   // Functions
 
-  update() {
+  public update() {
     this._updatedAt = new Date();
   }
 
-  deactivate(statusDescription: string) {
+  public deactivate(statusDescription: string) {
     this._active = false;
     this._statusDescription = statusDescription;
   }
 
-  delete() {
+  public delete() {
     this._active = false;
     this._statusDescription = "Deleted";
     this._deletedAt = new Date();
   }
 
-  reactivate() {
+  public reactivate() {
     this._active = true;
     this._statusDescription = null;
     this._deletedAt = null;

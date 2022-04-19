@@ -1,6 +1,6 @@
 import type { NextApiResponse } from "next";
-import AppError from "../../errors/AppError";
-import InternalServerError from "../../errors/InternalServerError";
+import AppError from "../../../errors/AppError";
+import InternalServerError from "../../../errors/InternalServerError";
 
 interface IRequest {
   res: NextApiResponse;

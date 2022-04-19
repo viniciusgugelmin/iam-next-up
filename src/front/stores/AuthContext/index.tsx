@@ -1,11 +1,11 @@
 import React, { createContext, useEffect, useState } from "react";
 import IAuthContextProvider from "../../../interfaces/IAuthContextProvider";
-import { postLoginUser } from "../../requests/postLoginUser";
+import { postLoginUser } from "../../requests/user/postLoginUser";
 import { IUserAuth, IUserLogin } from "../../../interfaces/IUser";
 import AppError from "../../../errors/AppError";
 import { IError } from "../../../interfaces/IError";
 import { useRouter } from "next/router";
-import { getAuthUser } from "../../requests/getAuthUser";
+import { getAuthUser } from "../../requests/user/getAuthUser";
 
 const contextValue = {
   isAuthenticated: false,

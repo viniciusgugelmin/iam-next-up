@@ -37,21 +37,28 @@ export const changeRolePermission = (
 
 export const getAllPermissions = () => [
   new Permission({
-    name: "user",
+    name: "admin_users",
     create: true,
     read: true,
     update: true,
     delete: true,
   }),
   new Permission({
-    name: "customer",
+    name: "users",
     create: true,
     read: true,
     update: true,
     delete: true,
   }),
   new Permission({
-    name: "product",
+    name: "customers",
+    create: true,
+    read: true,
+    update: true,
+    delete: true,
+  }),
+  new Permission({
+    name: "products",
     create: true,
     read: true,
     update: true,
