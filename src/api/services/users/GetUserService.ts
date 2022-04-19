@@ -4,16 +4,13 @@ import IUser from "../../../interfaces/IUser";
 import { ObjectId } from "mongodb";
 import AppError from "../../../errors/AppError";
 
-interface IGetUserServiceProps {
+interface IRequest {
   user: IUser;
   userId: string;
 }
 
 export default class GetUserService {
-  public async execute({
-    user,
-    userId,
-  }: IGetUserServiceProps): Promise<Object> {
+  public async execute({ user, userId }: IRequest): Promise<Object> {
     const usersRepository = new UsersRepository();
     usersRepository.checkIfHasPermission(user, "users", "read");
 
@@ -21,7 +18,7 @@ export default class GetUserService {
       const { db } = await connectMongoDB();
       const userToReturn = await db
         .collection(usersRepository.collection)
-        .findOne({ _id: new ObjectId(userId), _active: true });
+        .findOne({ _id: new ObjectId(userId) });
 
       if (!userToReturn) {
         throw new Error();

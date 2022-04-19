@@ -62,10 +62,6 @@ export default class User implements IUser {
 
   // Functions
 
-  public update() {
-    this._updatedAt = new Date();
-  }
-
   public deactivate(statusDescription: string) {
     this._active = false;
     this._statusDescription = statusDescription;

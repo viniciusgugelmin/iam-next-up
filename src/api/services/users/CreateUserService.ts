@@ -5,14 +5,13 @@ import AppError from "../../../errors/AppError";
 import { getCommonRole } from "../../models/Role";
 import User from "../../models/User";
 
+interface IRequest {
+  user: IUser;
+  newUser: any;
+}
+
 export default class CreateUserService {
-  public async execute({
-    user,
-    newUser,
-  }: {
-    user: IUser;
-    newUser: any;
-  }): Promise<IUser> {
+  public async execute({ user, newUser }: IRequest): Promise<IUser> {
     const usersRepository = new UsersRepository();
     usersRepository.checkIfHasPermission(user, "users", "create");
 
@@ -36,8 +35,18 @@ export default class CreateUserService {
         $or: [{ document: _newUser.document }, { email: _newUser.email }],
       });
 
-    if (hasUserWithSameDocumentOrEmail) {
-      throw new AppError("Document or email already in use");
+    if (
+      hasUserWithSameDocumentOrEmail &&
+      hasUserWithSameDocumentOrEmail.document === _newUser.document
+    ) {
+      throw new AppError("Document already in use", 400);
+    }
+
+    if (
+      hasUserWithSameDocumentOrEmail &&
+      hasUserWithSameDocumentOrEmail.email === _newUser.email
+    ) {
+      throw new AppError("Email already in use", 400);
     }
 
     if (_newUser.role.name !== getCommonRole().name) {
@@ -57,7 +66,7 @@ export default class CreateUserService {
 
     _newUser.password = await usersRepository.hashPassword(_newUser.password);
 
-    await db.collection(usersRepository.collection).insertOne({ ..._newUser });
+    await db.collection(usersRepository.collection).insertOne(_newUser);
 
     return _newUser;
   }

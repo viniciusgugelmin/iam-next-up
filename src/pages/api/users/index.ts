@@ -45,17 +45,22 @@ async function handleGet(req: NextApiRequest, res: NextApiResponse) {
 
 async function handlePost(req: NextApiRequest, res: NextApiResponse) {
   try {
+    const getAuthenticatedUserService = new GetAuthenticatedUserService();
+    const user = await getAuthenticatedUserService.execute({ req });
+
     const { document, email, name, password, gender, hiredAt, role } = req.body;
 
     const sanitizeEveryWordService = new SanitizeEveryWordService();
     const newUser = sanitizeEveryWordService.execute({
-      document,
-      email,
-      name,
-      password,
-      gender,
-      hiredAt,
-      role,
+      element: {
+        document,
+        email,
+        name,
+        password,
+        gender,
+        hiredAt,
+        role,
+      },
     });
 
     const userSchema = joi.object({
@@ -79,9 +84,6 @@ async function handlePost(req: NextApiRequest, res: NextApiResponse) {
     if (validation.error) {
       throw new AppError(validation.error.details[0].message);
     }
-
-    const getAuthenticatedUserService = new GetAuthenticatedUserService();
-    const user = await getAuthenticatedUserService.execute({ req });
 
     const createUserService = new CreateUserService();
     const userAdded = await createUserService.execute({ user, newUser });

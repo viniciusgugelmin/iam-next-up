@@ -1,5 +1,9 @@
+interface IRequest {
+  element: any;
+}
+
 export default class SanitizeEveryWordService {
-  public execute(element: any): any {
+  public execute({ element }: IRequest): any {
     if (
       typeof element === "number" ||
       typeof element === "boolean" ||

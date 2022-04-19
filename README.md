@@ -83,6 +83,8 @@ API:
   - Route to get all users
 - GET /api/users/:id
   - Route to get a user by id
+- PUT /api/users/:id
+  - Route to update a user by id
 - POST /api/users
   - Route to create a new user
 
