@@ -7,6 +7,7 @@ import SanitizeEveryWordService from "../../../api/services/app/SanitizeEveryWor
 import AppError from "../../../errors/AppError";
 import joi from "joi";
 import UpdateUserService from "../../../api/services/users/UpdateUserService";
+import DeleteUserService from "../../../api/services/users/DeleteUserService";
 
 export default async function handler(
   req: NextApiRequest,
@@ -19,6 +20,11 @@ export default async function handler(
 
   if (req.method === "PUT") {
     await handlePut(req, res);
+    return;
+  }
+
+  if (req.method === "DELETE") {
+    await handleDelete(req, res);
     return;
   }
 
@@ -58,15 +64,13 @@ async function handlePut(req: NextApiRequest, res: NextApiResponse) {
 
     const sanitizeEveryWordService = new SanitizeEveryWordService();
     const userToUpdateData = sanitizeEveryWordService.execute({
-      element: {
-        document,
-        email,
-        name,
-        password,
-        gender,
-        hiredAt,
-        role,
-      },
+      document,
+      email,
+      name,
+      password,
+      gender,
+      hiredAt,
+      role,
     });
 
     const userSchema = joi.object({
@@ -107,6 +111,26 @@ async function handlePut(req: NextApiRequest, res: NextApiResponse) {
     res.json({
       user: userUpdated,
     });
+  } catch (error) {
+    const sendRequestError = new SendRequestError();
+    sendRequestError.execute({ res, error });
+  }
+}
+
+async function handleDelete(req: NextApiRequest, res: NextApiResponse) {
+  try {
+    const getAuthenticatedUserService = new GetAuthenticatedUserService();
+    const user = await getAuthenticatedUserService.execute({ req });
+
+    const { userId } = req.query;
+
+    const deleteUserService = new DeleteUserService();
+    await deleteUserService.execute({
+      user,
+      userId: userId as string,
+    });
+
+    res.status(204).send({});
   } catch (error) {
     const sendRequestError = new SendRequestError();
     sendRequestError.execute({ res, error });

@@ -37,9 +37,14 @@ export default class UpdateUserService {
     const hasUserWithSameDocumentOrEmail = await db
       .collection(usersRepository.collection)
       .findOne({
-        $or: [
-          { document: _userToUpdate.document },
-          { email: _userToUpdate.email },
+        $and: [
+          { _deletedAt: null },
+          {
+            $or: [
+              { document: _userToUpdate.document },
+              { email: _userToUpdate.email },
+            ],
+          },
         ],
       });
 

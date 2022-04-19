@@ -32,7 +32,10 @@ export default class CreateUserService {
     const hasUserWithSameDocumentOrEmail = await db
       .collection(usersRepository.collection)
       .findOne({
-        $or: [{ document: _newUser.document }, { email: _newUser.email }],
+        $and: [
+          { _deletedAt: null },
+          { $or: [{ document: _newUser.document }, { email: _newUser.email }] },
+        ],
       });
 
     if (

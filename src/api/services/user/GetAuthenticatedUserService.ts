@@ -38,11 +38,11 @@ export default class GetAuthenticatedUserService {
       .findOne({ _id: new ObjectId(sub as string) });
 
     if (!user) {
-      throw new AppError("User not found", 404);
+      throw new AppError("Invalid token", 404);
     }
 
     if (!user._active) {
-      throw new AppError("User is not active", 401);
+      throw new AppError("Your user is not active", 401);
     }
 
     return user as unknown as IUser;

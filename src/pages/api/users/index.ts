@@ -52,15 +52,13 @@ async function handlePost(req: NextApiRequest, res: NextApiResponse) {
 
     const sanitizeEveryWordService = new SanitizeEveryWordService();
     const newUser = sanitizeEveryWordService.execute({
-      element: {
-        document,
-        email,
-        name,
-        password,
-        gender,
-        hiredAt,
-        role,
-      },
+      document,
+      email,
+      name,
+      password,
+      gender,
+      hiredAt,
+      role,
     });
 
     const userSchema = joi.object({
@@ -88,7 +86,7 @@ async function handlePost(req: NextApiRequest, res: NextApiResponse) {
     const createUserService = new CreateUserService();
     const userAdded = await createUserService.execute({ user, newUser });
 
-    res.json({
+    res.status(201).json({
       user: userAdded,
     });
   } catch (error) {

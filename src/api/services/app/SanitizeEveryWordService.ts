@@ -3,7 +3,7 @@ interface IRequest {
 }
 
 export default class SanitizeEveryWordService {
-  public execute({ element }: IRequest): any {
+  public execute(element: any): any {
     if (
       typeof element === "number" ||
       typeof element === "boolean" ||
