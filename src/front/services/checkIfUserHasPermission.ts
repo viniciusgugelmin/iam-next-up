@@ -8,12 +8,12 @@ export const checkIfHasPermission = (
   dispatch: boolean = true
 ) => {
   if (
-    user.role.name === adminRole.name ||
+    user.role?.name === adminRole.name ||
     user.role.permissions?.find(
-      // @ts-ignore
-      (permission) =>
-        // @ts-ignore
-        permission.name === permissionName && permission[permissionValue]
+      (permission: { [x: string]: any; name: string }) =>
+        permission.name &&
+        permission.name === permissionName &&
+        permission[permissionValue]
     )
   )
     return true;
