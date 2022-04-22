@@ -87,7 +87,10 @@ API:
   - Route to update a user by id
 - POST /api/users
   - Route to create a new user
-
+- DELETE /api/users/:id
+  - Route to delete a user by id
+- GET /api/roles
+  - Route to get all roles
 ```
 
 Routes:
