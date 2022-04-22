@@ -1,0 +1,59 @@
+@use "../variables/colors";
+
+.up-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: colors.$gray-3;
+  border-radius: 6px;
+  width: 400px;
+  min-height: 250px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
+  overflow: hidden;
+
+  h1 {
+    font-size: 24px;
+    font-weight: bold;
+    padding: 20px 0;
+    width: 100%;
+    text-align: center;
+    background: colors.$gray-1;
+    text-shadow: -4px 4px 10px rgb(0 0 0 / 60%);
+  }
+
+  p {
+    flex-grow: 1;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: colors.$gray-2;
+    width: 100%;
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 20px 0;
+    background: colors.$gray-1;
+    text-shadow: -4px 4px 10px rgb(0 0 0 / 60%);
+  }
+
+  &__overlay {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    background: rgba(0, 0, 0, 0.5);
+  }
+}

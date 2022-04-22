@@ -2,9 +2,9 @@ import { FormEvent, useState } from "react";
 import { Input } from "../../../Base/Input";
 import { Button } from "../../../Base/Button";
 import { Form } from "../../../Base/Form";
-import AppError from "../../../../../errors/AppError";
 import { IError } from "../../../../../interfaces/IError";
 import { postSignupUser } from "../../../../requests/user/postSingupUser";
+import { dispatchAlert } from "../../../../services/dispatchAlert";
 
 interface IHomeSignupPageProps {
   setPage: (page: string) => void;
@@ -16,6 +16,7 @@ export const HomeSignupPage = ({ setPage }: IHomeSignupPageProps) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [adminCode, setAdminCode] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const color = "blue";
   const isFormFilled =
@@ -23,6 +24,10 @@ export const HomeSignupPage = ({ setPage }: IHomeSignupPageProps) => {
 
   async function signup(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    if (!isFormFilled || loading) return;
+
+    setLoading(true);
 
     try {
       await postSignupUser({
@@ -35,10 +40,11 @@ export const HomeSignupPage = ({ setPage }: IHomeSignupPageProps) => {
 
       setPage("signup");
     } catch (error) {
-      throw new AppError(
-        (error as IError).response.data.message,
-        (error as IError).response.status
-      );
+      setLoading(false);
+      dispatchAlert({
+        message: (error as IError).response.data.message,
+        type: "error",
+      });
     }
   }
 
@@ -89,8 +95,8 @@ export const HomeSignupPage = ({ setPage }: IHomeSignupPageProps) => {
         color={color}
         required
       />
-      <Button type="submit" color={color} disabled={!isFormFilled}>
-        Submit
+      <Button type="submit" color={color} disabled={!isFormFilled || loading}>
+        {loading ? "Loadin..." : "Submit"}
       </Button>
     </Form>
   );

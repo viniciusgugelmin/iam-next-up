@@ -4,6 +4,7 @@
   background: colors.$gray-2;
   border-radius: 6px;
   padding: 1rem;
+  padding-bottom: 1.5rem;
 
   h2 {
     text-align: center;
@@ -16,15 +17,15 @@
     border-collapse: separate;
     border-spacing: 5px 8px;
     width: 100%;
+    border: 1px solid colors.$gray-4;
+    border-radius: 6px;
 
     thead {
       tr {
-
         th {
           text-align: center;
           padding: 8px;
-          cursor: pointer;
-          transition: opacity 0.3s ease-in-out;
+          transition: opacity 0.3s ease-in-out, background 0.3s ease-in-out;
           background: colors.$purple-1;
           border-radius: 6px;
 
@@ -37,7 +38,32 @@
 
     tbody {
       tr {
-        cursor: pointer;
+        &:nth-child(odd) {
+          td {
+            position: relative;
+            z-index: 1;
+
+            &:hover {
+              &:after {
+                opacity: 0.4 !important;
+              }
+            }
+
+            &:after {
+              display: block;
+              content: "";
+              width: 100%;
+              height: 100%;
+              background: colors.$purple-1;
+              position: absolute;
+              top: 0;
+              left: 0;
+              z-index: -1;
+              opacity: 0.1;
+              transition: opacity 0.3s ease-in-out;
+            }
+          }
+        }
 
         &:nth-child(even) {
           td {
@@ -73,6 +99,10 @@
           padding: 8px;
           transition: opacity 0.3s ease-in-out;
           border-radius: 6px;
+
+          &.up-table__button {
+            cursor: pointer;
+          }
 
           img {
             max-width: 18px !important;

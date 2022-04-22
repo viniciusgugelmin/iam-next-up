@@ -6,6 +6,7 @@ import AppError from "../../../errors/AppError";
 import { IError } from "../../../interfaces/IError";
 import { useRouter } from "next/router";
 import { getAuthUser } from "../../requests/user/getAuthUser";
+import { dispatchAlert } from "../../services/dispatchAlert";
 
 const contextValue = {
   isAuthenticated: false,
@@ -46,8 +47,18 @@ export const AuthContextProvider = ({ children }: IAuthContextProvider) => {
       localStorage.setItem("iam-token", token);
     } catch (error) {
       if (!(error as { response?: any }).response) {
+        dispatchAlert({
+          message: "Server error",
+          type: "error",
+        });
+
         throw new AppError("Server error", 500);
       }
+
+      dispatchAlert({
+        message: (error as IError).response.data.message,
+        type: "error",
+      });
 
       throw new AppError(
         (error as IError).response.data.message,
@@ -77,6 +88,11 @@ export const AuthContextProvider = ({ children }: IAuthContextProvider) => {
 
       user = getUserResponse.user;
     } catch (error) {
+      dispatchAlert({
+        message: "You are not authenticated",
+        type: "error",
+      });
+
       throw new AppError(
         (error as IError).response.data.message,
         (error as IError).response.status

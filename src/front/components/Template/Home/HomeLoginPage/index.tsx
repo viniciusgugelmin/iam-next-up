@@ -7,6 +7,7 @@ import { Form } from "../../../Base/Form";
 export const HomeLoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const context = useContext(authContext);
   const color = "purple";
@@ -14,7 +15,16 @@ export const HomeLoginPage = () => {
 
   async function login(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    await context.login({ email, password });
+
+    if (!isFormFilled || loading) return;
+
+    setLoading(true);
+
+    try {
+      await context.login({ email, password });
+    } catch (error) {
+      setLoading(false);
+    }
   }
 
   return (
@@ -37,8 +47,8 @@ export const HomeLoginPage = () => {
         color={color}
         required
       />
-      <Button type="submit" color={color} disabled={!isFormFilled}>
-        Submit
+      <Button type="submit" color={color} disabled={!isFormFilled || loading}>
+        {loading ? "Loadin..." : "Submit"}
       </Button>
     </Form>
   );

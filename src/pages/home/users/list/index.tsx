@@ -8,6 +8,12 @@ import IUser from "../../../../interfaces/IUser";
 import { Table } from "../../../../front/components/Base/Table";
 import { getUsers } from "../../../../front/requests/users/getUsers";
 import authContext from "../../../../front/stores/AuthContext";
+import { dispatchConfirmBox } from "../../../../front/services/dispatchConfirmBox";
+import { deleteUser } from "../../../../front/requests/users/deleteUser";
+import { dispatchAlert } from "../../../../front/services/dispatchAlert";
+import { IError } from "../../../../interfaces/IError";
+import { useRouter } from "next/router";
+import { checkIfHasPermission } from "../../../../front/services/checkIfUserHasPermission";
 
 const UsersList: NextPage<IPageProps> = ({ setPageSubtitle }: IPageProps) => {
   const isAuthenticated = useAuthentication();
@@ -15,11 +21,17 @@ const UsersList: NextPage<IPageProps> = ({ setPageSubtitle }: IPageProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const headers = ["Name", "Email", "Role", "Update", "Delete"];
   const context = useContext(authContext);
+  const router = useRouter();
 
   useEffect(() => {
     setPageSubtitle("Users list");
 
     if (!isAuthenticated) return;
+
+    if (!checkIfHasPermission(context.user, "users", "read")) {
+      router.push("/home");
+      return;
+    }
 
     loadUsers();
   }, [isAuthenticated]);
@@ -32,21 +44,48 @@ const UsersList: NextPage<IPageProps> = ({ setPageSubtitle }: IPageProps) => {
           user.email,
           user.role.name,
           () => handleUpdateUser(user._id as string),
-          () => handleDeleteUser(user._id as string),
+          () => handleDeleteUser(user._id as string, user.name),
         ]);
 
         setUsers([...mappedUsers]);
       })
-      .catch(console.error)
+      .catch((error) => {
+        dispatchAlert({
+          message: (error as IError).response.data.message,
+          type: "error",
+        });
+      })
       .finally(() => setIsLoading(false));
   }
 
   function handleUpdateUser(id: string) {
-    console.log(id);
+    router.push(`/home/users/form/${id}`);
   }
 
-  function handleDeleteUser(id: string) {
-    console.log(id);
+  function handleDeleteUser(id: string, name: string) {
+    dispatchConfirmBox({
+      title: "Delete user",
+      message: `Are you sure you want to delete "${name}"?`,
+      onConfirm: async (available = false) => {
+        if (!available) return;
+
+        try {
+          await deleteUser({ id, token: context.token });
+
+          dispatchAlert({
+            message: `User "${name}" has been deleted`,
+            type: "success",
+          });
+        } catch (error) {
+          dispatchAlert({
+            message: (error as IError).response.data.message,
+            type: "error",
+          });
+        } finally {
+          loadUsers();
+        }
+      },
+    });
   }
 
   if (!isAuthenticated) {

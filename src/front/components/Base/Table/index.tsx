@@ -1,5 +1,4 @@
 import Img from "next/image";
-import Link from "next/link";
 import penSvg from "../../../../../public/images/pen-solid.svg";
 import trashSvg from "../../../../../public/images/trash-solid.svg";
 
@@ -16,6 +15,15 @@ export const Table = ({ title, headers, data, isLoading }: ITableProps) => {
       .replace(/^_/, "")
       .replace(/([A-Z])/g, " $1")
       .replace(/^./, (str) => str.toUpperCase());
+  }
+
+  function copyToClipboard(text: string) {
+    const el = document.createElement("textarea");
+    el.value = text;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand("copy");
+    document.body.removeChild(el);
   }
 
   return (
@@ -36,19 +44,36 @@ export const Table = ({ title, headers, data, isLoading }: ITableProps) => {
                 {row.map((cell, index) => {
                   if (index === row.length - 2)
                     return (
-                      <td key={index} onClick={cell}>
+                      <td
+                        className="up-table__button"
+                        key={index}
+                        onClick={cell}
+                      >
                         <Img src={penSvg} alt="Pen" />
                       </td>
                     );
 
                   if (index === row.length - 1)
                     return (
-                      <td key={index} onClick={cell}>
+                      <td
+                        className="up-table__button"
+                        key={index}
+                        onClick={cell}
+                      >
                         <Img src={trashSvg} alt="Trash" />
                       </td>
                     );
 
-                  return <td key={index}>{cell}</td>;
+                  return (
+                    <td
+                      onClick={() => {
+                        copyToClipboard(cell);
+                      }}
+                      key={index}
+                    >
+                      {cell}
+                    </td>
+                  );
                 })}
               </tr>
             ))}

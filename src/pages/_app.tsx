@@ -3,6 +3,8 @@ import type { AppProps } from "next/app";
 import { AuthContextProvider } from "../front/stores/AuthContext";
 import Head from "next/head";
 import { useState } from "react";
+import { AlertsBox } from "../front/components/Utils/AlertsBox";
+import { COnfirmBox } from "../front/components/Utils/ConfirmBox";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [pageSubttitle, setPageSubtitle] = useState("");
@@ -17,6 +19,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <AuthContextProvider>
         <Component {...pageProps} setPageSubtitle={setPageSubtitle} />
+        <AlertsBox />
+        <COnfirmBox />
       </AuthContextProvider>
     </>
   );

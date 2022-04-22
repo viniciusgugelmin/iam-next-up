@@ -1,6 +1,7 @@
 interface INavbarOptionProps {
   optionIndex: number;
   name: string;
+  blocked: boolean;
   isActive: boolean;
   options: Array<INavbarSubOptionsProps>;
   handleSubOptionClick: (optionIndex: number, subOptionIndex: number) => void;
@@ -16,6 +17,7 @@ interface INavbarSubOptionsProps {
 export const NavbarOption = ({
   optionIndex,
   name,
+  blocked,
   isActive,
   options,
   handleSubOptionClick,
@@ -25,7 +27,9 @@ export const NavbarOption = ({
     <>
       <h2
         className={
-          "up-navbar__option" + (isActive ? " up-navbar__option--active" : "")
+          "up-navbar__option" +
+          (isActive ? " up-navbar__option--active" : "") +
+          (blocked ? " up-navbar__option--blocked" : "")
         }
         onClick={() => handleOptionClick(optionIndex)}
         title={name}

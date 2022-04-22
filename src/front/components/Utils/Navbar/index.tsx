@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { NavbarOption } from "./NavbarOption";
 import { useRouter } from "next/router";
+import { checkIfHasPermission } from "../../../services/checkIfUserHasPermission";
+import authContext from "../../../stores/AuthContext";
 
 export const Navbar = () => {
   const router = useRouter();
+  const context = useContext(authContext);
   const [navbarOptions, setOptions] = useState([
     {
       name: "Users",
+      blocked: !checkIfHasPermission(context.user, "users", "read", false),
       isActive: checkIfOptionInitActive("users"),
       options: [
         {
@@ -39,11 +43,8 @@ export const Navbar = () => {
       navbarOptions.map((item, itemIndex) => {
         item.options.map((subItem, subItemIndex) => {
           if (itemIndex === optionIndex && subItemIndex === subOptionIndex) {
-            subItem.isActive = !subItem.isActive;
-
-            if (subItem.isActive) {
-              router.push(`/home/${subItem.route}`);
-            }
+            subItem.isActive = true;
+            router.push(`/home/${subItem.route}`);
 
             return subItem;
           }
@@ -60,6 +61,10 @@ export const Navbar = () => {
   const handleOptionClick = (titleIndex: number) => {
     setOptions(
       navbarOptions.map((item, itemIndex) => {
+        if (item.blocked) {
+          return item;
+        }
+
         if (itemIndex === titleIndex) {
           item.isActive = !item.isActive;
           return item;

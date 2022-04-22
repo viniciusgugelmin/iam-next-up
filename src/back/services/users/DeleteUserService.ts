@@ -24,12 +24,16 @@ export default class DeleteUserService {
       throw new AppError("User not found", 404);
     }
 
+    if (userToDelete.document === "00000000000") {
+      throw new AppError("This user can't be deleted", 401);
+    }
+
     if (!userToDelete._active) {
       throw new AppError("User already deleted", 404);
     }
 
     try {
-      if (userToDelete.role === "admin") {
+      if (userToDelete.role.name === "admin") {
         usersRepository.checkIfHasPermission(user, "admin_users", "delete");
       }
     } catch (error) {

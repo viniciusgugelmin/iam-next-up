@@ -34,6 +34,13 @@ export default class UpdateUserService {
       userToUpdateData.document
     );
 
+    if (
+      _userToUpdate.document === "00000000000" &&
+      user.document !== "00000000000"
+    ) {
+      throw new AppError("Only the admin can update the admin user", 401);
+    }
+
     const hasUserWithSameDocumentOrEmail = await db
       .collection(usersRepository.collection)
       .findOne({
