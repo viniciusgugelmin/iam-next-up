@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import RouteNotFoundError from "../../../errors/RouteNotFoundError";
-import SendRequestError from "../../../api/services/app/SendRequestErrorService";
-import GetAuthenticatedUserService from "../../../api/services/user/GetAuthenticatedUserService";
+import SendRequestError from "../../../back/services/app/SendRequestErrorService";
+import GetAuthenticatedUserService from "../../../back/services/user/GetAuthenticatedUserService";
 import joi from "joi";
-import CreateUserSessionsService from "../../../api/services/user/CreateUserSessionService";
+import CreateUserSessionsService from "../../../back/services/user/CreateUserSessionService";
 import AppError from "../../../errors/AppError";
 
 export default async function handler(

@@ -6,9 +6,9 @@ interface IHomeLoggedProps {
 
 export const HomeLoggedPage = ({ children }: IHomeLoggedProps) => {
   return (
-    <>
+    <main className="up-home-logged-page">
       <Navbar />
       {children}
-    </>
+    </main>
   );
 };

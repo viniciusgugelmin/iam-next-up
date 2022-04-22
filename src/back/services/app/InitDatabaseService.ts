@@ -4,9 +4,10 @@ import AppError from "../../../errors/AppError";
 import { UsersRepository } from "../../repositories/UsersRepository";
 import User from "../../models/User";
 import IUser from "../../../interfaces/IUser";
-import { getAdminRole, getCommonRole } from "../../models/Role";
 import { RolesRepository } from "../../repositories/RolesRepository";
 import IRole from "../../../interfaces/IRole";
+import adminRole from "../../../constants/roles/adminRole";
+import commonRole from "../../../constants/roles/commonRole";
 
 interface IRequest {
   req: NextApiRequest;
@@ -38,7 +39,7 @@ export default class InitDatabaseService {
     }
 
     const rolesRepository = new RolesRepository();
-    const rolesToInsert = [getAdminRole(), getCommonRole()];
+    const rolesToInsert = [adminRole, commonRole];
     await db.collection(rolesRepository.collection).insertMany(rolesToInsert);
 
     const usersRepository = new UsersRepository();
@@ -49,7 +50,7 @@ export default class InitDatabaseService {
     user.password = await usersRepository.hashPassword("admin");
     user.gender = "Prefer not to say";
     user.role = {
-      name: getAdminRole().name,
+      name: adminRole.name,
     };
 
     user.role = await usersRepository.checkAndGetIfUserRoleExists(

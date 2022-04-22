@@ -23,20 +23,38 @@ export const NavbarOption = ({
 }: INavbarOptionProps) => {
   return (
     <>
-      <h2 onClick={() => handleOptionClick(optionIndex)}>{name}</h2>
-      {isActive && (
-        <ul>
-          {options.map((item, subOptionIndex) => (
-            <li
-              key={subOptionIndex}
-              onClick={() => handleSubOptionClick(optionIndex, subOptionIndex)}
-              className={item.isActive ? "active" : ""}
-            >
-              {item.name}
-            </li>
-          ))}
-        </ul>
-      )}
+      <h2
+        className={
+          "up-navbar__option" + (isActive ? " up-navbar__option--active" : "")
+        }
+        onClick={() => handleOptionClick(optionIndex)}
+        title={name}
+      >
+        {name}
+      </h2>
+
+      <ul
+        className={
+          "up-navbar__sub-options" +
+          (isActive
+            ? " up-navbar__sub-options--active"
+            : " up-navbar__sub-options--hidden")
+        }
+      >
+        {options.map((item, subOptionIndex) => (
+          <li
+            key={subOptionIndex}
+            onClick={() => handleSubOptionClick(optionIndex, subOptionIndex)}
+            className={
+              "up-navbar__sub-option" +
+              (item.isActive ? " up-navbar__sub-option--active" : "")
+            }
+            title={item.name}
+          >
+            {item.name}
+          </li>
+        ))}
+      </ul>
     </>
   );
 };

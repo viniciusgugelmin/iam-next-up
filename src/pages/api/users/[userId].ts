@@ -1,13 +1,13 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import RouteNotFoundError from "../../../errors/RouteNotFoundError";
-import GetAuthenticatedUserService from "../../../api/services/user/GetAuthenticatedUserService";
-import SendRequestError from "../../../api/services/app/SendRequestErrorService";
-import GetUserService from "../../../api/services/users/GetUserService";
-import SanitizeEveryWordService from "../../../api/services/app/SanitizeEveryWordService";
+import GetAuthenticatedUserService from "../../../back/services/user/GetAuthenticatedUserService";
+import SendRequestError from "../../../back/services/app/SendRequestErrorService";
+import GetUserService from "../../../back/services/users/GetUserService";
+import SanitizeEveryWordService from "../../../back/services/app/SanitizeEveryWordService";
 import AppError from "../../../errors/AppError";
 import joi from "joi";
-import UpdateUserService from "../../../api/services/users/UpdateUserService";
-import DeleteUserService from "../../../api/services/users/DeleteUserService";
+import UpdateUserService from "../../../back/services/users/UpdateUserService";
+import DeleteUserService from "../../../back/services/users/DeleteUserService";
 
 export default async function handler(
   req: NextApiRequest,

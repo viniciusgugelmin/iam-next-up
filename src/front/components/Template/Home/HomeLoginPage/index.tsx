@@ -3,12 +3,10 @@ import authContext from "../../../../stores/AuthContext";
 import { Button } from "../../../Base/Button";
 import { Input } from "../../../Base/Input";
 import { Form } from "../../../Base/Form";
-import { useRouter } from "next/router";
 
 export const HomeLoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const router = useRouter();
 
   const context = useContext(authContext);
   const color = "purple";

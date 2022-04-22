@@ -1,0 +1,85 @@
+@use "../variables/colors";
+
+.up-table {
+  background: colors.$gray-2;
+  border-radius: 6px;
+  padding: 1rem;
+
+  h2 {
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 16px;
+  }
+
+  table {
+    border-collapse: separate;
+    border-spacing: 5px 8px;
+    width: 100%;
+
+    thead {
+      tr {
+
+        th {
+          text-align: center;
+          padding: 8px;
+          cursor: pointer;
+          transition: opacity 0.3s ease-in-out;
+          background: colors.$purple-1;
+          border-radius: 6px;
+
+          &:hover {
+            background: colors.$purple-2;
+          }
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        cursor: pointer;
+
+        &:nth-child(even) {
+          td {
+            position: relative;
+            z-index: 1;
+
+            &:hover {
+              &:after {
+                opacity: 0.8 !important;
+              }
+            }
+
+            &:after {
+              display: block;
+              content: "";
+              width: 100%;
+              height: 100%;
+              background: colors.$purple-1;
+              position: absolute;
+              top: 0;
+              left: 0;
+              z-index: -1;
+              opacity: 0.2;
+            }
+          }
+        }
+
+        td {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          text-align: center;
+          padding: 8px;
+          transition: opacity 0.3s ease-in-out;
+          border-radius: 6px;
+
+          img {
+            max-width: 18px !important;
+            min-width: 18px !important;
+          }
+        }
+      }
+    }
+  }
+}

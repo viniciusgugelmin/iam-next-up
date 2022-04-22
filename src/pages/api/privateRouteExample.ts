@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import GetAuthenticatedUserService from "../../api/services/user/GetAuthenticatedUserService";
+import GetAuthenticatedUserService from "../../back/services/user/GetAuthenticatedUserService";
 import RouteNotFoundError from "../../errors/RouteNotFoundError";
-import SendRequestError from "../../api/services/app/SendRequestErrorService";
+import SendRequestError from "../../back/services/app/SendRequestErrorService";
 
 export default async function handler(
   req: NextApiRequest,

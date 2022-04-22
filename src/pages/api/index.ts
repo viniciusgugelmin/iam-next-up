@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import RouteNotFoundError from "../../errors/RouteNotFoundError";
-import SendRequestError from "../../api/services/app/SendRequestErrorService";
-import InitDatabaseService from "../../api/services/app/InitDatabaseService";
+import SendRequestError from "../../back/services/app/SendRequestErrorService";
+import InitDatabaseService from "../../back/services/app/InitDatabaseService";
 
 export default async function handler(
   req: NextApiRequest,

@@ -1,31 +1,35 @@
 import { useState } from "react";
 import { NavbarOption } from "./NavbarOption";
+import { useRouter } from "next/router";
 
 export const Navbar = () => {
+  const router = useRouter();
   const [navbarOptions, setOptions] = useState([
     {
-      name: "Dashboards",
-      isActive: false,
+      name: "Users",
+      isActive: checkIfOptionInitActive("users"),
       options: [
         {
-          name: "Lorem ipsum",
-          route: "/dashboard",
-          isActive: false,
+          name: "List",
+          route: "users/list",
+          isActive: checkIfSubOptionInitActive("users/list"),
         },
-      ],
-    },
-    {
-      name: "Products",
-      isActive: false,
-      options: [
         {
-          name: "Lorem ipsum",
-          route: "/products",
-          isActive: false,
+          name: "Form",
+          route: "users/form",
+          isActive: checkIfSubOptionInitActive("users/form"),
         },
       ],
     },
   ]);
+
+  function checkIfOptionInitActive(option: string) {
+    return router.pathname.startsWith(`/home/${option.toLowerCase()}`);
+  }
+
+  function checkIfSubOptionInitActive(subOption: string) {
+    return router.pathname.startsWith(`/home/${subOption.toLowerCase()}`);
+  }
 
   const handleSubOptionClick = (
     optionIndex: number,
@@ -36,6 +40,11 @@ export const Navbar = () => {
         item.options.map((subItem, subItemIndex) => {
           if (itemIndex === optionIndex && subItemIndex === subOptionIndex) {
             subItem.isActive = !subItem.isActive;
+
+            if (subItem.isActive) {
+              router.push(`/home/${subItem.route}`);
+            }
+
             return subItem;
           }
 
@@ -64,7 +73,7 @@ export const Navbar = () => {
 
   return (
     <aside className="up-navbar">
-      <h1>Go Drink</h1>
+      <h1 className="up-navbar__title">Go Drink</h1>
       {navbarOptions.map((item, index) => (
         <NavbarOption
           key={index}

@@ -5,12 +5,9 @@ import { HomeEntryPage } from "../front/components/Template/Home/HomeEntryPage";
 import { HomeLoginPage } from "../front/components/Template/Home/HomeLoginPage";
 import { HomeSignupPage } from "../front/components/Template/Home/HomeSignupPage";
 import useAuthentication from "../front/hooks/UseAuthentication";
+import IPageProps from "../interfaces/IPageProps";
 
-interface IHomeProps {
-  setPageSubtitle: (subtitle: string) => void;
-}
-
-const Home: NextPage<IHomeProps> = ({ setPageSubtitle }: IHomeProps) => {
+const Home: NextPage<IPageProps> = ({ setPageSubtitle }: IPageProps) => {
   const [page, setPage] = useState("");
   const isAuthenticated = useAuthentication(false);
   const router = useRouter();

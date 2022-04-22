@@ -1,4 +1,4 @@
-export interface IError {
+export interface IAppError {
   message: string;
   statusCode: number;
 }

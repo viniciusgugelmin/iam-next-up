@@ -3,14 +3,132 @@
 .up-navbar {
   display: flex;
   flex-direction: column;
-  padding: 20px 25px;
+  padding: 15px 20px;
   min-height: 100vh;
   max-height: 100vh;
-  max-width: 100px;
+  max-width: 220px;
+  min-width: 220px;
   overflow-y: auto;
   overflow-x: hidden;
   position: fixed;
   left: 0;
   top: 0;
-  background: colors.$blue-2;
+  background: colors.$gray-2;
+
+  &__title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-shadow: -4px 4px 10px rgb(0 0 0 / 60%);
+    text-align: center;
+  }
+
+  &__option {
+    cursor: pointer;
+    max-width: 100%;
+    padding: 10px;
+    padding-right: 31px;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    transition: color 0.3s ease-in-out;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &--active {
+      &:before {
+        background: colors.$purple-1 !important;
+        opacity: 0.7 !important;
+      }
+
+      &:after {
+        transform: rotate(180deg);
+        top: 0 !important;
+      }
+    }
+
+    &:hover {
+      color: colors.$gray-5;
+    }
+
+    &:before {
+      background: colors.$blue-1;
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      border-radius: 6px;
+      opacity: 0.1;
+      z-index: -1;
+      transition: opacity 0.3s ease-in-out, background 0.4s ease-in-out;
+    }
+
+    &:after {
+      display: flex;
+      align-items: center;
+      content: url(../../public/images/arrow-down.svg);
+      font-size: 14px;
+      position: absolute;
+      top: 4px;
+      right: 10px;
+      z-index: 1;
+      height: calc(100% - 4px);
+      transition: opacity 0.3s ease-in-out, transform 0.4s ease-in-out, top 0.4s ease-in-out;
+    }
+  }
+
+  &__sub-options {
+    background: colors.$gray-3;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+    margin: 5px 0;
+    z-index: 1;
+    border-radius: 6px;
+
+    &--active {
+      max-height: 100px;
+    }
+
+    &--hidden {
+      max-height: 0;
+    }
+  }
+
+  &__sub-option {
+    cursor: pointer;
+    padding: 10px 10px 10px 20px;
+    font-size: 14px;
+    transition: color 0.3s ease-in-out;
+    position: relative;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    margin: 5px;
+
+    &:before {
+      background: colors.$purple-1;
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      border-radius: 6px;
+      opacity: 0;
+      z-index: -1;
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    &--active {
+      &:before {
+        opacity: 0.3 !important;
+      }
+    }
+
+    &:hover {
+      color: colors.$gray-5;
+    }
+  }
 }

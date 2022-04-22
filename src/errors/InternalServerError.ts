@@ -1,6 +1,6 @@
-import { IError } from "./interfaces/IError";
+import { IAppError } from "../interfaces/IAppError";
 
-export default class InternalServerError implements IError {
+export default class InternalServerError implements IAppError {
   public readonly message: string;
   public readonly statusCode: number;
 
