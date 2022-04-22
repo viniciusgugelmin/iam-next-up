@@ -18,7 +18,7 @@ import { checkIfHasPermission } from "../../../../front/services/checkIfUserHasP
 const UsersList: NextPage<IPageProps> = ({ setPageSubtitle }: IPageProps) => {
   const isAuthenticated = useAuthentication();
   const [users, setUsers] = useState<[][]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const headers = ["Name", "Email", "Role", "Update", "Delete"];
   const context = useContext(authContext);
   const router = useRouter();
@@ -62,7 +62,7 @@ const UsersList: NextPage<IPageProps> = ({ setPageSubtitle }: IPageProps) => {
           });
         }
       })
-      .finally(() => setIsLoading(false));
+      .finally(() => setLoading(false));
   }
 
   function handleUpdateUser(id: string) {
@@ -105,7 +105,7 @@ const UsersList: NextPage<IPageProps> = ({ setPageSubtitle }: IPageProps) => {
         title="Users list"
         headers={headers}
         data={users}
-        isLoading={isLoading}
+        isLoading={loading}
       />
     </HomeLoggedPage>
   );

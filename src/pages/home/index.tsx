@@ -11,7 +11,7 @@ const HomeLogged: NextPage<IPageProps> = ({ setPageSubtitle }: IPageProps) => {
 
   useEffect(() => {
     setPageSubtitle("Home");
-  }, []);
+  }, [isAuthenticated]);
 
   if (!isAuthenticated) {
     return <PageLoading />;

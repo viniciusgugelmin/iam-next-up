@@ -3,6 +3,20 @@
 .up-input {
   margin-bottom: 12px;
 
+  &--select {
+    .up-input {
+      &__el {
+        width: 100%;
+        cursor: pointer;
+
+        option {
+          background: colors.$gray-3;
+          color: colors.$gray-5;
+        }
+      }
+    }
+  }
+
   &__container {
     background: colors.$gray-3;
     border: 2px solid colors.$gray-5;
@@ -65,6 +79,7 @@
   }
 
   &__el {
+    width: 100%;
     position: relative;
     appearance: none;
     background: transparent;

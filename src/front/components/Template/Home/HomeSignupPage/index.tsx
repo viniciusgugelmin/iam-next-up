@@ -37,8 +37,6 @@ export const HomeSignupPage = ({ setPage }: IHomeSignupPageProps) => {
         confirmPassword,
         adminCode,
       });
-
-      setPage("signup");
     } catch (error) {
       setLoading(false);
       dispatchAlert({

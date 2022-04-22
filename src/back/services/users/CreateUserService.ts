@@ -25,9 +25,13 @@ export default class CreateUserService {
       }
     }
 
-    _newUser.document = usersRepository.removeDotsAndSlashesFromDocument(
-      newUser.document
+    _newUser.role = await usersRepository.checkAndGetIfUserRoleExists(
+      db,
+      // @ts-ignore
+      _newUser.role
     );
+
+    usersRepository.removeDotsAndSlashesFromDocument(newUser.document);
 
     const hasUserWithSameDocumentOrEmail = await db
       .collection(usersRepository.collection)
@@ -61,11 +65,6 @@ export default class CreateUserService {
         );
       }
     }
-
-    _newUser.role = await usersRepository.checkAndGetIfUserRoleExists(
-      db,
-      _newUser.role.name
-    );
 
     _newUser.password = await usersRepository.hashPassword(_newUser.password);
 
