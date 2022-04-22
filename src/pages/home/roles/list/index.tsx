@@ -14,40 +14,36 @@ import { dispatchAlert } from "../../../../front/services/dispatchAlert";
 import { IError } from "../../../../interfaces/IError";
 import { useRouter } from "next/router";
 import { checkIfHasPermission } from "../../../../front/services/checkIfUserHasPermission";
+import IRole from "../../../../interfaces/IRole";
+import { getRoles } from "../../../../front/requests/roles/getRoles";
 
-const UsersList: NextPage<IPageProps> = ({ setPageSubtitle }: IPageProps) => {
+const RolesList: NextPage<IPageProps> = ({ setPageSubtitle }: IPageProps) => {
   const isAuthenticated = useAuthentication();
-  const [users, setUsers] = useState<[][]>([]);
+  const [roles, setRoles] = useState<[][]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const headers = ["Name", "Email", "Role", "Update", "Delete"];
+  const headers = ["Name"];
   const context = useContext(authContext);
   const router = useRouter();
 
   useEffect(() => {
-    setPageSubtitle("Users list");
+    setPageSubtitle("Roles list");
 
     if (!isAuthenticated) return;
 
-    if (!checkIfHasPermission(context.user, "users", "read")) {
+    if (!checkIfHasPermission(context.user, "roles", "read")) {
       router.push("/home");
       return;
     }
 
-    loadUsers();
+    loadRoles();
   }, [isAuthenticated]);
 
-  function loadUsers() {
-    getUsers({ token: context.token })
+  function loadRoles() {
+    getRoles({ token: context.token })
       .then((data) => {
-        const mappedUsers = data.users.map((user: IUser) => [
-          user.name,
-          user.email,
-          user.role.name,
-          () => handleUpdateUser(user._id as string),
-          () => handleDeleteUser(user._id as string, user.name),
-        ]);
+        const mappedRoles = data.roles.map((role: IRole) => [role.name]);
 
-        setUsers([...mappedUsers]);
+        setRoles([...mappedRoles]);
       })
       .catch((error) => {
         if (!error.response?.data) {
@@ -65,36 +61,6 @@ const UsersList: NextPage<IPageProps> = ({ setPageSubtitle }: IPageProps) => {
       .finally(() => setIsLoading(false));
   }
 
-  function handleUpdateUser(id: string) {
-    router.push(`/home/users/form/${id}`);
-  }
-
-  function handleDeleteUser(id: string, name: string) {
-    dispatchConfirmBox({
-      title: "Delete user",
-      message: `Are you sure you want to delete "${name}"?`,
-      onConfirm: async (available = false) => {
-        if (!available) return;
-
-        try {
-          await deleteUser({ id, token: context.token });
-
-          dispatchAlert({
-            message: `User "${name}" has been deleted`,
-            type: "success",
-          });
-        } catch (error) {
-          dispatchAlert({
-            message: (error as IError).response.data.message,
-            type: "error",
-          });
-        } finally {
-          loadUsers();
-        }
-      },
-    });
-  }
-
   if (!isAuthenticated) {
     return <PageLoading />;
   }
@@ -102,13 +68,13 @@ const UsersList: NextPage<IPageProps> = ({ setPageSubtitle }: IPageProps) => {
   return (
     <HomeLoggedPage>
       <Table
-        title="Users list"
+        title="Roles list"
         headers={headers}
-        data={users}
+        data={roles}
         isLoading={isLoading}
       />
     </HomeLoggedPage>
   );
 };
 
-export default UsersList;
+export default RolesList;

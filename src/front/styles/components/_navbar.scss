@@ -61,6 +61,12 @@
       }
     }
 
+    &--has-sub-options {
+      &:after {
+        display: none !important;
+      }
+    }
+
     &:hover {
       color: colors.$gray-5;
     }

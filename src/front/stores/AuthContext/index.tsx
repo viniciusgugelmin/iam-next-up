@@ -45,6 +45,11 @@ export const AuthContextProvider = ({ children }: IAuthContextProvider) => {
       user = loginResponse.user;
       token = loginResponse.token;
       localStorage.setItem("iam-token", token);
+
+      dispatchAlert({
+        message: "Login successful",
+        type: "success",
+      });
     } catch (error) {
       if (!(error as { response?: any }).response) {
         dispatchAlert({
@@ -92,6 +97,8 @@ export const AuthContextProvider = ({ children }: IAuthContextProvider) => {
         message: "You are not authenticated",
         type: "error",
       });
+
+      context.logout();
 
       throw new AppError(
         (error as IError).response.data.message,

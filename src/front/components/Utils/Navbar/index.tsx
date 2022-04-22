@@ -25,6 +25,24 @@ export const Navbar = () => {
         },
       ],
     },
+    {
+      name: "Roles",
+      blocked: !checkIfHasPermission(context.user, "roles", "read", false),
+      isActive: checkIfOptionInitActive("roles"),
+      options: [
+        {
+          name: "List",
+          route: "roles/list",
+          isActive: checkIfSubOptionInitActive("roles/list"),
+        },
+      ],
+    },
+    {
+      name: "Logout",
+      action: () => context.logout(),
+      isActive: checkIfOptionInitActive("logout"),
+      options: [],
+    },
   ]);
 
   function checkIfOptionInitActive(option: string) {
@@ -41,7 +59,7 @@ export const Navbar = () => {
   ) => {
     setOptions(
       navbarOptions.map((item, itemIndex) => {
-        item.options.map((subItem, subItemIndex) => {
+        item.options?.map((subItem, subItemIndex) => {
           if (itemIndex === optionIndex && subItemIndex === subOptionIndex) {
             subItem.isActive = true;
             router.push(`/home/${subItem.route}`);
@@ -67,6 +85,11 @@ export const Navbar = () => {
 
         if (itemIndex === titleIndex) {
           item.isActive = !item.isActive;
+
+          if (item.options.length === 0 && item.action) {
+            item.action();
+          }
+
           return item;
         }
 

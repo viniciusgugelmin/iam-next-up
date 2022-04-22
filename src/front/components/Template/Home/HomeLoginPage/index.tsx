@@ -48,7 +48,7 @@ export const HomeLoginPage = () => {
         required
       />
       <Button type="submit" color={color} disabled={!isFormFilled || loading}>
-        {loading ? "Loadin..." : "Submit"}
+        {loading ? "Loading..." : "Submit"}
       </Button>
     </Form>
   );

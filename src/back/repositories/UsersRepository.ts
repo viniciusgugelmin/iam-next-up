@@ -41,11 +41,12 @@ export class UsersRepository {
   ) {
     if (
       user.role.name === adminRole.name ||
-      user.role.permissions?.find(
-        (permission) =>
-          // @ts-ignore
-          permission.name === permissionName && permission[permissionValue]
-      )
+      ("permissions" in user.role &&
+        user.role.permissions?.find(
+          (permission) =>
+            // @ts-ignore
+            permission.name === permissionName && permission[permissionValue]
+        ))
     )
       return;
 

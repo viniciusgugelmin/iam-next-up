@@ -9,7 +9,7 @@ export default interface IUser {
   active: boolean;
   statusDescription: string | null;
   gender: string;
-  role: IRole;
+  role: IRole | { name: string };
   hiredAt: Date;
   createdAt: Date;
   updatedAt: Date;

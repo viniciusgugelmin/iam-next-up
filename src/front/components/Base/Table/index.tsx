@@ -42,7 +42,7 @@ export const Table = ({ title, headers, data, isLoading }: ITableProps) => {
             {data.map((row: any[], index: number) => (
               <tr key={index}>
                 {row.map((cell, index) => {
-                  if (index === row.length - 2)
+                  if (row.length > 2 && index === row.length - 2)
                     return (
                       <td
                         className="up-table__button"
@@ -53,7 +53,7 @@ export const Table = ({ title, headers, data, isLoading }: ITableProps) => {
                       </td>
                     );
 
-                  if (index === row.length - 1)
+                  if (row.length > 2 && index === row.length - 1)
                     return (
                       <td
                         className="up-table__button"
