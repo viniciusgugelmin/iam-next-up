@@ -9,7 +9,7 @@ export const checkIfHasPermission = (
 ) => {
   if (
     user.role?.name === adminRole.name ||
-    user.role.permissions?.find(
+    user.role?.permissions?.find(
       (permission: { [x: string]: any; name: string }) =>
         permission.name &&
         permission.name === permissionName &&
