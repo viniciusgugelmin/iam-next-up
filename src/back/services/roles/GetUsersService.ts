@@ -17,7 +17,7 @@ export default class GetRolesService {
     const { db } = await connectMongoDB();
     const roles = await db
       .collection(rolesRepository.collection)
-      .find({})
+      .find({ _deletedAt: null })
       .toArray();
 
     return roles;
