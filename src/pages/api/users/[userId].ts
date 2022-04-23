@@ -69,18 +69,18 @@ async function handlePut(req: NextApiRequest, res: NextApiResponse) {
       name,
       password,
       gender,
-      hiredAt,
-      role,
+      hiredAt: hiredAt.replace(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/, "$3-$2-$1"),
+      role: { name: role },
     });
 
     const userSchema = joi.object({
       document: joi
         .string()
         .required()
-        .regex(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/),
+        .regex(/^[0-9]{11}$/),
       email: joi.string().required().email(),
       name: joi.string().required(),
-      password: joi.string().required(),
+      password: joi.optional(),
       gender: joi.string().required(),
       hiredAt: joi.date().required(),
       role: joi
@@ -99,6 +99,7 @@ async function handlePut(req: NextApiRequest, res: NextApiResponse) {
     const userToUpdate = await getUserService.execute({
       user,
       userId: userId as string,
+      returnPassword: true,
     });
 
     const updateUserService = new UpdateUserService();

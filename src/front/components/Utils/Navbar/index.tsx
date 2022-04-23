@@ -10,29 +10,35 @@ export const Navbar = () => {
   const [navbarOptions, setOptions] = useState([
     {
       name: "Users",
-      blocked: !checkIfHasPermission(context.user, "users", "read", false),
       isActive: checkIfOptionInitActive("users"),
       options: [
         {
           name: "List",
           route: "users/list",
+          blocked: !checkIfHasPermission(context.user, "users", "read", false),
           isActive: checkIfSubOptionInitActive("users/list"),
         },
         {
           name: "Form",
           route: "users/form",
+          blocked: !checkIfHasPermission(
+            context.user,
+            "users",
+            "create",
+            false
+          ),
           isActive: checkIfSubOptionInitActive("users/form"),
         },
       ],
     },
     {
       name: "Roles",
-      blocked: !checkIfHasPermission(context.user, "roles", "read", false),
       isActive: checkIfOptionInitActive("roles"),
       options: [
         {
           name: "List",
           route: "roles/list",
+          blocked: !checkIfHasPermission(context.user, "roles", "read", false),
           isActive: checkIfSubOptionInitActive("roles/list"),
         },
       ],
@@ -60,6 +66,10 @@ export const Navbar = () => {
     setOptions(
       navbarOptions.map((item, itemIndex) => {
         item.options?.map((subItem, subItemIndex) => {
+          if (subItem.blocked) {
+            return subItem;
+          }
+
           if (itemIndex === optionIndex && subItemIndex === subOptionIndex) {
             subItem.isActive = true;
             router.push(`/home/${subItem.route}`);
@@ -79,10 +89,6 @@ export const Navbar = () => {
   const handleOptionClick = (titleIndex: number) => {
     setOptions(
       navbarOptions.map((item, itemIndex) => {
-        if (item.blocked) {
-          return item;
-        }
-
         if (itemIndex === titleIndex) {
           item.isActive = !item.isActive;
 

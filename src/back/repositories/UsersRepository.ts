@@ -56,10 +56,6 @@ export class UsersRepository {
     );
   }
 
-  public removeDotsAndSlashesFromDocument(document: string) {
-    return document.replace(/[\s-.]/g, "");
-  }
-
   public async hashPassword(password: string): Promise<string> {
     return await hash(password, 8);
   }

@@ -58,7 +58,7 @@ async function handlePost(req: NextApiRequest, res: NextApiResponse) {
       password,
       gender,
       hiredAt: hiredAt.replace(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/, "$3-$2-$1"),
-      role,
+      role: { name: role },
     });
 
     const userSchema = joi.object({
@@ -71,7 +71,11 @@ async function handlePost(req: NextApiRequest, res: NextApiResponse) {
       password: joi.string().required(),
       gender: joi.string().required(),
       hiredAt: joi.date().required(),
-      role: joi.string().required(),
+      role: joi
+        .object({
+          name: joi.string().required(),
+        })
+        .required(),
     });
 
     const validation = userSchema.validate(newUser);

@@ -30,10 +30,6 @@ export default class UpdateUserService {
       }
     }
 
-    _userToUpdate.document = usersRepository.removeDotsAndSlashesFromDocument(
-      userToUpdateData.document
-    );
-
     if (
       _userToUpdate.document === "00000000000" &&
       user.document !== "00000000000"
@@ -89,9 +85,13 @@ export default class UpdateUserService {
       _userToUpdate.role.name
     );
 
-    _userToUpdate.password = await usersRepository.hashPassword(
-      _userToUpdate.password
-    );
+    if (_userToUpdate.password?.trim() === "") {
+      _userToUpdate.password = userToUpdate.password;
+    } else {
+      _userToUpdate.password = await usersRepository.hashPassword(
+        _userToUpdate.password
+      );
+    }
 
     await db.collection(usersRepository.collection).updateOne(
       { _id: userToUpdate._id },
@@ -102,6 +102,9 @@ export default class UpdateUserService {
         },
       }
     );
+
+    // @ts-ignore
+    _userToUpdate.password && delete _userToUpdate.password;
 
     return {
       ..._userToUpdate,

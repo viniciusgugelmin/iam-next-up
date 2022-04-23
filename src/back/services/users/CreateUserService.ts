@@ -27,11 +27,8 @@ export default class CreateUserService {
 
     _newUser.role = await usersRepository.checkAndGetIfUserRoleExists(
       db,
-      // @ts-ignore
-      _newUser.role
+      _newUser.role.name
     );
-
-    usersRepository.removeDotsAndSlashesFromDocument(newUser.document);
 
     const hasUserWithSameDocumentOrEmail = await db
       .collection(usersRepository.collection)

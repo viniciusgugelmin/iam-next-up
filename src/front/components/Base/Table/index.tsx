@@ -42,25 +42,19 @@ export const Table = ({ title, headers, data, isLoading }: ITableProps) => {
             {data.map((row: any[], index: number) => (
               <tr key={index}>
                 {row.map((cell, index) => {
-                  if (row.length > 2 && index === row.length - 2)
+                  if (typeof cell === "function")
                     return (
                       <td
                         className="up-table__button"
                         key={index}
                         onClick={cell}
                       >
-                        <Img src={penSvg} alt="Pen" />
-                      </td>
-                    );
-
-                  if (row.length > 2 && index === row.length - 1)
-                    return (
-                      <td
-                        className="up-table__button"
-                        key={index}
-                        onClick={cell}
-                      >
-                        <Img src={trashSvg} alt="Trash" />
+                        {headers[index] === "Delete" && (
+                          <Img src={trashSvg} alt="Trash" />
+                        )}
+                        {headers[index] === "Update" && (
+                          <Img src={penSvg} alt="Pen" />
+                        )}
                       </td>
                     );
 

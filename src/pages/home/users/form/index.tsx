@@ -33,20 +33,12 @@ const UsersCreateForm: NextPage<IPageProps> = ({
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [gender, setGender] = useState("");
   const [hiredAt, setHiredAt] = useState("");
   const [hiredAtTreated, setHiredAtTreatedDate] = useState("");
 
   const isFormFilled =
-    role &&
-    document &&
-    name &&
-    email &&
-    password &&
-    confirmPassword &&
-    gender &&
-    hiredAt;
+    role && document && name && email && password && gender && hiredAt;
 
   const gendersArray = [["", ""], ...genders.map((gender) => [gender, gender])];
 
@@ -148,7 +140,6 @@ const UsersCreateForm: NextPage<IPageProps> = ({
           name,
           email,
           password,
-          confirmPassword,
           gender,
           hiredAt: hiredAtTreated,
         },
@@ -232,15 +223,6 @@ const UsersCreateForm: NextPage<IPageProps> = ({
           name="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          color={color}
-          required
-        />
-        <Input
-          type="password"
-          placeholder="Confirm password"
-          name="confirm_password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
           color={color}
           required
         />

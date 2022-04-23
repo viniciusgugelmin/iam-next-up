@@ -7,10 +7,15 @@ import AppError from "../../../errors/AppError";
 interface IRequest {
   user: IUser;
   userId: string;
+  returnPassword?: boolean;
 }
 
 export default class GetUserService {
-  public async execute({ user, userId }: IRequest): Promise<Object> {
+  public async execute({
+    user,
+    userId,
+    returnPassword = false,
+  }: IRequest): Promise<Object> {
     const usersRepository = new UsersRepository();
     usersRepository.checkIfHasPermission(user, "users", "read");
 
@@ -24,7 +29,7 @@ export default class GetUserService {
         throw new Error();
       }
 
-      delete userToReturn.password;
+      !returnPassword && delete userToReturn.password;
 
       return userToReturn;
     } catch (error) {
