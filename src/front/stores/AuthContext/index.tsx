@@ -93,6 +93,8 @@ export const AuthContextProvider = ({ children }: IAuthContextProvider) => {
 
       user = getUserResponse.user;
     } catch (error) {
+      localStorage.removeItem("iam-token");
+
       dispatchAlert({
         message: "You are not authenticated",
         type: "error",

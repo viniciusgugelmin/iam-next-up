@@ -16,6 +16,7 @@ export const HomeEntryPage = ({
   isRouteAvailable,
 }: IHomeEntryPageProps) => {
   const [isPageChanged, setIsPageChanged] = useState(false);
+  const [pageLoaded, setPageLoaded] = useState(false);
   const [isPageUnmounting, setIsPageUnmounting] = useState(false);
   const entryPageClassName = page ? "up-home-entry-page--disabled" : "";
   const sectionPageClassName = isPageUnmounting
@@ -33,6 +34,9 @@ export const HomeEntryPage = ({
 
     setTimeout(() => {
       setIsPageChanged(!!newPage);
+      setTimeout(() => {
+        setPageLoaded(true);
+      }, 100);
 
       if (!initPage) {
         setPage(newPage);
@@ -43,7 +47,7 @@ export const HomeEntryPage = ({
 
   return (
     <div className={`up-home-entry-page ${entryPageClassName}`}>
-      {!isPageChanged && (
+      {!isPageChanged && pageLoaded && (
         <div className="up-home-entry-page__container">
           <h1 className="up-home-entry-page__title">Go Drink</h1>
           <div className="up-home-entry-page__button-container">
