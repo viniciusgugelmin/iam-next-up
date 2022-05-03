@@ -54,7 +54,7 @@ export default class UpdateUserService {
     if (
       hasUserWithSameDocumentOrEmail &&
       hasUserWithSameDocumentOrEmail.document === _userToUpdate.document &&
-      hasUserWithSameDocumentOrEmail.document !== _userToUpdate.document
+      hasUserWithSameDocumentOrEmail.document !== userToUpdate.document
     ) {
       throw new AppError("Document already in use", 400);
     }
