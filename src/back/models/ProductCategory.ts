@@ -1,15 +1,12 @@
+import IProductCategory from "../../interfaces/IProductCategory";
 import IRole from "../../interfaces/IRole";
 
-export default class Role implements IRole {
+export default class ProductCategory implements IProductCategory {
   name;
-  description;
-  permissions;
   private _deletedAt: Date | null = null;
 
   constructor(role: IRole) {
     this.name = role.name;
-    this.description = role.description;
-    this.permissions = role.permissions;
   }
 
   // Getters and Setters
