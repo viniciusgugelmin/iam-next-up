@@ -65,6 +65,7 @@ NEXT_PUBLIC_API_URL="" // API URL - http://localhost:3000/api
 
 NEXT_PUBLIC_MONGO_URI="" // MongoDB URI - mongodb://localhost:27017
 NEXT_PUBLIC_MONGO_DB="" // MongoDB DB - go-drink
+NEXT_PUBLIC_MONGO_DB_TEST="" // MongoDB DB - go-drink-test
 
 NEXT_PUBLIC_SESSION_SECRET="" // Session Secret - "go-drink-secret"
 NEXT_PUBLIC_SESSION_ADMIN_PASSWORD="" // Admin Password - "admin"
@@ -104,7 +105,19 @@ Routes:
   - Route to register
 - /home
   - Logged in base route
-
+- /home/users/list
+  - Route to list all users
+- /home/users/form
+  - Route to create a new user
+- /home/users/form/:userId
+  - Route to update a user by id
+- /home/roles/list
+  - Route to list all roles
+- /home/products/list
+  - Route to list all products
+- /home/products/form
+  - Route to create a new product
+- /home/products/form/:productId
 ```
 
 ## Contributing

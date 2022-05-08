@@ -1,114 +1,58 @@
 import connectMongoDB from "../../config/mongoDatabase";
 import { UsersRepository } from "../../repositories/UsersRepository";
 import IUser from "../../../interfaces/IUser";
-import AppError from "../../../errors/AppError";
-import User from "../../models/User";
-import commonRole from "../../../constants/roles/commonRole";
+import { ProductsRepository } from "../../repositories/ProductsRepository";
+import { ProductsCategoriesRepository } from "../../repositories/ProductsCategoriesRepository";
+import Product from "../../models/Product";
 
 interface IRequest {
   user: IUser;
-  userToUpdate: any;
-  userToUpdateData: any;
+  productToUpdate: any;
+  productToUpdateData: any;
 }
 
 export default class UpdateProductService {
   public async execute({
     user,
-    userToUpdate,
-    userToUpdateData,
+    productToUpdate,
+    productToUpdateData,
   }: IRequest): Promise<Object> {
     const usersRepository = new UsersRepository();
-    usersRepository.checkIfHasPermission(user, "users", "update");
+    usersRepository.checkIfHasPermission(user, "products", "update");
 
     const { db } = await connectMongoDB();
 
-    const _userToUpdate = new User();
-    for (const key in userToUpdateData) {
-      if (userToUpdateData[key]) {
+    const _productToUpdate = new Product();
+    for (const key in productToUpdateData) {
+      if (productToUpdateData[key]) {
         // @ts-ignore
-        _userToUpdate[key] = userToUpdateData[key];
+        _productToUpdate[key] = productToUpdateData[key];
       }
     }
 
-    if (
-      _userToUpdate.document === "00000000000" &&
-      user.document !== "00000000000"
-    ) {
-      throw new AppError("Only the admin can update the admin user", 401);
-    }
+    const productsCategoriesRepository = new ProductsCategoriesRepository();
 
-    const hasUserWithSameDocumentOrEmail = await db
-      .collection(usersRepository.collection)
-      .findOne({
-        $and: [
-          { _deletedAt: null },
-          {
-            $or: [
-              { document: _userToUpdate.document },
-              { email: _userToUpdate.email },
-            ],
-          },
-        ],
-      });
-
-    if (
-      hasUserWithSameDocumentOrEmail &&
-      hasUserWithSameDocumentOrEmail.document === _userToUpdate.document &&
-      hasUserWithSameDocumentOrEmail.document !== userToUpdate.document
-    ) {
-      throw new AppError("Document already in use", 400);
-    }
-
-    if (
-      hasUserWithSameDocumentOrEmail &&
-      hasUserWithSameDocumentOrEmail.email === _userToUpdate.email &&
-      hasUserWithSameDocumentOrEmail.email !== userToUpdate.email
-    ) {
-      throw new AppError("Email already in use", 400);
-    }
-
-    if (
-      _userToUpdate.role.name !== userToUpdate.role.name &&
-      _userToUpdate.role.name !== commonRole.name
-    ) {
-      try {
-        usersRepository.checkIfHasPermission(user, "admin_users", "update");
-      } catch (error) {
-        throw new AppError(
-          "You don't have permission to update a user with this role"
-        );
-      }
-    }
-
-    _userToUpdate.role = await usersRepository.checkAndGetIfUserRoleExists(
-      db,
-      _userToUpdate.role.name
-    );
-
-    if (_userToUpdate.password?.trim() === "") {
-      _userToUpdate.password = userToUpdate.password;
-    } else {
-      _userToUpdate.password = await usersRepository.hashPassword(
-        _userToUpdate.password
+    _productToUpdate.category =
+      await productsCategoriesRepository.checkAndGetIfProductCategoryExists(
+        db,
+        _productToUpdate.category
       );
-    }
 
-    await db.collection(usersRepository.collection).updateOne(
-      { _id: userToUpdate._id },
+    const productsRepository = new ProductsRepository();
+
+    await db.collection(productsRepository.collection).updateOne(
+      { _id: productToUpdate._id },
       {
         $set: {
-          ..._userToUpdate,
-          _createdAt: userToUpdate._createdAt,
+          ..._productToUpdate,
+          _createdAt: productToUpdate._createdAt,
         },
       }
     );
 
-    // @ts-ignore
-    _userToUpdate.password && delete _userToUpdate.password;
-
     return {
-      ..._userToUpdate,
-      _createdAt: userToUpdate._createdAt,
+      ..._productToUpdate,
+      _createdAt: productToUpdate._createdAt,
     };
   }
 }

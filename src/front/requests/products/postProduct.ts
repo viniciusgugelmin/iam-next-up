@@ -1,15 +1,15 @@
 import axios from "axios";
 
-interface IGetUsersRequest {
+interface IPostProductRequest {
   token: string;
-  user: any;
+  product: any;
 }
 
-export const postProduct = async ({ token, user }: IGetUsersRequest) => {
+export const postProduct = async ({ token, product }: IPostProductRequest) => {
   const request = await axios.post(
     `${process.env.NEXT_PUBLIC_API_URL || `/api`}/products`,
     {
-      ...user,
+      ...product,
     },
     {
       headers: {

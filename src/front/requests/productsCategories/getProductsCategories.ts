@@ -1,13 +1,14 @@
 import axios from "axios";
 
-interface IGetProductRequest {
+interface IGetProductsCategoriesRequest {
   token: string;
-  id: string;
 }
 
-export const getProduct = async ({ token, id }: IGetProductRequest) => {
+export const getProductsCategories = async ({
+  token,
+}: IGetProductsCategoriesRequest) => {
   const request = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL || `/api`}/products/${id}`,
+    `${process.env.NEXT_PUBLIC_API_URL || `/api`}/products/categories`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

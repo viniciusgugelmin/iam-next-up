@@ -1,25 +1,25 @@
 import connectMongoDB from "../../config/mongoDatabase";
 import { UsersRepository } from "../../repositories/UsersRepository";
 import IUser from "../../../interfaces/IUser";
-import { ProductsRepository } from "../../repositories/ProductsRepository";
+import { ProductsCategoriesRepository } from "../../repositories/ProductsCategoriesRepository";
 
 interface IRequest {
   user: IUser;
 }
 
-export default class GetProductsService {
+export default class GetProductsCategoriesService {
   public async execute({ user }: IRequest): Promise<Object[]> {
     const usersRepository = new UsersRepository();
-    usersRepository.checkIfHasPermission(user, "products", "read");
+    usersRepository.checkIfHasPermission(user, "products_categories", "read");
 
-    const productsRepository = new ProductsRepository();
+    const productsCategoriesRepository = new ProductsCategoriesRepository();
 
     const { db } = await connectMongoDB();
-    const products = await db
-      .collection(productsRepository.collection)
+    const productsCategories = await db
+      .collection(productsCategoriesRepository.collection)
       .find({ _deletedAt: null })
       .toArray();
 
-    return products;
+    return productsCategories;
   }
 }

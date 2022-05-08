@@ -3,6 +3,8 @@ import IProductCategory from "./IProductCategory";
 export default interface IProduct {
   _id?: string;
   name: string;
+  brand: string;
+  basePrice: number;
   price: number;
   quantity: number;
   isAlcoholic: boolean;

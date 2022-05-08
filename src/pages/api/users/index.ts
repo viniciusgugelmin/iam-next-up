@@ -65,7 +65,8 @@ async function handlePost(req: NextApiRequest, res: NextApiResponse) {
       document: joi
         .string()
         .required()
-        .regex(/^[0-9]{11}$/),
+        .regex(/^[0-9]{11}$/)
+        .message("Invalid document"),
       email: joi.string().required().email(),
       name: joi.string().required(),
       password: joi.string().required(),

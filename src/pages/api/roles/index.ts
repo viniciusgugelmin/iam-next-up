@@ -2,11 +2,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 import RouteNotFoundError from "../../../errors/RouteNotFoundError";
 import GetAuthenticatedUserService from "../../../back/services/user/GetAuthenticatedUserService";
 import SendRequestError from "../../../back/services/app/SendRequestErrorService";
-import GetUsersService from "../../../back/services/users/GetUsersService";
-import CreateUserService from "../../../back/services/users/CreateUserService";
-import joi from "joi";
-import SanitizeEveryWordService from "../../../back/services/app/SanitizeEveryWordService";
-import AppError from "../../../errors/AppError";
 import GetRolesService from "../../../back/services/roles/GetUsersService";
 
 export default async function handler(

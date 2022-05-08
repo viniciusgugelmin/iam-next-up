@@ -8,6 +8,9 @@ import AppError from "../../../errors/AppError";
 import joi from "joi";
 import UpdateUserService from "../../../back/services/users/UpdateUserService";
 import DeleteUserService from "../../../back/services/users/DeleteUserService";
+import GetProductService from "../../../back/services/products/GetProductService";
+import DeleteProductService from "../../../back/services/products/DeleteProductService";
+import UpdateProductService from "../../../back/services/products/UpdateProductService";
 
 export default async function handler(
   req: NextApiRequest,
@@ -39,14 +42,14 @@ async function handleGet(req: NextApiRequest, res: NextApiResponse) {
 
     const { productId } = req.query;
 
-    const getUserService = new GetUserService();
-    const userToReturn = await getUserService.execute({
+    const getProductsService = new GetProductService();
+    const productToReturn = await getProductsService.execute({
       user,
       productId: productId as string,
     });
 
     res.json({
-      user: userToReturn,
+      product: productToReturn,
     });
   } catch (error) {
     const sendRequestError = new SendRequestError();
@@ -63,7 +66,7 @@ async function handlePut(req: NextApiRequest, res: NextApiResponse) {
     const { document, email, name, password, gender, hiredAt, role } = req.body;
 
     const sanitizeEveryWordService = new SanitizeEveryWordService();
-    const userToUpdateData = sanitizeEveryWordService.execute({
+    const productToUpdateData = sanitizeEveryWordService.execute({
       document,
       email,
       name,
@@ -90,27 +93,26 @@ async function handlePut(req: NextApiRequest, res: NextApiResponse) {
         .required(),
     });
 
-    const validation = userSchema.validate(userToUpdateData);
+    const validation = userSchema.validate(productToUpdateData);
     if (validation.error) {
       throw new AppError(validation.error.details[0].message);
     }
 
-    const getUserService = new GetUserService();
-    const userToUpdate = await getUserService.execute({
+    const getProductService = new GetProductService();
+    const productToUpdate = await getProductService.execute({
       user,
       productId: productId as string,
-      returnPassword: true,
     });
 
-    const updateUserService = new UpdateUserService();
-    const userUpdated = await updateUserService.execute({
+    const updateProductService = new UpdateProductService();
+    const productUpdated = await updateProductService.execute({
       user,
-      userToUpdate,
-      userToUpdateData,
+      productToUpdate,
+      productToUpdateData,
     });
 
     res.json({
-      user: userUpdated,
+      product: productUpdated,
     });
   } catch (error) {
     const sendRequestError = new SendRequestError();
@@ -125,8 +127,8 @@ async function handleDelete(req: NextApiRequest, res: NextApiResponse) {
 
     const { productId } = req.query;
 
-    const deleteUserService = new DeleteUserService();
-    await deleteUserService.execute({
+    const deleteProductService = new DeleteProductService();
+    await deleteProductService.execute({
       user,
       productId: productId as string,
     });

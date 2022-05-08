@@ -1,72 +1,43 @@
 import connectMongoDB from "../../config/mongoDatabase";
 import { UsersRepository } from "../../repositories/UsersRepository";
 import IUser from "../../../interfaces/IUser";
-import AppError from "../../../errors/AppError";
-import User from "../../models/User";
-import commonRole from "../../../constants/roles/commonRole";
+import IProduct from "../../../interfaces/IProduct";
+import Product from "../../models/Product";
+import { ProductsRepository } from "../../repositories/ProductsRepository";
+import { ProductsCategoriesRepository } from "../../repositories/ProductsCategoriesRepository";
 
 interface IRequest {
   user: IUser;
-  newUser: any;
+  newProduct: any;
 }
 
 export default class CreateProductService {
-  public async execute({ user, newUser }: IRequest): Promise<IUser> {
+  public async execute({ user, newProduct }: IRequest): Promise<IProduct> {
     const usersRepository = new UsersRepository();
-    usersRepository.checkIfHasPermission(user, "users", "create");
+    usersRepository.checkIfHasPermission(user, "products", "create");
 
     const { db } = await connectMongoDB();
 
-    const _newUser = new User();
-    for (const key in newUser) {
-      if (newUser[key]) {
+    const _newProduct = new Product();
+    for (const key in newProduct) {
+      if (newProduct[key]) {
         // @ts-ignore
-        _newUser[key] = newUser[key];
+        _newProduct[key] = newProduct[key];
       }
     }
 
-    _newUser.role = await usersRepository.checkAndGetIfUserRoleExists(
-      db,
-      _newUser.role.name
-    );
+    const productsCategoriesRepository = new ProductsCategoriesRepository();
 
-    const hasUserWithSameDocumentOrEmail = await db
-      .collection(usersRepository.collection)
-      .findOne({
-        $and: [
-          { _deletedAt: null },
-          { $or: [{ document: _newUser.document }, { email: _newUser.email }] },
-        ],
-      });
+    _newProduct.category =
+      await productsCategoriesRepository.checkAndGetIfProductCategoryExists(
+        db,
+        _newProduct.category
+      );
 
-    if (
-      hasUserWithSameDocumentOrEmail &&
-      hasUserWithSameDocumentOrEmail.document === _newUser.document
-    ) {
-      throw new AppError("Document already in use", 400);
-    }
+    const productsRepository = new ProductsRepository();
 
-    if (
-      hasUserWithSameDocumentOrEmail &&
-      hasUserWithSameDocumentOrEmail.email === _newUser.email
-    ) {
-      throw new AppError("Email already in use", 400);
-    }
+    await db.collection(productsRepository.collection).insertOne(_newProduct);
 
-    if (_newUser.role.name !== commonRole.name) {
-      try {
-        usersRepository.checkIfHasPermission(user, "admin_users", "create");
-      } catch (error) {
-        throw new AppError(
-          "You don't have permission to create a user with this role"
-        );
-      }
-    }
-
-    _newUser.password = await usersRepository.hashPassword(_newUser.password);
-
-    await db.collection(usersRepository.collection).insertOne(_newUser);
-
-    return _newUser;
+    return _newProduct;
   }
 }

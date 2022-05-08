@@ -21,7 +21,16 @@ const ProductsList: NextPage<IPageProps> = ({
   const isAuthenticated = useAuthentication();
   const [products, setProducts] = useState<[][]>([]);
   const [loading, setLoading] = useState(true);
-  const headers = ["Name", "Email", "Role", "Update", "Delete"];
+  const headers = [
+    "Name",
+    "Brand",
+    "Base price",
+    "Price",
+    "Quantity",
+    "Category",
+    "Update",
+    "Delete",
+  ];
   const context = useContext(authContext);
   const router = useRouter();
 
@@ -43,9 +52,11 @@ const ProductsList: NextPage<IPageProps> = ({
       .then((data) => {
         const mappedProducts = data.products.map((product: IProduct) => [
           product.name,
+          product.brand,
+          product.basePrice,
           product.price,
           product.quantity,
-          product.category,
+          product.category?.name || "-",
           () => handleUpdateProduct(product._id as string),
           () => handleDeleteProduct(product._id as string, product.name),
         ]);

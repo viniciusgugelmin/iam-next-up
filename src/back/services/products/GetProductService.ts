@@ -3,37 +3,33 @@ import { UsersRepository } from "../../repositories/UsersRepository";
 import IUser from "../../../interfaces/IUser";
 import { ObjectId } from "mongodb";
 import AppError from "../../../errors/AppError";
+import { ProductsRepository } from "../../repositories/ProductsRepository";
 
 interface IRequest {
   user: IUser;
-  userId: string;
-  returnPassword?: boolean;
+  productId: string;
 }
 
 export default class GetProductService {
-  public async execute({
-    user,
-    userId,
-    returnPassword = false,
-  }: IRequest): Promise<Object> {
+  public async execute({ user, productId }: IRequest): Promise<Object> {
     const usersRepository = new UsersRepository();
-    usersRepository.checkIfHasPermission(user, "users", "read");
+    usersRepository.checkIfHasPermission(user, "products", "read");
+
+    const productsRepository = new ProductsRepository();
 
     try {
       const { db } = await connectMongoDB();
-      const userToReturn = await db
-        .collection(usersRepository.collection)
-        .findOne({ _id: new ObjectId(userId) });
+      const productToReturn = await db
+        .collection(productsRepository.collection)
+        .findOne({ _id: new ObjectId(productId) });
 
-      if (!userToReturn) {
+      if (!productToReturn) {
         throw new Error();
       }
 
-      !returnPassword && delete userToReturn.password;
-
-      return userToReturn;
+      return productToReturn;
     } catch (error) {
-      throw new AppError("User not found", 404);
+      throw new AppError("Product not found", 404);
     }
   }
 }

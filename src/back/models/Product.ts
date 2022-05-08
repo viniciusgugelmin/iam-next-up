@@ -3,6 +3,8 @@ import IProductCategory from "../../interfaces/IProductCategory";
 
 export default class Product implements IProduct {
   name = "";
+  brand = "";
+  basePrice = 0;
   price = 0;
   quantity = 0;
   isAlcoholic = false;
