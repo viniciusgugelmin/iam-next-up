@@ -45,7 +45,7 @@ export const Navbar = () => {
     },
     {
       name: "Products",
-      isActive: checkIfOptionInitActive("products"),
+      isActive: checkIfOptionInitActive("products", ["categories"]),
       options: [
         {
           name: "List",
@@ -72,6 +72,34 @@ export const Navbar = () => {
       ],
     },
     {
+      name: "Categories",
+      isActive: checkIfOptionInitActive("products/categories"),
+      options: [
+        {
+          name: "List",
+          route: "products/categories/list",
+          blocked: !checkIfHasPermission(
+            context.user,
+            "products_categories",
+            "read",
+            false
+          ),
+          isActive: checkIfSubOptionInitActive("products/categories/list"),
+        },
+        {
+          name: "Form",
+          route: "products/categories/form",
+          blocked: !checkIfHasPermission(
+            context.user,
+            "products_categories",
+            "create",
+            false
+          ),
+          isActive: checkIfSubOptionInitActive("products/categories/form"),
+        },
+      ],
+    },
+    {
       name: "Logout",
       action: () => context.logout(),
       isActive: checkIfOptionInitActive("logout"),
@@ -79,8 +107,19 @@ export const Navbar = () => {
     },
   ]);
 
-  function checkIfOptionInitActive(option: string) {
-    return router.pathname.startsWith(`/home/${option.toLowerCase()}`);
+  function checkIfOptionInitActive(option: string, ignoreItems: string[] = []) {
+    const routeCheck = router.pathname.startsWith(
+      `/home/${option.toLowerCase()}`
+    );
+
+    if (ignoreItems.length > 0) {
+      return (
+        routeCheck &&
+        !ignoreItems.find((item) => router.pathname.includes(item))
+      );
+    }
+
+    return routeCheck;
   }
 
   function checkIfSubOptionInitActive(subOption: string) {

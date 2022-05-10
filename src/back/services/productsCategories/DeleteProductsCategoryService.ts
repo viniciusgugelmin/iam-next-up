@@ -3,52 +3,57 @@ import { UsersRepository } from "../../repositories/UsersRepository";
 import IUser from "../../../interfaces/IUser";
 import { ObjectId } from "mongodb";
 import AppError from "../../../errors/AppError";
-import User from "../../models/User";
+import ProductCategory from "../../models/ProductCategory";
+import { ProductsCategoriesRepository } from "../../repositories/ProductsCategoriesRepository";
+import { ProductsRepository } from "../../repositories/ProductsRepository";
 
 interface IRequest {
   user: IUser;
-  userId: string;
+  productsCategoryId: string;
 }
 
 export default class DeleteProductsCategoryService {
-  public async execute({ user, userId }: IRequest): Promise<Object> {
+  public async execute({
+    user,
+    productsCategoryId,
+  }: IRequest): Promise<Object> {
     const usersRepository = new UsersRepository();
-    usersRepository.checkIfHasPermission(user, "users", "delete");
+    usersRepository.checkIfHasPermission(user, "products_categories", "delete");
+
+    const productsCategoriesRepository = new ProductsCategoriesRepository();
 
     const { db } = await connectMongoDB();
-    const userToDelete = await db
-      .collection(usersRepository.collection)
-      .findOne({ _id: new ObjectId(userId) });
+    const productsCategoryToDelete = await db
+      .collection(productsCategoriesRepository.collection)
+      .findOne({ _id: new ObjectId(productsCategoryId) });
 
-    if (!userToDelete) {
-      throw new AppError("User not found", 404);
+    if (!productsCategoryToDelete) {
+      throw new AppError("Products category not found", 404);
     }
 
-    if (userToDelete.document === "00000000000") {
-      throw new AppError("This user can't be deleted", 401);
-    }
+    const deletedProductsCategoryData = new ProductCategory();
 
-    if (!userToDelete._active) {
-      throw new AppError("User already deleted", 404);
-    }
-
-    try {
-      if (userToDelete.role.name === "admin") {
-        usersRepository.checkIfHasPermission(user, "admin_users", "delete");
-      }
-    } catch (error) {
-      throw new AppError("You don't have permission to delete this user", 403);
-    }
-
-    const deletedUserData = new User();
-
-    await db.collection(usersRepository.collection).updateOne(
-      { _id: new ObjectId(userId) },
+    await db.collection(productsCategoriesRepository.collection).updateOne(
+      { _id: new ObjectId(productsCategoryId) },
       {
-        $set: deletedUserData.delete(),
+        $set: deletedProductsCategoryData.delete(),
       }
     );
 
-    return userToDelete;
+    const productsRepository = new ProductsRepository();
+
+    await db.collection(productsRepository.collection).updateMany(
+      { "category.name": productsCategoryToDelete.name },
+      {
+        $set: {
+          category: {
+            ...productsCategoryToDelete,
+            ...deletedProductsCategoryData.delete(),
+          },
+        },
+      }
+    );
+
+    return productsCategoryToDelete;
   }
 }

@@ -6,7 +6,7 @@ export default class Product implements IProduct {
   brand = "";
   basePrice = 0;
   price = 0;
-  quantity = 0;
+  liters = 0;
   isAlcoholic = false;
   description = "";
   image = "";

@@ -2,12 +2,9 @@ import { NextApiRequest, NextApiResponse } from "next";
 import RouteNotFoundError from "../../../errors/RouteNotFoundError";
 import GetAuthenticatedUserService from "../../../back/services/user/GetAuthenticatedUserService";
 import SendRequestError from "../../../back/services/app/SendRequestErrorService";
-import GetUserService from "../../../back/services/users/GetUserService";
 import SanitizeEveryWordService from "../../../back/services/app/SanitizeEveryWordService";
 import AppError from "../../../errors/AppError";
 import joi from "joi";
-import UpdateUserService from "../../../back/services/users/UpdateUserService";
-import DeleteUserService from "../../../back/services/users/DeleteUserService";
 import GetProductService from "../../../back/services/products/GetProductService";
 import DeleteProductService from "../../../back/services/products/DeleteProductService";
 import UpdateProductService from "../../../back/services/products/UpdateProductService";
@@ -63,37 +60,36 @@ async function handlePut(req: NextApiRequest, res: NextApiResponse) {
     const user = await getAuthenticatedUserService.execute({ req });
 
     const { productId } = req.query;
-    const { document, email, name, password, gender, hiredAt, role } = req.body;
+    const { name, liters, description, image, category } = req.body;
 
     const sanitizeEveryWordService = new SanitizeEveryWordService();
     const productToUpdateData = sanitizeEveryWordService.execute({
-      document,
-      email,
       name,
-      password,
-      gender,
-      hiredAt: hiredAt.replace(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/, "$3-$2-$1"),
-      role: { name: role },
+      liters,
+      description,
+      image,
+      category: { name: category },
     });
 
-    const userSchema = joi.object({
-      document: joi
+    const productSchema = joi.object({
+      name: joi.string().required(),
+      liters: joi.number().required(),
+      description: joi.string().required(),
+      image: joi
         .string()
         .required()
-        .regex(/^[0-9]{11}$/),
-      email: joi.string().required().email(),
-      name: joi.string().required(),
-      password: joi.optional(),
-      gender: joi.string().required(),
-      hiredAt: joi.date().required(),
-      role: joi
+        .regex(
+          /^(ftp|http|https|chrome|:\/\/|\.|@){2,}(localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\S*:\w*@)*([a-zA-Z]|(\d{1,3}|\.){7}){1,}(\w|\.{2,}|\.[a-zA-Z]{2,3}|\/|\?|&|:\d|@|=|\/|\(.*\)|#|-|%)*$/
+        )
+        .message("Invalid image url"),
+      category: joi
         .object({
           name: joi.string().required(),
         })
         .required(),
     });
 
-    const validation = userSchema.validate(productToUpdateData);
+    const validation = productSchema.validate(productToUpdateData);
     if (validation.error) {
       throw new AppError(validation.error.details[0].message);
     }

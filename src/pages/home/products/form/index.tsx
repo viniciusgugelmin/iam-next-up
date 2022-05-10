@@ -33,21 +33,14 @@ const ProductsCreateForm: NextPage<IPageProps> = ({
   const [brand, setBrand] = useState("");
   const [basePrice, setBasePrice] = useState("");
   const [price, setPrice] = useState("");
-  const [quantity, setQuantity] = useState("");
+  const [liters, setLiters] = useState("");
   const [isAlcoholic, setIsAlcoholic] = useState("false");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
   const [category, setCategory] = useState("");
 
   const isFormFilled =
-    name &&
-    brand &&
-    basePrice &&
-    price &&
-    quantity &&
-    isAlcoholic &&
-    description &&
-    image;
+    name && brand && basePrice && price && liters && description && image;
 
   useEffect(() => {
     setPageSubtitle("Products form");
@@ -115,7 +108,7 @@ const ProductsCreateForm: NextPage<IPageProps> = ({
           brand,
           basePrice,
           price,
-          quantity,
+          liters,
           isAlcoholic: isAlcoholic === "true",
           description,
           image,
@@ -162,7 +155,7 @@ const ProductsCreateForm: NextPage<IPageProps> = ({
         <Input
           type="text"
           placeholder="Name"
-          name="document"
+          name="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
           color={color}
@@ -197,10 +190,10 @@ const ProductsCreateForm: NextPage<IPageProps> = ({
         />
         <Input
           type="number"
-          placeholder="Quantity"
-          name="quantity"
-          value={quantity}
-          onChange={(e) => handleNumberChange(e.target.value, setQuantity)}
+          placeholder="Liters"
+          name="liters"
+          value={liters}
+          onChange={(e) => handleNumberChange(e.target.value, setLiters)}
           color={color}
           required
         />

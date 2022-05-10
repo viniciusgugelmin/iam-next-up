@@ -30,6 +30,13 @@ export default class UpdateProductService {
       }
     }
 
+    for (const key in _productToUpdate) {
+      if (!productToUpdateData[key]) {
+        // @ts-ignore
+        delete _productToUpdate[key];
+      }
+    }
+
     const productsCategoriesRepository = new ProductsCategoriesRepository();
 
     _productToUpdate.category =

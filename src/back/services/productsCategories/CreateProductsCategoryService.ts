@@ -1,10 +1,10 @@
 import connectMongoDB from "../../config/mongoDatabase";
 import { UsersRepository } from "../../repositories/UsersRepository";
 import IUser from "../../../interfaces/IUser";
-import IProduct from "../../../interfaces/IProduct";
-import Product from "../../models/Product";
 import { ProductsCategoriesRepository } from "../../repositories/ProductsCategoriesRepository";
 import AppError from "../../../errors/AppError";
+import ProductCategory from "../../models/ProductCategory";
+import IProductCategory from "../../../interfaces/IProductCategory";
 
 interface IRequest {
   user: IUser;
@@ -15,13 +15,13 @@ export default class CreateProductsCategoryService {
   public async execute({
     user,
     newProductsCategory,
-  }: IRequest): Promise<IProduct> {
+  }: IRequest): Promise<IProductCategory> {
     const usersRepository = new UsersRepository();
     usersRepository.checkIfHasPermission(user, "products_categories", "create");
 
     const { db } = await connectMongoDB();
 
-    const _newProductsCategory = new Product();
+    const _newProductsCategory = new ProductCategory();
     for (const key in newProductsCategory) {
       if (newProductsCategory[key]) {
         // @ts-ignore

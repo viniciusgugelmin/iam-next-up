@@ -21,6 +21,7 @@ import { putUser } from "../../../../../front/requests/users/putUser";
 import { postProduct } from "../../../../../front/requests/products/postProduct";
 import { getProductsCategories } from "../../../../../front/requests/productsCategories/getProductsCategories";
 import { getProduct } from "../../../../../front/requests/products/getProduct";
+import { putProduct } from "../../../../../front/requests/products/putProduct";
 
 const ProductsUpdateForm: NextPage<IPageProps> = ({
   setPageSubtitle,
@@ -36,8 +37,8 @@ const ProductsUpdateForm: NextPage<IPageProps> = ({
   const [brand, setBrand] = useState("");
   const [basePrice, setBasePrice] = useState("");
   const [price, setPrice] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [isAlcoholic, setIsAlcoholic] = useState("false");
+  const [liters, setLiters] = useState("");
+  const [, setIsAlcoholic] = useState("false");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
   const [category, setCategory] = useState("");
@@ -47,8 +48,7 @@ const ProductsUpdateForm: NextPage<IPageProps> = ({
     brand &&
     basePrice &&
     price &&
-    quantity &&
-    isAlcoholic &&
+    liters &&
     description &&
     image &&
     category;
@@ -108,7 +108,7 @@ const ProductsUpdateForm: NextPage<IPageProps> = ({
       setBrand(data.product.brand);
       setBasePrice(data.product.basePrice);
       setPrice(data.product.price);
-      setQuantity(data.product.quantity);
+      setLiters(data.product.liters);
       setIsAlcoholic(data.product.isAlcoholic as string);
       setDescription(data.product.description);
       setImage(data.product.image);
@@ -122,7 +122,7 @@ const ProductsUpdateForm: NextPage<IPageProps> = ({
     setFunction(numberToInsert);
   };
 
-  async function createProduct(e: FormEvent<HTMLFormElement>) {
+  async function updateProduct(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (!isFormFilled || loading) return;
@@ -130,23 +130,20 @@ const ProductsUpdateForm: NextPage<IPageProps> = ({
     setLoading(true);
 
     try {
-      await postProduct({
+      await putProduct({
         token: context.token,
         product: {
           name,
-          brand,
-          basePrice,
-          price,
-          quantity,
-          isAlcoholic: isAlcoholic === "true",
+          liters,
           description,
           image,
           category,
         },
+        id: router.query.productId as string,
       });
 
       dispatchAlert({
-        message: "Product created successful",
+        message: "Product updated successful",
         type: "success",
       });
 
@@ -177,65 +174,26 @@ const ProductsUpdateForm: NextPage<IPageProps> = ({
     <HomeLoggedPage>
       <Form
         className="up-form up-admin-form"
-        onSubmit={createProduct}
+        onSubmit={updateProduct}
         color={color}
         title="Update product"
       >
         <Input
           type="text"
           placeholder="Name"
-          name="document"
+          name="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
           color={color}
           required
         />
         <Input
-          type="text"
-          placeholder="Brand"
-          name="email"
-          value={brand}
-          onChange={(e) => setBrand(e.target.value)}
-          color={color}
-          required
-        />
-        <Input
           type="number"
-          placeholder="Base price"
-          name="base_price"
-          value={basePrice}
-          onChange={(e) => handleNumberChange(e.target.value, setBasePrice)}
+          placeholder="Liters"
+          name="liters"
+          value={liters}
+          onChange={(e) => handleNumberChange(e.target.value, setLiters)}
           color={color}
-          required
-        />
-        <Input
-          type="number"
-          placeholder="Price"
-          name="price"
-          value={price}
-          onChange={(e) => handleNumberChange(e.target.value, setPrice)}
-          color={color}
-          required
-        />
-        <Input
-          type="number"
-          placeholder="Quantity"
-          name="quantity"
-          value={quantity}
-          onChange={(e) => handleNumberChange(e.target.value, setQuantity)}
-          color={color}
-          required
-        />
-        <Select
-          placeholder="Is alcoholic"
-          name="is_alcoholic"
-          value={isAlcoholic}
-          onChange={(e) => setIsAlcoholic(e.target.value)}
-          color={color}
-          options={[
-            ["true", "Yes"],
-            ["false", "No"],
-          ]}
           required
         />
         <Input

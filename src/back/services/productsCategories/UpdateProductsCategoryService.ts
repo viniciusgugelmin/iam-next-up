@@ -4,111 +4,61 @@ import IUser from "../../../interfaces/IUser";
 import AppError from "../../../errors/AppError";
 import User from "../../models/User";
 import commonRole from "../../../constants/roles/commonRole";
+import ProductCategory from "../../models/ProductCategory";
+import { ProductsCategoriesRepository } from "../../repositories/ProductsCategoriesRepository";
 
 interface IRequest {
   user: IUser;
-  userToUpdate: any;
-  userToUpdateData: any;
+  productsCategoryToUpdate: any;
+  productsCategoryToUpdateData: any;
 }
 
 export default class UpdateProductsCategoryService {
   public async execute({
     user,
-    userToUpdate,
-    userToUpdateData,
+    productsCategoryToUpdate,
+    productsCategoryToUpdateData,
   }: IRequest): Promise<Object> {
     const usersRepository = new UsersRepository();
-    usersRepository.checkIfHasPermission(user, "users", "update");
+    usersRepository.checkIfHasPermission(user, "products_categories", "update");
 
     const { db } = await connectMongoDB();
 
-    const _userToUpdate = new User();
-    for (const key in userToUpdateData) {
-      if (userToUpdateData[key]) {
+    const _productsCategoryToUpdate = new ProductCategory();
+    for (const key in productsCategoryToUpdateData) {
+      if (productsCategoryToUpdateData[key]) {
         // @ts-ignore
-        _userToUpdate[key] = userToUpdateData[key];
+        _productsCategoryToUpdate[key] = productsCategoryToUpdateData[key];
       }
     }
 
-    if (
-      _userToUpdate.document === "00000000000" &&
-      user.document !== "00000000000"
-    ) {
-      throw new AppError("Only the admin can update the admin user", 401);
-    }
+    const productsCategoriesRepository = new ProductsCategoriesRepository();
 
-    const hasUserWithSameDocumentOrEmail = await db
-      .collection(usersRepository.collection)
+    const hasProductsCategoryWithSameName = await db
+      .collection(productsCategoriesRepository.collection)
       .findOne({
-        $and: [
-          { _deletedAt: null },
-          {
-            $or: [
-              { document: _userToUpdate.document },
-              { email: _userToUpdate.email },
-            ],
-          },
-        ],
+        $and: [{ _deletedAt: null }, { name: _productsCategoryToUpdate.name }],
       });
 
     if (
-      hasUserWithSameDocumentOrEmail &&
-      hasUserWithSameDocumentOrEmail.document === _userToUpdate.document &&
-      hasUserWithSameDocumentOrEmail.document !== userToUpdate.document
+      hasProductsCategoryWithSameName &&
+      hasProductsCategoryWithSameName.name === _productsCategoryToUpdate.name &&
+      hasProductsCategoryWithSameName.name !== productsCategoryToUpdate.name
     ) {
-      throw new AppError("Document already in use", 400);
+      throw new AppError("Name already in use", 400);
     }
 
-    if (
-      hasUserWithSameDocumentOrEmail &&
-      hasUserWithSameDocumentOrEmail.email === _userToUpdate.email &&
-      hasUserWithSameDocumentOrEmail.email !== userToUpdate.email
-    ) {
-      throw new AppError("Email already in use", 400);
-    }
-
-    if (
-      _userToUpdate.role.name !== userToUpdate.role.name &&
-      _userToUpdate.role.name !== commonRole.name
-    ) {
-      try {
-        usersRepository.checkIfHasPermission(user, "admin_users", "update");
-      } catch (error) {
-        throw new AppError(
-          "You don't have permission to update a user with this role"
-        );
-      }
-    }
-
-    _userToUpdate.role = await usersRepository.checkAndGetIfUserRoleExists(
-      db,
-      _userToUpdate.role.name
-    );
-
-    if (_userToUpdate.password?.trim() === "") {
-      _userToUpdate.password = userToUpdate.password;
-    } else {
-      _userToUpdate.password = await usersRepository.hashPassword(
-        _userToUpdate.password
-      );
-    }
-
-    await db.collection(usersRepository.collection).updateOne(
-      { _id: userToUpdate._id },
+    await db.collection(productsCategoriesRepository.collection).updateOne(
+      { _id: productsCategoryToUpdate._id },
       {
         $set: {
-          ..._userToUpdate,
-          _createdAt: userToUpdate._createdAt,
+          ..._productsCategoryToUpdate,
         },
       }
     );
 
-    // @ts-ignore
-    _userToUpdate.password && delete _userToUpdate.password;
-
     return {
-      ..._userToUpdate,
-      _createdAt: userToUpdate._createdAt,
+      ..._productsCategoryToUpdate,
     };
   }
 }

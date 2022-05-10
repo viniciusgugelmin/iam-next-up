@@ -6,7 +6,7 @@ export default interface IProduct {
   brand: string;
   basePrice: number;
   price: number;
-  quantity: number;
+  liters: number;
   isAlcoholic: boolean;
   description: string;
   image: string;

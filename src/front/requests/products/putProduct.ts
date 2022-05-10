@@ -1,16 +1,20 @@
 import axios from "axios";
 
-interface IPutUserRequest {
+interface IPutProductRequest {
   token: string;
-  user: any;
+  product: any;
   id: string;
 }
 
-export const putProduct = async ({ token, user, id }: IPutUserRequest) => {
+export const putProduct = async ({
+  token,
+  product,
+  id,
+}: IPutProductRequest) => {
   const request = await axios.put(
     `${process.env.NEXT_PUBLIC_API_URL || `/api`}/products/${id}`,
     {
-      ...user,
+      ...product,
     },
     {
       headers: {

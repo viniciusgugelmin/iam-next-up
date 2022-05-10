@@ -11,7 +11,7 @@ export class ProductsCategoriesRepository {
     productCategory: IProductCategory | null
   ): Promise<any> {
     const _productCategory = await db.collection(this.collection).findOne({
-      $and: [{ _deletedAt: null }, { name: productCategory }],
+      $and: [{ _deletedAt: null }, { name: productCategory?.name }],
     });
 
     if (!_productCategory) {
