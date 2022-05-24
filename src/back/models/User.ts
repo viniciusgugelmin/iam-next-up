@@ -1,5 +1,5 @@
-import IUser from "../../interfaces/IUser";
-import IRole from "../../interfaces/IRole";
+import IUser from "../../interfaces/models/IUser";
+import IRole from "../../interfaces/models/IRole";
 import genders from "../../constants/users/genders";
 import commonRole from "../../constants/roles/commonRole";
 

@@ -1,6 +1,6 @@
 import connectMongoDB from "../../config/mongoDatabase";
 import { UsersRepository } from "../../repositories/UsersRepository";
-import IUser from "../../../interfaces/IUser";
+import IUser from "../../../interfaces/models/IUser";
 import { ProductsCategoriesRepository } from "../../repositories/ProductsCategoriesRepository";
 
 interface IRequest {

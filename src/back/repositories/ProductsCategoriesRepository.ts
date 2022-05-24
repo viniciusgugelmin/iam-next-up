@@ -1,7 +1,6 @@
 import { Db } from "mongodb";
-import IRole from "../../interfaces/IRole";
 import AppError from "../../errors/AppError";
-import IProductCategory from "../../interfaces/IProductCategory";
+import IProductCategory from "../../interfaces/models/IProductCategory";
 
 export class ProductsCategoriesRepository {
   collection = "products_categories";

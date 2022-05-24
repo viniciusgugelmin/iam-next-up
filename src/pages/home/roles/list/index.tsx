@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { PageLoading } from "../../../../front/components/Base/PageLoading";
 import useAuthentication from "../../../../front/hooks/UseAuthentication";
 import IPageProps from "../../../../interfaces/IPageProps";
-import IUser from "../../../../interfaces/IUser";
+import IUser from "../../../../interfaces/models/IUser";
 import { Table } from "../../../../front/components/Base/Table";
 import { getUsers } from "../../../../front/requests/users/getUsers";
 import authContext from "../../../../front/stores/AuthContext";
@@ -14,7 +14,7 @@ import { dispatchAlert } from "../../../../front/services/dispatchAlert";
 import { IError } from "../../../../interfaces/IError";
 import { useRouter } from "next/router";
 import { checkIfHasPermission } from "../../../../front/services/checkIfUserHasPermission";
-import IRole from "../../../../interfaces/IRole";
+import IRole from "../../../../interfaces/models/IRole";
 import { getRoles } from "../../../../front/requests/roles/getRoles";
 
 const RolesList: NextPage<IPageProps> = ({ setPageSubtitle }: IPageProps) => {

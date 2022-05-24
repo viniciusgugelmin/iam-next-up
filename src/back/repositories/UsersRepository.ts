@@ -2,8 +2,8 @@ import { hash } from "bcryptjs";
 import AppError from "../../errors/AppError";
 import { Db } from "mongodb";
 import { RolesRepository } from "./RolesRepository";
-import IRole from "../../interfaces/IRole";
-import IUser from "../../interfaces/IUser";
+import IRole from "../../interfaces/models/IRole";
+import IUser from "../../interfaces/models/IUser";
 import adminRole from "../../constants/roles/adminRole";
 
 export class UsersRepository {

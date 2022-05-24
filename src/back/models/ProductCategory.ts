@@ -1,4 +1,4 @@
-import IProductCategory from "../../interfaces/IProductCategory";
+import IProductCategory from "../../interfaces/models/IProductCategory";
 
 export default class ProductCategory implements IProductCategory {
   name = "";

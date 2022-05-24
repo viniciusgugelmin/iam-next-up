@@ -60,12 +60,11 @@ async function handlePut(req: NextApiRequest, res: NextApiResponse) {
     const user = await getAuthenticatedUserService.execute({ req });
 
     const { productId } = req.query;
-    const { name, liters, description, image, category } = req.body;
+    const { name, description, image, category } = req.body;
 
     const sanitizeEveryWordService = new SanitizeEveryWordService();
     const productToUpdateData = sanitizeEveryWordService.execute({
       name,
-      liters,
       description,
       image,
       category: { name: category },
@@ -73,7 +72,6 @@ async function handlePut(req: NextApiRequest, res: NextApiResponse) {
 
     const productSchema = joi.object({
       name: joi.string().required(),
-      liters: joi.number().required(),
       description: joi.string().required(),
       image: joi
         .string()

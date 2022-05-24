@@ -11,7 +11,7 @@ import { dispatchAlert } from "../../../../../front/services/dispatchAlert";
 import { IError } from "../../../../../interfaces/IError";
 import { useRouter } from "next/router";
 import { checkIfHasPermission } from "../../../../../front/services/checkIfUserHasPermission";
-import IProductCategory from "../../../../../interfaces/IProductCategory";
+import IProductCategory from "../../../../../interfaces/models/IProductCategory";
 import { getProductsCategories } from "../../../../../front/requests/productsCategories/getProductsCategories";
 import { deleteProductsCategory } from "../../../../../front/requests/productsCategories/deleteProductsCategory";
 

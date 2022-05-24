@@ -3,9 +3,9 @@ import { NextApiRequest } from "next";
 import AppError from "../../../errors/AppError";
 import { UsersRepository } from "../../repositories/UsersRepository";
 import User from "../../models/User";
-import IUser from "../../../interfaces/IUser";
+import IUser from "../../../interfaces/models/IUser";
 import { RolesRepository } from "../../repositories/RolesRepository";
-import IRole from "../../../interfaces/IRole";
+import IRole from "../../../interfaces/models/IRole";
 import adminRole from "../../../constants/roles/adminRole";
 import commonRole from "../../../constants/roles/commonRole";
 

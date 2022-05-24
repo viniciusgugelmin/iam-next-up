@@ -1,10 +1,10 @@
 import connectMongoDB from "../../config/mongoDatabase";
 import { UsersRepository } from "../../repositories/UsersRepository";
-import IUser from "../../../interfaces/IUser";
+import IUser from "../../../interfaces/models/IUser";
 import { ProductsCategoriesRepository } from "../../repositories/ProductsCategoriesRepository";
 import AppError from "../../../errors/AppError";
 import ProductCategory from "../../models/ProductCategory";
-import IProductCategory from "../../../interfaces/IProductCategory";
+import IProductCategory from "../../../interfaces/models/IProductCategory";
 
 interface IRequest {
   user: IUser;

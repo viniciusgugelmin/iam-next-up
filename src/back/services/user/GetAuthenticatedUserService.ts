@@ -5,7 +5,7 @@ import authConfig from "../../config/auth";
 import { UsersRepository } from "../../repositories/UsersRepository";
 import connectMongoDB from "../../config/mongoDatabase";
 import { ObjectId } from "mongodb";
-import IUser from "../../../interfaces/IUser";
+import IUser from "../../../interfaces/models/IUser";
 
 interface IRequest {
   req: NextApiRequest;

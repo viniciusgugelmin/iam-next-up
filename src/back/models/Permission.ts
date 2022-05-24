@@ -1,4 +1,4 @@
-import IPermission from "../../interfaces/IPermission";
+import IPermission from "../../interfaces/models/IPermission";
 
 export default class Permission implements IPermission {
   name;

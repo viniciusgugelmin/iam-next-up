@@ -35,23 +35,12 @@ const ProductsUpdateForm: NextPage<IPageProps> = ({
 
   const [name, setName] = useState("");
   const [brand, setBrand] = useState("");
-  const [basePrice, setBasePrice] = useState("");
-  const [price, setPrice] = useState("");
-  const [liters, setLiters] = useState("");
   const [, setIsAlcoholic] = useState("false");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
   const [category, setCategory] = useState("");
 
-  const isFormFilled =
-    name &&
-    brand &&
-    basePrice &&
-    price &&
-    liters &&
-    description &&
-    image &&
-    category;
+  const isFormFilled = name && brand && description && image && category;
 
   useEffect(() => {
     setPageSubtitle("Products form");
@@ -106,9 +95,6 @@ const ProductsUpdateForm: NextPage<IPageProps> = ({
     }).then((data) => {
       setName(data.product.name);
       setBrand(data.product.brand);
-      setBasePrice(data.product.basePrice);
-      setPrice(data.product.price);
-      setLiters(data.product.liters);
       setIsAlcoholic(data.product.isAlcoholic as string);
       setDescription(data.product.description);
       setImage(data.product.image);
@@ -134,7 +120,6 @@ const ProductsUpdateForm: NextPage<IPageProps> = ({
         token: context.token,
         product: {
           name,
-          liters,
           description,
           image,
           category,
@@ -184,15 +169,6 @@ const ProductsUpdateForm: NextPage<IPageProps> = ({
           name="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          color={color}
-          required
-        />
-        <Input
-          type="number"
-          placeholder="Liters"
-          name="liters"
-          value={liters}
-          onChange={(e) => handleNumberChange(e.target.value, setLiters)}
           color={color}
           required
         />

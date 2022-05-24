@@ -31,16 +31,12 @@ const ProductsCreateForm: NextPage<IPageProps> = ({
 
   const [name, setName] = useState("");
   const [brand, setBrand] = useState("");
-  const [basePrice, setBasePrice] = useState("");
-  const [price, setPrice] = useState("");
-  const [liters, setLiters] = useState("");
   const [isAlcoholic, setIsAlcoholic] = useState("false");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
   const [category, setCategory] = useState("");
 
-  const isFormFilled =
-    name && brand && basePrice && price && liters && description && image;
+  const isFormFilled = name && brand && description && image;
 
   useEffect(() => {
     setPageSubtitle("Products form");
@@ -106,9 +102,6 @@ const ProductsCreateForm: NextPage<IPageProps> = ({
         product: {
           name,
           brand,
-          basePrice,
-          price,
-          liters,
           isAlcoholic: isAlcoholic === "true",
           description,
           image,
@@ -167,33 +160,6 @@ const ProductsCreateForm: NextPage<IPageProps> = ({
           name="email"
           value={brand}
           onChange={(e) => setBrand(e.target.value)}
-          color={color}
-          required
-        />
-        <Input
-          type="number"
-          placeholder="Base price"
-          name="base_price"
-          value={basePrice}
-          onChange={(e) => handleNumberChange(e.target.value, setBasePrice)}
-          color={color}
-          required
-        />
-        <Input
-          type="number"
-          placeholder="Price"
-          name="price"
-          value={price}
-          onChange={(e) => handleNumberChange(e.target.value, setPrice)}
-          color={color}
-          required
-        />
-        <Input
-          type="number"
-          placeholder="Liters"
-          name="liters"
-          value={liters}
-          onChange={(e) => handleNumberChange(e.target.value, setLiters)}
           color={color}
           required
         />

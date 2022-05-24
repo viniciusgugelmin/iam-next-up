@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { PageLoading } from "../../../../front/components/Base/PageLoading";
 import useAuthentication from "../../../../front/hooks/UseAuthentication";
 import IPageProps from "../../../../interfaces/IPageProps";
-import IUser from "../../../../interfaces/IUser";
+import IUser from "../../../../interfaces/models/IUser";
 import { Table } from "../../../../front/components/Base/Table";
 import { getUsers } from "../../../../front/requests/users/getUsers";
 import authContext from "../../../../front/stores/AuthContext";

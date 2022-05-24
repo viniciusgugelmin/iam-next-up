@@ -1,12 +1,9 @@
-import IProduct from "../../interfaces/IProduct";
-import IProductCategory from "../../interfaces/IProductCategory";
+import IProduct from "../../interfaces/models/IProduct";
+import IProductCategory from "../../interfaces/models/IProductCategory";
 
 export default class Product implements IProduct {
   name = "";
   brand = "";
-  basePrice = 0;
-  price = 0;
-  liters = 0;
   isAlcoholic = false;
   description = "";
   image = "";

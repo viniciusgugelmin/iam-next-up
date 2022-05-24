@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import { checkIfHasPermission } from "../../../../front/services/checkIfUserHasPermission";
 import { deleteProduct } from "../../../../front/requests/products/deleteProduct";
 import { getProducts } from "../../../../front/requests/products/getProducts";
-import IProduct from "../../../../interfaces/IProduct";
+import IProduct from "../../../../interfaces/models/IProduct";
 
 const ProductsList: NextPage<IPageProps> = ({
   setPageSubtitle,
@@ -21,16 +21,7 @@ const ProductsList: NextPage<IPageProps> = ({
   const isAuthenticated = useAuthentication();
   const [products, setProducts] = useState<[][]>([]);
   const [loading, setLoading] = useState(true);
-  const headers = [
-    "Name",
-    "Brand",
-    "Base price",
-    "Price",
-    "Liters",
-    "Category",
-    "Update",
-    "Delete",
-  ];
+  const headers = ["Name", "Brand", "Category", "Update", "Delete"];
   const context = useContext(authContext);
   const router = useRouter();
 
@@ -53,9 +44,6 @@ const ProductsList: NextPage<IPageProps> = ({
         const mappedProducts = data.products.map((product: IProduct) => [
           product.name,
           product.brand,
-          product.basePrice,
-          product.price,
-          product.liters,
           product.category?.name || "-",
           () => handleUpdateProduct(product._id as string),
           () => handleDeleteProduct(product._id as string, product.name),

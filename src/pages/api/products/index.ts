@@ -48,25 +48,12 @@ async function handlePost(req: NextApiRequest, res: NextApiResponse) {
     const getAuthenticatedUserService = new GetAuthenticatedUserService();
     const user = await getAuthenticatedUserService.execute({ req });
 
-    const {
-      name,
-      brand,
-      basePrice,
-      price,
-      liters,
-      isAlcoholic,
-      description,
-      image,
-      category,
-    } = req.body;
+    const { name, brand, isAlcoholic, description, image, category } = req.body;
 
     const sanitizeEveryWordService = new SanitizeEveryWordService();
     const newProduct = sanitizeEveryWordService.execute({
       name,
       brand,
-      basePrice,
-      price,
-      liters,
       isAlcoholic,
       description,
       image,
@@ -76,9 +63,6 @@ async function handlePost(req: NextApiRequest, res: NextApiResponse) {
     const productSchema = joi.object({
       name: joi.string().required(),
       brand: joi.string().required(),
-      basePrice: joi.number().required(),
-      price: joi.number().required(),
-      liters: joi.number().required(),
       isAlcoholic: joi.boolean().required(),
       description: joi.string().required(),
       image: joi

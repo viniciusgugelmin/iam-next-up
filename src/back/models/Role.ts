@@ -1,4 +1,4 @@
-import IRole from "../../interfaces/IRole";
+import IRole from "../../interfaces/models/IRole";
 
 export default class Role implements IRole {
   name;
