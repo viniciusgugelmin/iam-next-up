@@ -1,3 +1,4 @@
+import { ProductsCategoriesRepository } from "./../../repositories/ProductsCategoriesRepository";
 import connectMongoDB from "../../config/mongoDatabase";
 import { NextApiRequest } from "next";
 import AppError from "../../../errors/AppError";
@@ -8,6 +9,9 @@ import { RolesRepository } from "../../repositories/RolesRepository";
 import IRole from "../../../interfaces/models/IRole";
 import adminRole from "../../../constants/roles/adminRole";
 import commonRole from "../../../constants/roles/commonRole";
+import ProductCategory from "../../models/ProductCategory";
+import { ProductsRepository } from "../../repositories/ProductsRepository";
+import Product from "../../models/Product";
 
 interface IRequest {
   req: NextApiRequest;
@@ -16,6 +20,7 @@ interface IRequest {
 interface IResponse {
   user: IUser;
   roles: IRole[];
+  productsCategories: ProductCategory[];
 }
 
 export default class InitDatabaseService {
@@ -60,6 +65,19 @@ export default class InitDatabaseService {
 
     await db.collection(usersRepository.collection).insertOne(user);
 
-    return { user, roles: rolesToInsert };
+    const productsCategoriesRepository = new ProductsCategoriesRepository();
+    const productsCategories: ProductCategory[] = [];
+
+    for (let productCategoryName of ["Juices", "Distilleds", "Soft drinks"]) {
+      const productCategory = new ProductCategory();
+      productCategory.name = productCategoryName;
+      productsCategories.push(productCategory);
+    }
+
+    await db
+      .collection(productsCategoriesRepository.collection)
+      .insertMany(productsCategories);
+
+    return { user, roles: rolesToInsert, productsCategories };
   }
 }

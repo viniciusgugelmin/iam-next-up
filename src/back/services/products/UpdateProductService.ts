@@ -2,7 +2,6 @@ import connectMongoDB from "../../config/mongoDatabase";
 import { UsersRepository } from "../../repositories/UsersRepository";
 import IUser from "../../../interfaces/models/IUser";
 import { ProductsRepository } from "../../repositories/ProductsRepository";
-import { ProductsCategoriesRepository } from "../../repositories/ProductsCategoriesRepository";
 import Product from "../../models/Product";
 
 interface IRequest {
@@ -36,14 +35,6 @@ export default class UpdateProductService {
         delete _productToUpdate[key];
       }
     }
-
-    const productsCategoriesRepository = new ProductsCategoriesRepository();
-
-    _productToUpdate.category =
-      await productsCategoriesRepository.checkAndGetIfProductCategoryExists(
-        db,
-        _productToUpdate.category
-      );
 
     const productsRepository = new ProductsRepository();
 

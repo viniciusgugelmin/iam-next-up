@@ -92,6 +92,28 @@ API:
   - Route to delete a user by id
 - GET /api/roles
   - Route to get all roles
+- GET /api/products
+  - Route to get all products
+- GET /api/products/:id
+  - Route to get a product by id
+- PUT /api/products/:id
+  - Route to update a product by id
+- POST /api/products
+  - Route to create a new product
+- DELETE /api/products/:id
+  - Route to delete a product by id
+- GET /api/products/categories
+  - Route to get all categories
+- GET /api/products/categories/:id
+  - Route to get a category by id
+- PUT /api/products/categories/:id
+  - Route to update a category by id
+- POST /api/products/categories
+  - Route to create a new category
+- DELETE /api/products/categories/:id
+  - Route to delete a category by id
+- GET /api/storage
+  - Route to get all storage
 ```
 
 Routes:
@@ -118,6 +140,15 @@ Routes:
 - /home/products/form
   - Route to create a new product
 - /home/products/form/:productId
+  - Route to update a product by id
+- /home/products/categories/list
+  - Route to list all categories
+- /home/products/categories/form
+  - Route to create a new category
+- /home/products/categories/form/:categoryId
+  - Route to update a category by id
+- /home/storage/list
+  - Route to list all storage
 ```
 
 ## Contributing

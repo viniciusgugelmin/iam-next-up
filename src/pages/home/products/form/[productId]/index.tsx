@@ -27,7 +27,6 @@ const ProductsUpdateForm: NextPage<IPageProps> = ({
   setPageSubtitle,
 }: IPageProps) => {
   const [loading, setLoading] = useState(false);
-  const [productsCategories, setProductsCategories] = useState<string[][]>([]);
   const isAuthenticated = useAuthentication();
   const context = useContext(authContext);
   const router = useRouter();
@@ -38,9 +37,8 @@ const ProductsUpdateForm: NextPage<IPageProps> = ({
   const [, setIsAlcoholic] = useState("false");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
-  const [category, setCategory] = useState("");
 
-  const isFormFilled = name && brand && description && image && category;
+  const isFormFilled = name && brand && description && image;
 
   useEffect(() => {
     setPageSubtitle("Products form");
@@ -51,42 +49,8 @@ const ProductsUpdateForm: NextPage<IPageProps> = ({
       router.push("/home");
     }
 
-    loadProductsCategories();
     loadProduct();
   }, [isAuthenticated]);
-
-  function loadProductsCategories() {
-    setLoading(true);
-
-    getProductsCategories({ token: context.token })
-      .then((data) => {
-        setProductsCategories([
-          ["", ""],
-          ...data.productsCategories.map(
-            (productCategory: { name: string }) => [
-              productCategory.name,
-              productCategory.name,
-            ]
-          ),
-        ]);
-      })
-      .catch((error) => {
-        if (!error.response?.data) {
-          dispatchAlert({
-            message: "Server error",
-            type: "error",
-          });
-        } else {
-          dispatchAlert({
-            message: (error as IError).response.data.message,
-            type: "error",
-          });
-        }
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }
 
   function loadProduct() {
     getProduct({
@@ -98,7 +62,6 @@ const ProductsUpdateForm: NextPage<IPageProps> = ({
       setIsAlcoholic(data.product.isAlcoholic as string);
       setDescription(data.product.description);
       setImage(data.product.image);
-      setCategory(data.product.category.name);
     });
   }
 
@@ -122,7 +85,6 @@ const ProductsUpdateForm: NextPage<IPageProps> = ({
           name,
           description,
           image,
-          category,
         },
         id: router.query.productId as string,
       });
@@ -188,15 +150,6 @@ const ProductsUpdateForm: NextPage<IPageProps> = ({
           value={image}
           onChange={(e) => setImage(e.target.value)}
           color={color}
-          required
-        />
-        <Select
-          placeholder="Category"
-          name="category"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          color={color}
-          options={productsCategories}
           required
         />
         <Button type="submit" color={color} disabled={!isFormFilled || loading}>

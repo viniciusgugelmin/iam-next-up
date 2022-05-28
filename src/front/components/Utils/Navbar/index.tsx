@@ -100,6 +100,23 @@ export const Navbar = () => {
       ],
     },
     {
+      name: "Storage",
+      isActive: checkIfOptionInitActive("storage"),
+      options: [
+        {
+          name: "List",
+          route: "storage/list",
+          blocked: !checkIfHasPermission(
+            context.user,
+            "storage",
+            "read",
+            false
+          ),
+          isActive: checkIfSubOptionInitActive("storage/list"),
+        },
+      ],
+    },
+    {
       name: "Logout",
       action: () => context.logout(),
       isActive: checkIfOptionInitActive("logout"),
