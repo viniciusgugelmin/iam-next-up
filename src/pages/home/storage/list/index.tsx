@@ -11,12 +11,13 @@ import { IError } from "../../../../interfaces/IError";
 import { useRouter } from "next/router";
 import { checkIfHasPermission } from "../../../../front/services/checkIfUserHasPermission";
 import { getAllStorage } from "../../../../front/requests/storage/getAllStorage";
+import IStorage from "../../../../interfaces/models/IStorage";
 
 const StorageList: NextPage<IPageProps> = ({ setPageSubtitle }: IPageProps) => {
   const isAuthenticated = useAuthentication();
   const [storage, setStorage] = useState<[][]>([]);
   const [loading, setLoading] = useState(true);
-  const headers = ["Name", "Liters"];
+  const headers = ["Product Id", "Product name", "Liters"];
   const context = useContext(authContext);
   const router = useRouter();
 
@@ -36,13 +37,11 @@ const StorageList: NextPage<IPageProps> = ({ setPageSubtitle }: IPageProps) => {
   function loadStorage() {
     getAllStorage({ token: context.token })
       .then((data) => {
-        const mappedProducts = data.products.map(
-          (product: { _id: string; name: string; liters: Number }) => [
-            product.name,
-            product.liters,
-            () => handleUpdateProduct(product._id as string),
-          ]
-        );
+        const mappedProducts = data.products.map((productStorage: IStorage) => [
+          productStorage.productId,
+          productStorage.product?.name || "",
+          formatLiters(productStorage.liters),
+        ]);
 
         setStorage([...mappedProducts]);
       })
@@ -62,8 +61,10 @@ const StorageList: NextPage<IPageProps> = ({ setPageSubtitle }: IPageProps) => {
       .finally(() => setLoading(false));
   }
 
-  function handleUpdateProduct(id: string) {
-    router.push(`/home/storage/form/${id}`);
+  function formatLiters(value: number): string {
+    return Intl.NumberFormat("pt-BR", {
+      style: "decimal",
+    }).format(value);
   }
 
   if (!isAuthenticated) {

@@ -16,7 +16,7 @@ const permissions = [
     delete: true,
   }),
   new Permission({
-    name: "customers",
+    name: "costumers",
     create: true,
     read: true,
     update: true,
@@ -24,6 +24,34 @@ const permissions = [
   }),
   new Permission({
     name: "products",
+    create: true,
+    read: true,
+    update: true,
+    delete: true,
+  }),
+  new Permission({
+    name: "entries",
+    create: true,
+    read: true,
+    update: true,
+    delete: true,
+  }),
+  new Permission({
+    name: "product_categories",
+    create: true,
+    read: true,
+    update: true,
+    delete: true,
+  }),
+  new Permission({
+    name: "products_for_sale",
+    create: true,
+    read: true,
+    update: true,
+    delete: true,
+  }),
+  new Permission({
+    name: "storage",
     create: true,
     read: true,
     update: true,

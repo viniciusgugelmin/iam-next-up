@@ -21,6 +21,7 @@ interface IResponse {
   user: IUser;
   roles: IRole[];
   productsCategories: ProductCategory[];
+  products: Product[];
 }
 
 export default class InitDatabaseService {
@@ -78,6 +79,27 @@ export default class InitDatabaseService {
       .collection(productsCategoriesRepository.collection)
       .insertMany(productsCategories);
 
-    return { user, roles: rolesToInsert, productsCategories };
+    const softDrinksProductCategory = productsCategories.find(
+      (productCategory) => productCategory.name === "Soft drinks"
+    );
+
+    let products: Product[] = [];
+
+    if (softDrinksProductCategory) {
+      const productsRepository = new ProductsRepository();
+      const product = new Product();
+      product.name = "Coca-Cola";
+      product.brand = "Coca-Cola";
+      product.description = "Coca-Cola";
+      product.image =
+        "https://www.imigrantesbebidas.com.br/bebida/images/products/full/1984-refrigerante-coca-cola-lata-350ml.jpg";
+      product.category = softDrinksProductCategory;
+
+      await db.collection(productsRepository.collection).insertOne(product);
+
+      products.push(product);
+    }
+
+    return { user, roles: rolesToInsert, productsCategories, products };
   }
 }

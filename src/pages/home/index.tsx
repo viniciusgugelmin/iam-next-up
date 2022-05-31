@@ -1,5 +1,4 @@
 import { NextPage } from "next";
-import { Navbar } from "../../front/components/Utils/Navbar";
 import useAuthentication from "../../front/hooks/UseAuthentication";
 import { PageLoading } from "../../front/components/Base/PageLoading";
 import { useEffect } from "react";

@@ -7,7 +7,7 @@ export default class Product implements IProduct {
   isAlcoholic = false;
   description = "";
   image = "";
-  category: IProductCategory | null = null;
+  category: IProductCategory | { name: string } | null = null;
   private _createdAt = new Date();
   private _updatedAt = new Date();
   private _deletedAt: Date | null = null;

@@ -114,6 +114,12 @@ API:
   - Route to delete a category by id
 - GET /api/storage
   - Route to get all storage
+ - GET /api/entries
+  - Route to get all entries
+- POST /api/entries
+  - Route to create a new entry and add it to the storage
+- DELETE /api/entries/:id
+  - Route to delete an entry by id and remove it from the storage
 ```
 
 Routes:
@@ -149,6 +155,10 @@ Routes:
   - Route to update a category by id
 - /home/storage/list
   - Route to list all storage
+- /home/entries/list
+  - Route to list all entries
+- /home/entries/form
+  - Route to create a new entry and add it to the storage
 ```
 
 ## Contributing

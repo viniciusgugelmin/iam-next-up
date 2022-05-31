@@ -7,7 +7,7 @@ export default interface IProduct {
   isAlcoholic: boolean;
   description: string;
   image: string;
-  category: IProductCategory | null;
+  category: IProductCategory | { name: string } | null;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date | null;

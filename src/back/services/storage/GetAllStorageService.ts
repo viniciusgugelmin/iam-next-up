@@ -3,6 +3,7 @@ import { StorageRepository } from "./../../repositories/StorageRepository";
 import connectMongoDB from "../../config/mongoDatabase";
 import { UsersRepository } from "../../repositories/UsersRepository";
 import IUser from "../../../interfaces/models/IUser";
+import { ObjectId } from "mongodb";
 
 interface IRequest {
   user: IUser;
@@ -19,10 +20,10 @@ export default class GetAllStorageService {
     const { db } = await connectMongoDB();
     const products = await db
       .collection(productsRepository.collection)
-      .find({ _deleteAt: null })
+      .find({})
       .toArray();
 
-    const productsIds = products.map((product) => product._id);
+    const productsIds = products.map((product) => new ObjectId(product._id));
 
     const storage = await db
       .collection(storageRepository.collection)
@@ -31,6 +32,16 @@ export default class GetAllStorageService {
       })
       .toArray();
 
-    return storage;
+    return storage.map((item) => {
+      const product = products.find(
+        (product) => product._id.toString() === item.productId.toString()
+      );
+      return {
+        ...item,
+        product: {
+          name: product?.name,
+        },
+      };
+    });
   }
 }
