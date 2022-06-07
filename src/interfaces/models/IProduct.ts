@@ -1,4 +1,4 @@
-import IProductCategory from "./IProductCategory";
+import IProductsCategory from "./IProductsCategory";
 
 export default interface IProduct {
   _id?: string;
@@ -7,7 +7,7 @@ export default interface IProduct {
   isAlcoholic: boolean;
   description: string;
   image: string;
-  category: IProductCategory | { name: string } | null;
+  category: IProductsCategory | { name: string } | null;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date | null;

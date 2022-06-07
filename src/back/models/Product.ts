@@ -1,5 +1,5 @@
 import IProduct from "../../interfaces/models/IProduct";
-import IProductCategory from "../../interfaces/models/IProductCategory";
+import IProductsCategory from "../../interfaces/models/IProductsCategory";
 
 export default class Product implements IProduct {
   name = "";
@@ -7,7 +7,7 @@ export default class Product implements IProduct {
   isAlcoholic = false;
   description = "";
   image = "";
-  category: IProductCategory | { name: string } | null = null;
+  category: IProductsCategory | { name: string } | null = null;
   private _createdAt = new Date();
   private _updatedAt = new Date();
   private _deletedAt: Date | null = null;

@@ -9,7 +9,7 @@ import { RolesRepository } from "../../repositories/RolesRepository";
 import IRole from "../../../interfaces/models/IRole";
 import adminRole from "../../../constants/roles/adminRole";
 import commonRole from "../../../constants/roles/commonRole";
-import ProductCategory from "../../models/ProductCategory";
+import ProductsCategory from "../../models/ProductsCategory";
 import { ProductsRepository } from "../../repositories/ProductsRepository";
 import Product from "../../models/Product";
 
@@ -20,7 +20,7 @@ interface IRequest {
 interface IResponse {
   user: IUser;
   roles: IRole[];
-  productsCategories: ProductCategory[];
+  productsCategories: ProductsCategory[];
   products: Product[];
 }
 
@@ -67,37 +67,53 @@ export default class InitDatabaseService {
     await db.collection(usersRepository.collection).insertOne(user);
 
     const productsCategoriesRepository = new ProductsCategoriesRepository();
-    const productsCategories: ProductCategory[] = [];
+    const productsCategories: ProductsCategory[] = [];
 
-    for (let productCategoryName of ["Juices", "Distilleds", "Soft drinks"]) {
-      const productCategory = new ProductCategory();
-      productCategory.name = productCategoryName;
-      productsCategories.push(productCategory);
+    for (let productsCategoryName of ["Juices", "Distilleds", "Soft drinks"]) {
+      const productsCategory = new ProductsCategory();
+      productsCategory.name = productsCategoryName;
+      productsCategories.push(productsCategory);
     }
 
     await db
       .collection(productsCategoriesRepository.collection)
       .insertMany(productsCategories);
 
-    const softDrinksProductCategory = productsCategories.find(
-      (productCategory) => productCategory.name === "Soft drinks"
+    const softDrinksProductsCategory = productsCategories.find(
+      (productsCategory) => productsCategory.name === "Soft drinks"
     );
 
     let products: Product[] = [];
 
-    if (softDrinksProductCategory) {
+    if (softDrinksProductsCategory) {
+      for (let drink of [
+        {
+          name: "Coca-Cola",
+          brand: "Coca-Cola",
+          image:
+            "https://www.imigrantesbebidas.com.br/bebida/images/products/full/1984-refrigerante-coca-cola-lata-350ml.jpg",
+        },
+        {
+          name: "Pepsi",
+          brand: "PepsiCo",
+          image:
+            "https://apoioentrega.vteximg.com.br/arquivos/ids/459556/16a971a96ac5fc6b02ac8f5568e0ad8a_refrigerante-pepsi-lata-350-ml---refrig-pepsi-350ml-lt-cola---1-un_lett_1.jpg?v=637305880434630000",
+        },
+      ]) {
+        const { name, brand, image } = drink;
+
+        const product = new Product();
+        product.name = name;
+        product.brand = brand;
+        product.description = name;
+        product.image = image;
+        product.category = softDrinksProductsCategory;
+
+        products.push(product);
+      }
+
       const productsRepository = new ProductsRepository();
-      const product = new Product();
-      product.name = "Coca-Cola";
-      product.brand = "Coca-Cola";
-      product.description = "Coca-Cola";
-      product.image =
-        "https://www.imigrantesbebidas.com.br/bebida/images/products/full/1984-refrigerante-coca-cola-lata-350ml.jpg";
-      product.category = softDrinksProductCategory;
-
-      await db.collection(productsRepository.collection).insertOne(product);
-
-      products.push(product);
+      await db.collection(productsRepository.collection).insertMany(products);
     }
 
     return { user, roles: rolesToInsert, productsCategories, products };

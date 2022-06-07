@@ -120,6 +120,12 @@ API:
   - Route to create a new entry and add it to the storage
 - DELETE /api/entries/:id
   - Route to delete an entry by id and remove it from the storage
+- GET /api/products-for-sale
+  - Route to get all products for sale
+- POST /api/products-for-sale
+  - Route to create a new product for sale
+- DELETE /api/products-for-sale/:id
+  - Route to delete a product for sale by id
 ```
 
 Routes:
@@ -159,6 +165,10 @@ Routes:
   - Route to list all entries
 - /home/entries/form
   - Route to create a new entry and add it to the storage
+- /home/products-for-sale/list
+  - Route to list all products for sale
+- /home/products-for-sale/form
+  - Route to create a new product for sale
 ```
 
 ## Contributing

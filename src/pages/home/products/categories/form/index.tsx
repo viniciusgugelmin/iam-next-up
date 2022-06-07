@@ -37,7 +37,7 @@ const ProductsCategoriesCreateForm: NextPage<IPageProps> = ({
     }
   }, [isAuthenticated]);
 
-  async function createProductCategory(e: FormEvent<HTMLFormElement>) {
+  async function createProductsCategory(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (!isFormFilled || loading) return;
@@ -84,7 +84,7 @@ const ProductsCategoriesCreateForm: NextPage<IPageProps> = ({
     <HomeLoggedPage>
       <Form
         className="up-form up-admin-form"
-        onSubmit={createProductCategory}
+        onSubmit={createProductsCategory}
         color={color}
         title="Create products category"
       >

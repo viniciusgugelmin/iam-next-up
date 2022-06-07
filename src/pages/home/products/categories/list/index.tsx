@@ -11,7 +11,7 @@ import { dispatchAlert } from "../../../../../front/services/dispatchAlert";
 import { IError } from "../../../../../interfaces/IError";
 import { useRouter } from "next/router";
 import { checkIfHasPermission } from "../../../../../front/services/checkIfUserHasPermission";
-import IProductCategory from "../../../../../interfaces/models/IProductCategory";
+import IProductsCategory from "../../../../../interfaces/models/IProductsCategory";
 import { getProductsCategories } from "../../../../../front/requests/productsCategories/getProductsCategories";
 import { deleteProductsCategory } from "../../../../../front/requests/productsCategories/deleteProductsCategory";
 
@@ -42,7 +42,7 @@ const ProductsCategoriesList: NextPage<IPageProps> = ({
     getProductsCategories({ token: context.token })
       .then((data) => {
         const mappedCategories = data.productsCategories.map(
-          (category: IProductCategory) => [
+          (category: IProductsCategory) => [
             category.name,
             () => handleUpdateCategory(category._id as string),
             () => handleDeleteCategory(category._id as string, category.name),

@@ -1,3 +1,5 @@
+import { useRef } from "react";
+
 interface INavbarOptionProps {
   optionIndex: number;
   name: string;
@@ -22,6 +24,8 @@ export const NavbarOption = ({
   handleSubOptionClick,
   handleOptionClick,
 }: INavbarOptionProps) => {
+  const listRef = useRef<HTMLUListElement>(null);
+
   return (
     <>
       <h2
@@ -37,12 +41,16 @@ export const NavbarOption = ({
       </h2>
 
       <ul
+        ref={listRef}
         className={
           "up-navbar__sub-options" +
           (isActive
             ? " up-navbar__sub-options--active"
             : " up-navbar__sub-options--hidden")
         }
+        style={{
+          minHeight: isActive ? listRef.current?.scrollHeight : 0,
+        }}
       >
         {options.map((item, subOptionIndex) => (
           <li

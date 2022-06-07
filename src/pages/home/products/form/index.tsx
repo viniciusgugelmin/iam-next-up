@@ -58,9 +58,9 @@ const ProductsCreateForm: NextPage<IPageProps> = ({
         setProductsCategories([
           ["", ""],
           ...data.productsCategories.map(
-            (productCategory: { name: string }) => [
-              productCategory.name,
-              productCategory.name,
+            (productsCategory: { name: string }) => [
+              productsCategory.name,
+              productsCategory.name,
             ]
           ),
         ]);

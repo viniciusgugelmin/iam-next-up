@@ -1,3 +1,3 @@
 export class ProductForSaleRepository {
-  collection = "products_for_sales";
+  collection = "products_for_sale";
 }

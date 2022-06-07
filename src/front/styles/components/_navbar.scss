@@ -26,6 +26,7 @@
   &__option {
     cursor: pointer;
     max-width: 100%;
+    min-height: 38px;
     padding: 10px;
     padding-right: 31px;
     position: relative;
@@ -87,18 +88,26 @@
 
   &__sub-options {
     background: colors.$gray-3;
-    overflow: hidden;
-    transition: max-height 0.3s ease-in-out;
+    overflow: auto;
+    min-height: 34px;
+    transition: max-height 0.3s ease-in-out, min-height 0.3s ease-in-out;
     margin: 5px 0;
     z-index: 1;
     border-radius: 6px;
+    
+    &::-webkit-scrollbar {
+      opacity: 0;
+      width: 0;
+    }
 
     &--active {
       max-height: 100px;
     }
 
     &--hidden {
+      overflow: hidden;
       max-height: 0;
+      min-height: 0;
     }
   }
 

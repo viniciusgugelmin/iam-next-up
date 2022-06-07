@@ -3,7 +3,7 @@ import { UsersRepository } from "../../repositories/UsersRepository";
 import IUser from "../../../interfaces/models/IUser";
 import { ObjectId } from "mongodb";
 import AppError from "../../../errors/AppError";
-import ProductCategory from "../../models/ProductCategory";
+import ProductsCategory from "../../models/ProductsCategory";
 import { ProductsCategoriesRepository } from "../../repositories/ProductsCategoriesRepository";
 import { ProductsRepository } from "../../repositories/ProductsRepository";
 
@@ -31,7 +31,7 @@ export default class DeleteProductsCategoryService {
       throw new AppError("Products category not found", 404);
     }
 
-    const deletedProductsCategoryData = new ProductCategory();
+    const deletedProductsCategoryData = new ProductsCategory();
 
     await db.collection(productsCategoriesRepository.collection).updateOne(
       { _id: new ObjectId(productsCategoryId) },

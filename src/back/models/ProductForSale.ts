@@ -22,11 +22,13 @@ export default class ProductForSale implements IProductForSale {
   }
 
   public set promo(value: number) {
-    if (value < 0 || value > 100) {
+    let newValue = parseInt(String(value));
+
+    if (newValue < 0 || newValue > 100) {
       throw new Error("Promo must be between 0 and 100");
     }
 
-    this._promo = value;
+    this._promo = newValue;
   }
 
   // Functions

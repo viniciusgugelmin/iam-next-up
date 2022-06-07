@@ -3,8 +3,8 @@ import { UsersRepository } from "../../repositories/UsersRepository";
 import IUser from "../../../interfaces/models/IUser";
 import { ProductsCategoriesRepository } from "../../repositories/ProductsCategoriesRepository";
 import AppError from "../../../errors/AppError";
-import ProductCategory from "../../models/ProductCategory";
-import IProductCategory from "../../../interfaces/models/IProductCategory";
+import ProductsCategory from "../../models/ProductsCategory";
+import IProductsCategory from "../../../interfaces/models/IProductsCategory";
 
 interface IRequest {
   user: IUser;
@@ -15,13 +15,13 @@ export default class CreateProductsCategoryService {
   public async execute({
     user,
     newProductsCategory,
-  }: IRequest): Promise<IProductCategory> {
+  }: IRequest): Promise<IProductsCategory> {
     const usersRepository = new UsersRepository();
     usersRepository.checkIfHasPermission(user, "products_categories", "create");
 
     const { db } = await connectMongoDB();
 
-    const _newProductsCategory = new ProductCategory();
+    const _newProductsCategory = new ProductsCategory();
     for (const key in newProductsCategory) {
       if (newProductsCategory[key]) {
         // @ts-ignore

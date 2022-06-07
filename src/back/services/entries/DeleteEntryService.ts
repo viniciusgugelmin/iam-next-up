@@ -3,7 +3,6 @@ import { UsersRepository } from "../../repositories/UsersRepository";
 import IUser from "../../../interfaces/models/IUser";
 import { ObjectId } from "mongodb";
 import AppError from "../../../errors/AppError";
-import User from "../../models/User";
 import { EntryRepository } from "../../repositories/EntryRepository";
 import { StorageRepository } from "../../repositories/StorageRepository";
 import { ProductForSaleRepository } from "../../repositories/ProductForSaleRepository";
@@ -46,8 +45,8 @@ export default class DeleteEntryService {
     const productForSale = await db
       .collection(productForSaleRepository.collection)
       .findOne({
-        productId: new ObjectId(entryId),
-        _deleteAt: null,
+        productId: new ObjectId(entryToDelete.productId),
+        _deletedAt: null,
       });
 
     if (productForSale) {

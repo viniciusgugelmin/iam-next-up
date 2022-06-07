@@ -4,7 +4,7 @@ import IUser from "../../../interfaces/models/IUser";
 import AppError from "../../../errors/AppError";
 import User from "../../models/User";
 import commonRole from "../../../constants/roles/commonRole";
-import ProductCategory from "../../models/ProductCategory";
+import ProductsCategory from "../../models/ProductsCategory";
 import { ProductsCategoriesRepository } from "../../repositories/ProductsCategoriesRepository";
 
 interface IRequest {
@@ -24,7 +24,7 @@ export default class UpdateProductsCategoryService {
 
     const { db } = await connectMongoDB();
 
-    const _productsCategoryToUpdate = new ProductCategory();
+    const _productsCategoryToUpdate = new ProductsCategory();
     for (const key in productsCategoryToUpdateData) {
       if (productsCategoryToUpdateData[key]) {
         // @ts-ignore

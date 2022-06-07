@@ -45,7 +45,10 @@ export const Navbar = () => {
     },
     {
       name: "Products",
-      isActive: checkIfOptionInitActive("products", ["categories"]),
+      isActive: checkIfOptionInitActive("products", [
+        "categories",
+        "products-for-sale",
+      ]),
       options: [
         {
           name: "List",
@@ -141,6 +144,34 @@ export const Navbar = () => {
             false
           ),
           isActive: checkIfSubOptionInitActive("entries/form"),
+        },
+      ],
+    },
+    {
+      name: "Products for sale",
+      isActive: checkIfOptionInitActive("products-for-sale"),
+      options: [
+        {
+          name: "List",
+          route: "products-for-sale/list",
+          blocked: !checkIfHasPermission(
+            context.user,
+            "products_for_sale",
+            "read",
+            false
+          ),
+          isActive: checkIfSubOptionInitActive("products-for-sale/list"),
+        },
+        {
+          name: "Form",
+          route: "products-for-sale/form",
+          blocked: !checkIfHasPermission(
+            context.user,
+            "products_for_sale",
+            "create",
+            false
+          ),
+          isActive: checkIfSubOptionInitActive("products-for-sale/form"),
         },
       ],
     },

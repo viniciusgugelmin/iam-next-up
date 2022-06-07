@@ -29,7 +29,7 @@ export default class CreateProductService {
     const productsCategoriesRepository = new ProductsCategoriesRepository();
 
     _newProduct.category =
-      await productsCategoriesRepository.checkAndGetIfProductCategoryExists(
+      await productsCategoriesRepository.checkAndGetIfProductsCategoryExists(
         db,
         _newProduct.category
       );

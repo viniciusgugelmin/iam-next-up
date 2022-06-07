@@ -37,7 +37,7 @@ const permissions = [
     delete: true,
   }),
   new Permission({
-    name: "product_categories",
+    name: "products_categories",
     create: true,
     read: true,
     update: true,
