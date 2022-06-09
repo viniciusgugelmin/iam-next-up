@@ -41,8 +41,6 @@ export default class GetProductsForSaleService {
       .find({ productId: { $in: productsIds } })
       .toArray();
 
-    console.log(storage);
-
     return productsForSale.map((productsForSale) => {
       const product = products.find(
         (product) =>

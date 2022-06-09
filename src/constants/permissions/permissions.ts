@@ -16,7 +16,7 @@ const permissions = [
     delete: true,
   }),
   new Permission({
-    name: "costumers",
+    name: "customers",
     create: true,
     read: true,
     update: true,

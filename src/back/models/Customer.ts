@@ -1,6 +1,6 @@
-import ICostumer from "../../interfaces/models/ICostumer";
+import ICustomer from "../../interfaces/models/ICustomer";
 
-export default class Costumer implements ICostumer {
+export default class Customer implements ICustomer {
   document = "";
   email = "";
   name = "";

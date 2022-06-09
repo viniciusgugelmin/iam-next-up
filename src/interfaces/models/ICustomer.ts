@@ -1,4 +1,4 @@
-export default interface ICostumer {
+export default interface ICustomer {
   _id?: string;
   document: string;
   name: string;

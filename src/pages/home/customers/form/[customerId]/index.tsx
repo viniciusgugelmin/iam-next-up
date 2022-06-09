@@ -6,67 +6,69 @@ import useAuthentication from "../../../../../front/hooks/UseAuthentication";
 import authContext from "../../../../../front/stores/AuthContext";
 import { useRouter } from "next/router";
 import IPageProps from "../../../../../interfaces/IPageProps";
-import genders from "../../../../../constants/users/genders";
-import { getRoles } from "../../../../../front/requests/roles/getRoles";
 import { dispatchAlert } from "../../../../../front/services/dispatchAlert";
 import { IError } from "../../../../../interfaces/IError";
-import { postUser } from "../../../../../front/requests/users/postUser";
 import { PageLoading } from "../../../../../front/components/Base/PageLoading";
 import { Form } from "../../../../../front/components/Base/Form";
-import { Select } from "../../../../../front/components/Base/Select";
 import { Input } from "../../../../../front/components/Base/Input";
 import { Button } from "../../../../../front/components/Base/Button";
-import { getUser } from "../../../../../front/requests/users/getUser";
 import { putUser } from "../../../../../front/requests/users/putUser";
+import { getCustomer } from "../../../../../front/requests/customers/getCustomer";
+import { putCustomer } from "../../../../../front/requests/customers/putCustomer";
 
-const UsersUpdateForm: NextPage<IPageProps> = ({
+const CustomersUpdateForm: NextPage<IPageProps> = ({
   setPageSubtitle,
 }: IPageProps) => {
-  const [loading, setLoading] = useState(true);
-  const [roles, setRoles] = useState<string[][]>([]);
+  const [loading, setLoading] = useState(false);
   const isAuthenticated = useAuthentication();
   const context = useContext(authContext);
   const router = useRouter();
   const color = "purple";
 
-  const [role, setRole] = useState("");
   const [document, setDocument] = useState("");
   const [documentTreated, setDocumentTreated] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [gender, setGender] = useState("");
-  const [hiredAt, setHiredAt] = useState("");
-  const [hiredAtTreated, setHiredAtTreatedDate] = useState("");
+  const [birthday, setBirthday] = useState("");
+  const [birthdayTreated, setBirthdayTreatedDate] = useState("");
 
-  const isFormFilled = role && document && name && email && gender && hiredAt;
-
-  const gendersArray = [["", ""], ...genders.map((gender) => [gender, gender])];
+  const isFormFilled = document && name && email && birthday;
 
   useEffect(() => {
-    setPageSubtitle("Users form");
+    setPageSubtitle("Customers form");
 
     if (!isAuthenticated) return;
 
-    if (!checkIfHasPermission(context.user, "users", "update")) {
+    if (!checkIfHasPermission(context.user, "customers", "update")) {
       router.push("/home");
     }
 
-    loadRoles();
-    loadUser();
+    loadCustomer();
   }, [isAuthenticated]);
 
-  function loadRoles() {
-    setLoading(true);
-
-    getRoles({ token: context.token })
+  function loadCustomer() {
+    getCustomer({
+      token: context.token,
+      id: router.query.customerId as string,
+    })
       .then((data) => {
-        setRoles([
-          ["", ""],
-          ...data.roles.map((role: { name: string }) => [role.name, role.name]),
-        ]);
+        setDocument(data.customer.document);
+        setDocumentTreated(data.customer.document);
+        setName(data.customer.name);
+        setEmail(data.customer.email);
+        const _birthdayDate = new Date(data.customer._birthday);
+        const _birthdayDateTreated = _birthdayDate.toJSON().slice(0, 10);
+
+        handleBirthdayChange(
+          _birthdayDateTreated.replace(
+            /^(\d{4})-(\d{1,2})-(\d{1,2})$/,
+            "$3/$2/$1"
+          )
+        );
       })
       .catch((error) => {
+        // @ts-ignore
         if (!error.response?.data) {
           dispatchAlert({
             message: "Server error",
@@ -78,30 +80,9 @@ const UsersUpdateForm: NextPage<IPageProps> = ({
             type: "error",
           });
         }
-      })
-      .finally(() => {
-        setLoading(false);
+
+        router.push("/home");
       });
-  }
-
-  function loadUser() {
-    getUser({
-      token: context.token,
-      id: router.query.userId as string,
-    }).then((data) => {
-      setRole(data.user.role.name);
-      setDocument(data.user.document);
-      setDocumentTreated(data.user.document);
-      setName(data.user.name);
-      setEmail(data.user.email);
-      setGender(data.user._gender);
-      const _hiredDate = new Date(data.user._hiredAt);
-      const _hiredDateTreated = _hiredDate.toJSON().slice(0, 10);
-
-      handleHiredAtChange(
-        _hiredDateTreated.replace(/^(\d{4})-(\d{1,2})-(\d{1,2})$/, "$3/$2/$1")
-      );
-    });
   }
 
   const handleDocumentChange = (doc: string) => {
@@ -125,12 +106,12 @@ const UsersUpdateForm: NextPage<IPageProps> = ({
     );
   };
 
-  const handleHiredAtChange = (date: string) => {
+  const handleBirthdayChange = (date: string) => {
     const dateToInsert = date.replace(/[^0-9]/g, "").slice(0, 8);
 
-    setHiredAt(dateToInsert);
+    setBirthday(dateToInsert);
 
-    setHiredAtTreatedDate(
+    setBirthdayTreatedDate(
       dateToInsert
         .split("")
         .map((char, index) => {
@@ -146,7 +127,7 @@ const UsersUpdateForm: NextPage<IPageProps> = ({
     );
   };
 
-  async function updateUser(e: FormEvent<HTMLFormElement>) {
+  async function updateCustomer(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (!isFormFilled || loading) return;
@@ -154,26 +135,24 @@ const UsersUpdateForm: NextPage<IPageProps> = ({
     setLoading(true);
 
     try {
-      await putUser({
+      await putCustomer({
         token: context.token,
-        user: {
-          role,
+        customer: {
           document,
           name,
           email,
           password,
-          gender,
-          hiredAt: hiredAtTreated,
+          birthday: birthdayTreated,
         },
-        id: router.query.userId as string,
+        id: router.query.customerId as string,
       });
 
       dispatchAlert({
-        message: "User updated successful",
+        message: "Customer updated successful",
         type: "success",
       });
 
-      router.push("/home/users/list");
+      router.push("/home/customers/list");
     } catch (error) {
       // @ts-ignore
       if (!error.response?.data) {
@@ -200,19 +179,10 @@ const UsersUpdateForm: NextPage<IPageProps> = ({
     <HomeLoggedPage>
       <Form
         className="up-form up-admin-form"
-        onSubmit={updateUser}
+        onSubmit={updateCustomer}
         color={color}
-        title="Update user"
+        title="Update customer"
       >
-        <Select
-          placeholder="Role"
-          name="role"
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
-          color={color}
-          options={roles}
-          required
-        />
         <Input
           type="text"
           placeholder="Document"
@@ -248,21 +218,12 @@ const UsersUpdateForm: NextPage<IPageProps> = ({
           onChange={(e) => setPassword(e.target.value)}
           color={color}
         />
-        <Select
-          placeholder="Gender"
-          name="gender"
-          value={gender}
-          onChange={(e) => setGender(e.target.value)}
-          color={color}
-          options={gendersArray}
-          required
-        />
         <Input
           type="text"
-          placeholder="Hired date"
-          name="hired_at"
-          value={hiredAtTreated}
-          onChange={(e) => handleHiredAtChange(e.target.value)}
+          placeholder="Birthday"
+          name="birthday"
+          value={birthdayTreated}
+          onChange={(e) => handleBirthdayChange(e.target.value)}
           color={color}
           required
         />
@@ -274,4 +235,4 @@ const UsersUpdateForm: NextPage<IPageProps> = ({
   );
 };
 
-export default UsersUpdateForm;
+export default CustomersUpdateForm;

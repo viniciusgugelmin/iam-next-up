@@ -6,20 +6,12 @@ import useAuthentication from "../../../../../front/hooks/UseAuthentication";
 import authContext from "../../../../../front/stores/AuthContext";
 import { useRouter } from "next/router";
 import IPageProps from "../../../../../interfaces/IPageProps";
-import genders from "../../../../../constants/users/genders";
-import { getRoles } from "../../../../../front/requests/roles/getRoles";
 import { dispatchAlert } from "../../../../../front/services/dispatchAlert";
 import { IError } from "../../../../../interfaces/IError";
-import { postUser } from "../../../../../front/requests/users/postUser";
 import { PageLoading } from "../../../../../front/components/Base/PageLoading";
 import { Form } from "../../../../../front/components/Base/Form";
-import { Select } from "../../../../../front/components/Base/Select";
 import { Input } from "../../../../../front/components/Base/Input";
 import { Button } from "../../../../../front/components/Base/Button";
-import { getUser } from "../../../../../front/requests/users/getUser";
-import { putUser } from "../../../../../front/requests/users/putUser";
-import { postProduct } from "../../../../../front/requests/products/postProduct";
-import { getProductsCategories } from "../../../../../front/requests/productsCategories/getProductsCategories";
 import { getProduct } from "../../../../../front/requests/products/getProduct";
 import { putProduct } from "../../../../../front/requests/products/putProduct";
 
@@ -56,20 +48,31 @@ const ProductsUpdateForm: NextPage<IPageProps> = ({
     getProduct({
       token: context.token,
       id: router.query.productId as string,
-    }).then((data) => {
-      setName(data.product.name);
-      setBrand(data.product.brand);
-      setIsAlcoholic(data.product.isAlcoholic as string);
-      setDescription(data.product.description);
-      setImage(data.product.image);
-    });
+    })
+      .then((data) => {
+        setName(data.product.name);
+        setBrand(data.product.brand);
+        setIsAlcoholic(data.product.isAlcoholic as string);
+        setDescription(data.product.description);
+        setImage(data.product.image);
+      })
+      .catch((error) => {
+        // @ts-ignore
+        if (!error.response?.data) {
+          dispatchAlert({
+            message: "Server error",
+            type: "error",
+          });
+        } else {
+          dispatchAlert({
+            message: (error as IError).response.data.message,
+            type: "error",
+          });
+        }
+
+        router.push("/home");
+      });
   }
-
-  const handleNumberChange = (number: string, setFunction: Function) => {
-    const numberToInsert = number.replace("e", "").replace("-", "");
-
-    setFunction(numberToInsert);
-  };
 
   async function updateProduct(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();

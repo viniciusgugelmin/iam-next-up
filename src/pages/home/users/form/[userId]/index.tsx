@@ -88,20 +88,37 @@ const UsersUpdateForm: NextPage<IPageProps> = ({
     getUser({
       token: context.token,
       id: router.query.userId as string,
-    }).then((data) => {
-      setRole(data.user.role.name);
-      setDocument(data.user.document);
-      setDocumentTreated(data.user.document);
-      setName(data.user.name);
-      setEmail(data.user.email);
-      setGender(data.user._gender);
-      const _hiredDate = new Date(data.user._hiredAt);
-      const _hiredDateTreated = _hiredDate.toJSON().slice(0, 10);
+    })
+      .then((data) => {
+        setRole(data.user.role.name);
+        setDocument(data.user.document);
+        setDocumentTreated(data.user.document);
+        setName(data.user.name);
+        setEmail(data.user.email);
+        setGender(data.user._gender);
+        const _hiredDate = new Date(data.user._hiredAt);
+        const _hiredDateTreated = _hiredDate.toJSON().slice(0, 10);
 
-      handleHiredAtChange(
-        _hiredDateTreated.replace(/^(\d{4})-(\d{1,2})-(\d{1,2})$/, "$3/$2/$1")
-      );
-    });
+        handleHiredAtChange(
+          _hiredDateTreated.replace(/^(\d{4})-(\d{1,2})-(\d{1,2})$/, "$3/$2/$1")
+        );
+      })
+      .catch((error) => {
+        // @ts-ignore
+        if (!error.response?.data) {
+          dispatchAlert({
+            message: "Server error",
+            type: "error",
+          });
+        } else {
+          dispatchAlert({
+            message: (error as IError).response.data.message,
+            type: "error",
+          });
+        }
+
+        router.push("/home");
+      });
   }
 
   const handleDocumentChange = (doc: string) => {

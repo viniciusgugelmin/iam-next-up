@@ -126,6 +126,14 @@ API:
   - Route to create a new product for sale
 - DELETE /api/products-for-sale/:id
   - Route to delete a product for sale by id
+- GET /api/customers
+  - Route to get all customers
+- POST /api/customers
+  - Route to create a new customer
+- PUT /api/customers/:id
+  - Route to update a customer by id
+- DELETE /api/customers/:id
+  - Route to delete a customer by id
 ```
 
 Routes:
@@ -169,6 +177,12 @@ Routes:
   - Route to list all products for sale
 - /home/products-for-sale/form
   - Route to create a new product for sale
+- /home/customers/list
+  - Route to list all customers
+- /home/customers/form
+  - Route to create a new customer
+- /home/customers/form/:customerId
+  - Route to update a customer by id
 ```
 
 ## Contributing
