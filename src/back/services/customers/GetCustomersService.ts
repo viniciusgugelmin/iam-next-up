@@ -20,8 +20,6 @@ export default class GetCustomersService {
       .find({ _deletedAt: null })
       .toArray();
 
-    console.log(customers);
-
     customers.map((customer) => {
       delete customer.password;
     });

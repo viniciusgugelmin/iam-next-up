@@ -236,6 +236,7 @@ export const Navbar = () => {
   ) => {
     setOptions(
       navbarOptions.map((item, itemIndex) => {
+        // @ts-ignore
         item.options?.map((subItem, subItemIndex) => {
           if (subItem.blocked) {
             return subItem;

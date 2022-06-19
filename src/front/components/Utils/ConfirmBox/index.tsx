@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "../../Base/Button";
 
-export const COnfirmBox = () => {
+export const ConfirmBox = () => {
   const [show, setShow] = useState(false);
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
