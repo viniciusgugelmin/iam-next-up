@@ -72,6 +72,8 @@ export default class DeleteEntryService {
       .collection(entryRepository.collection)
       .deleteOne({ _id: new ObjectId(entryId) });
 
+    // TODO delete transaction
+
     return entryToDelete;
   }
 }

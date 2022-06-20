@@ -134,6 +134,12 @@ API:
   - Route to update a customer by id
 - DELETE /api/customers/:id
   - Route to delete a customer by id
+- GET /api/sales
+  - Route to get all sales
+- POST /api/sales
+  - Route to create a new sale
+- DELETE /api/sales/:id
+  - Route to delete a sale by id
 ```
 
 Routes:

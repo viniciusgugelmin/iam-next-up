@@ -72,7 +72,22 @@ export default class CreateEntryService {
     }
 
     const entryRepository = new EntryRepository();
-    await db.collection(entryRepository.collection).insertOne(_newEntry);
+    const { insertedId } = await db
+      .collection(entryRepository.collection)
+      .insertOne(_newEntry);
+
+    try {
+      // TODO register transaction
+    } catch (error) {
+      await db.collection(entryRepository.collection).deleteOne({
+        _id: new ObjectId(insertedId),
+      });
+
+      throw new AppError(
+        "An error has occurred trying to register the transaction",
+        500
+      );
+    }
 
     return _newEntry;
   }

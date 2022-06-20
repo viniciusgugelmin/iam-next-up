@@ -1,7 +1,7 @@
 export default interface ISale {
   _id?: string;
   productForSaleId: string;
-  costumersDocument: number;
+  customersDocument: string;
   liters: number;
   createdAt: Date;
 }
