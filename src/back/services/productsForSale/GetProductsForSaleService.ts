@@ -1,21 +1,10 @@
 import connectMongoDB from "../../config/mongoDatabase";
-import { UsersRepository } from "../../repositories/UsersRepository";
-import IUser from "../../../interfaces/models/IUser";
-import { EntryRepository } from "../../repositories/EntryRepository";
 import { ProductsRepository } from "../../repositories/ProductsRepository";
-import { ObjectId } from "mongodb";
 import { ProductForSaleRepository } from "../../repositories/ProductForSaleRepository";
 import { StorageRepository } from "../../repositories/StorageRepository";
 
-interface IRequest {
-  user: IUser;
-}
-
 export default class GetProductsForSaleService {
-  public async execute({ user }: IRequest): Promise<Object[]> {
-    const usersRepository = new UsersRepository();
-    usersRepository.checkIfHasPermission(user, "products_for_sale", "read");
-
+  public async execute(): Promise<Object[]> {
     const productForSaleRepository = new ProductForSaleRepository();
     const productsRepository = new ProductsRepository();
     const storageRepository = new StorageRepository();
@@ -57,6 +46,12 @@ export default class GetProductsForSaleService {
         ...productsForSale,
         product: {
           name: product?.name,
+          description: product?.description,
+          image: product?.image,
+          isAlcoholic: product?.isAlcoholic,
+          category: {
+            name: product?.category?.name,
+          },
         },
         storageLiters: productStorage?.liters || 0,
       };

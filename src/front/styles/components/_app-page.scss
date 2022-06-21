@@ -1,0 +1,11 @@
+@use "../variables/colors";
+
+.up-app-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  padding: 15px 15px 15px 15px;
+  background: colors.$gray-3;
+}

@@ -1,11 +1,11 @@
 import axios from "axios";
 
 interface IGetProductsForSaleRequest {
-  token: string;
+  token?: string;
 }
 
 export const getProductsForSale = async ({
-  token,
+  token = "",
 }: IGetProductsForSaleRequest) => {
   const request = await axios.get(
     `${process.env.NEXT_PUBLIC_API_URL || `/api`}/products-for-sale`,

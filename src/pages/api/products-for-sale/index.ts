@@ -28,11 +28,8 @@ export default async function handler(
 
 async function handleGet(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const getAuthenticatedUserService = new GetAuthenticatedUserService();
-    const user = await getAuthenticatedUserService.execute({ req });
-
     const getProductsForSaleService = new GetProductsForSaleService();
-    const productsForSale = await getProductsForSaleService.execute({ user });
+    const productsForSale = await getProductsForSaleService.execute();
 
     res.json({
       productsForSale,
