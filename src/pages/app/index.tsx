@@ -8,13 +8,11 @@ import { IError } from "../../interfaces/IError";
 import { PageLoading } from "../../front/components/Base/PageLoading";
 import Img from "next/image";
 import { dispatchConfirmBox } from "../../front/services/dispatchConfirmBox";
+import { postSale } from "../../front/requests/sales/postSale";
 
 const App: NextPage<IPageProps> = ({ setPageSubtitle }: IPageProps) => {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-
-  const [product, setProduct] = useState<any>(null);
-  const [liters, setLiters] = useState(0);
 
   useEffect(() => {
     setPageSubtitle("App");
@@ -63,8 +61,16 @@ const App: NextPage<IPageProps> = ({ setPageSubtitle }: IPageProps) => {
   }
 
   function handleBuyProductForSale(p: any) {
-    setProduct(p);
-    setLiters(1);
+    if (p.storageLiters === 0) {
+      return;
+    }
+
+    if (p.product.isAlcoholic) {
+      return dispatchAlert({
+        message: "You must log in to buy alcohol",
+        type: "error",
+      });
+    }
 
     dispatchConfirmBox({
       title: "Buy product for sale",
@@ -73,7 +79,22 @@ const App: NextPage<IPageProps> = ({ setPageSubtitle }: IPageProps) => {
         if (!available) return;
 
         try {
-          console.log("buy product for sale");
+          await postSale({
+            sale: {
+              productForSaleId: p._id,
+              customersDocument: "00000000000",
+              liters: 1,
+            },
+          });
+
+          dispatchAlert({
+            message: `You bought "${
+              p.product.name || p._id
+            }", wait a little bit to get it...`,
+            type: "success",
+          });
+
+          loadProducts();
         } catch (error) {
           dispatchAlert({
             message: (error as IError).response.data.message,
@@ -91,13 +112,23 @@ const App: NextPage<IPageProps> = ({ setPageSubtitle }: IPageProps) => {
   return (
     <AppPage>
       <section className="up-product-cards">
+        {products.length === 0 && (
+          <p className="up-product-cards__empty">
+            There are no products for sale at this moment :(
+          </p>
+        )}
         {products.map((p) => (
           <div
             onClick={() => handleBuyProductForSale(p)}
             key={p._id}
             className="up-product-card"
           >
-            <div className="up-product-card__image">
+            <div
+              className={
+                "up-product-card__image " +
+                (p.storageLiters <= 0 && "up-product-card__image--out-of-stock")
+              }
+            >
               <Img
                 src={p.product.image}
                 alt={p.product.name}
@@ -106,7 +137,7 @@ const App: NextPage<IPageProps> = ({ setPageSubtitle }: IPageProps) => {
               />
               <div className="up-product-card__content">
                 <div className="up-product-card__title">{p.product.name}</div>
-                {p._promo > 0 && (
+                {p._promo > 0 && p.storageLiters > 0 && (
                   <div className="up-product-card__promo">
                     {formatReal(p.pricePerLiter * (1 - p._promo / 100))}
                   </div>

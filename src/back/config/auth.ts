@@ -1,6 +1,6 @@
 export default {
   jwt: {
     secret: process.env.NEXT_PUBLIC_SESSION_SECRET || "default",
-    expiresIn: "1d",
+    expiresIn: "7d",
   },
 };

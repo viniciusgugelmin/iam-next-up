@@ -45,9 +45,6 @@ async function handleGet(req: NextApiRequest, res: NextApiResponse) {
 
 async function handlePost(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const getAuthenticatedUserService = new GetAuthenticatedUserService();
-    const user = await getAuthenticatedUserService.execute({ req });
-
     const { productForSaleId, customersDocument, liters } = req.body;
 
     const sanitizeEveryWordService = new SanitizeEveryWordService();
@@ -72,7 +69,7 @@ async function handlePost(req: NextApiRequest, res: NextApiResponse) {
     }
 
     const createSaleService = new CreateSaleService();
-    const saleAdded = await createSaleService.execute({ user, newSale });
+    const saleAdded = await createSaleService.execute({ newSale });
 
     res.status(201).json({
       sale: saleAdded,

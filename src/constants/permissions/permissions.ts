@@ -51,6 +51,13 @@ const permissions = [
     delete: true,
   }),
   new Permission({
+    name: "sales",
+    create: true,
+    read: true,
+    update: true,
+    delete: true,
+  }),
+  new Permission({
     name: "storage",
     create: true,
     read: true,

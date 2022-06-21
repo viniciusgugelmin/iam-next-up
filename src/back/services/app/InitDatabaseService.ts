@@ -12,6 +12,8 @@ import commonRole from "../../../constants/roles/commonRole";
 import ProductsCategory from "../../models/ProductsCategory";
 import { ProductsRepository } from "../../repositories/ProductsRepository";
 import Product from "../../models/Product";
+import { CustomersRepository } from "../../repositories/CustomersRepository";
+import Customer from "../../models/Customer";
 
 interface IRequest {
   req: NextApiRequest;
@@ -22,6 +24,7 @@ interface IResponse {
   roles: IRole[];
   productsCategories: ProductsCategory[];
   products: Product[];
+  customer: Customer;
 }
 
 export default class InitDatabaseService {
@@ -116,6 +119,22 @@ export default class InitDatabaseService {
       await db.collection(productsRepository.collection).insertMany(products);
     }
 
-    return { user, roles: rolesToInsert, productsCategories, products };
+    const customersRepository = new CustomersRepository();
+    const customer = new Customer();
+    customer.document = "00000000000";
+    customer.name = "Lorem ipsum";
+    customer.email = "lorem@ipsum.com";
+    customer.password = await customersRepository.hashPassword("lorem");
+    customer.birthday = new Date();
+
+    await db.collection(customersRepository.collection).insertOne(customer);
+
+    return {
+      user,
+      roles: rolesToInsert,
+      productsCategories,
+      products,
+      customer,
+    };
   }
 }

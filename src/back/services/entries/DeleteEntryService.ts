@@ -50,7 +50,7 @@ export default class DeleteEntryService {
       });
 
     if (productForSale) {
-      throw new AppError("Product is in sale", 400);
+      throw new AppError("Product is on sale", 400);
     }
 
     const storageUpdated = {

@@ -1,6 +1,4 @@
 import connectMongoDB from "../../config/mongoDatabase";
-import { UsersRepository } from "../../repositories/UsersRepository";
-import IUser from "../../../interfaces/models/IUser";
 import AppError from "../../../errors/AppError";
 import { ObjectId } from "mongodb";
 import { StorageRepository } from "../../repositories/StorageRepository";
@@ -8,17 +6,15 @@ import ISale from "../../../interfaces/models/ISale";
 import Sale from "../../models/Sale";
 import { ProductForSaleRepository } from "../../repositories/ProductForSaleRepository";
 import { SalesRepository } from "../../repositories/SalesRepository";
+import { ProductsRepository } from "../../repositories/ProductsRepository";
+import { CustomersRepository } from "../../repositories/CustomersRepository";
 
 interface IRequest {
-  user: IUser;
   newSale: any;
 }
 
 export default class CreateSaleService {
-  public async execute({ user, newSale }: IRequest): Promise<ISale> {
-    const usersRepository = new UsersRepository();
-    usersRepository.checkIfHasPermission(user, "sales", "create");
-
+  public async execute({ newSale }: IRequest): Promise<ISale> {
     const { db } = await connectMongoDB();
 
     const _newSale = new Sale();
@@ -53,7 +49,45 @@ export default class CreateSaleService {
     }
 
     if (currentStorage.liters < _newSale.liters) {
-      throw new AppError("Not enough liters", 400);
+      throw new AppError("Not enough liters in storage", 400);
+    }
+
+    const productsRepository = new ProductsRepository();
+    const product = await db.collection(productsRepository.collection).findOne({
+      _id: new ObjectId(productForSaleExists.productId),
+    });
+
+    if (!product) {
+      throw new AppError("Product not found", 404);
+    }
+
+    if (product.isAlcoholic) {
+      if (_newSale.customersDocument === "00000000000") {
+        throw new AppError("You must log in to buy alcohol", 401);
+      }
+
+      const customersRepository = new CustomersRepository();
+      const customer = await db
+        .collection(customersRepository.collection)
+        .findOne({
+          document: new ObjectId(_newSale.customersDocument),
+        });
+
+      if (!customer) {
+        throw new AppError("Customer not found", 404);
+      }
+
+      const birthdate = new Date(customer.birthdate);
+      const age = Math.floor(
+        (Date.now() - birthdate.getTime()) / (1000 * 3600 * 24 * 365)
+      );
+
+      if (age < 18) {
+        throw new AppError(
+          "Customer is under 18 years old and cannot buy alcohol",
+          401
+        );
+      }
     }
 
     const salesRepository = new SalesRepository();
