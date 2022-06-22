@@ -2,7 +2,6 @@
 
 .up-product-cards {
   display: flex;
-  overflow-x: auto;
   justify-content: center;
   align-items: center;
   gap: 25px;
@@ -17,10 +16,10 @@
     padding: 25px;
     color: white;
     font-size: 1.2rem;
+    text-align: center;
   }
 
   .up-product-card {
-    max-width: calc(50% - 20px);
     margin-bottom: 20px;
 
     &__image {

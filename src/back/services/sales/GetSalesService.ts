@@ -67,8 +67,13 @@ export default class GetSalesService {
       .toArray();
 
     return sales.map((sale) => {
+      const productForSale = productsForSale.find((productForSale) => {
+        return productForSale._id.toString() === sale.productForSaleId;
+      });
+
       const product = products.find(
-        (product) => product._id.toString() === sale.productId.toString()
+        (product) =>
+          productForSale?.productId.toString() === product._id.toString()
       );
 
       const customer = customers.find(
@@ -76,6 +81,12 @@ export default class GetSalesService {
           customer.document === sale.customersDocument &&
           customer._deletedAt === null
       );
+
+      const amountPaid = productForSale
+        ? productForSale.pricePerLiter *
+          (1 - productForSale._promo / 100) *
+          sale.liters
+        : "Error";
 
       return {
         ...sale,
@@ -85,6 +96,7 @@ export default class GetSalesService {
         customer: {
           name: customer?.name,
         },
+        amountPaid: amountPaid,
       };
     });
   }

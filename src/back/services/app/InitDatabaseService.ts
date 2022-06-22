@@ -122,7 +122,7 @@ export default class InitDatabaseService {
     const customersRepository = new CustomersRepository();
     const customer = new Customer();
     customer.document = "00000000000";
-    customer.name = "Lorem ipsum";
+    customer.name = "Unregistered";
     customer.email = "lorem@ipsum.com";
     customer.password = await customersRepository.hashPassword("lorem");
     customer.birthday = new Date();
