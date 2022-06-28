@@ -14,6 +14,8 @@ import { ProductsRepository } from "../../repositories/ProductsRepository";
 import Product from "../../models/Product";
 import { CustomersRepository } from "../../repositories/CustomersRepository";
 import Customer from "../../models/Customer";
+import { AccountingRepository } from "../../repositories/AccountingRepository";
+import { ObjectId } from "mongodb";
 
 interface IRequest {
   req: NextApiRequest;
@@ -25,6 +27,7 @@ interface IResponse {
   productsCategories: ProductsCategory[];
   products: Product[];
   customer: Customer;
+  accounts: any[];
 }
 
 export default class InitDatabaseService {
@@ -68,6 +71,36 @@ export default class InitDatabaseService {
     );
 
     await db.collection(usersRepository.collection).insertOne(user);
+
+    const accountingRepository = new AccountingRepository();
+    const accounting = [
+      {
+        name: "Active",
+        accounts: ["Cash", "Storage"],
+      },
+      {
+        name: "Passive",
+        accounts: ["Providers"],
+      },
+    ];
+
+    for (let i = 0; i < accounting.length; i++) {
+      const accountingToInsert = accounting[i];
+      const { insertedId } = await db
+        .collection(accountingRepository.collection)
+        .insertOne({
+          account: accountingToInsert.name,
+        });
+
+      for (let j = 0; j < accountingToInsert.accounts.length; j++) {
+        const subAccountingToInsert = accountingToInsert.accounts[j];
+        await db.collection(accountingRepository.collection).insertOne({
+          account: subAccountingToInsert,
+          accountId: insertedId,
+          value: subAccountingToInsert === "Cash" ? 1000 : 0,
+        });
+      }
+    }
 
     const productsCategoriesRepository = new ProductsCategoriesRepository();
     const productsCategories: ProductsCategory[] = [];
@@ -129,12 +162,18 @@ export default class InitDatabaseService {
 
     await db.collection(customersRepository.collection).insertOne(customer);
 
+    const accounts = await db
+      .collection(accountingRepository.collection)
+      .find()
+      .toArray();
+
     return {
       user,
       roles: rolesToInsert,
       productsCategories,
       products,
       customer,
+      accounts,
     };
   }
 }

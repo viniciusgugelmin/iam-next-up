@@ -8,6 +8,10 @@ import { ProductForSaleRepository } from "../../repositories/ProductForSaleRepos
 import { SalesRepository } from "../../repositories/SalesRepository";
 import { ProductsRepository } from "../../repositories/ProductsRepository";
 import { CustomersRepository } from "../../repositories/CustomersRepository";
+import Transaction from "../../models/Transaction";
+import { TransactionsRepository } from "../../repositories/TransactionsRepository";
+import { AccountingRepository } from "../../repositories/AccountingRepository";
+import { EntryRepository } from "../../repositories/EntryRepository";
 
 interface IRequest {
   newSale: any;
@@ -112,7 +116,81 @@ export default class CreateSaleService {
         }
       );
 
-      // TODO register transaction
+      const transactionsRepository = new TransactionsRepository();
+      const accountingRepository = new AccountingRepository();
+
+      // Cash and storage transaction
+      const transaction = new Transaction();
+      transaction.transactionId = insertedId;
+      transaction.transactionName = salesRepository.collection;
+
+      const accountCredit = await db
+        .collection(accountingRepository.collection)
+        .findOne({
+          account: "Storage",
+        });
+
+      if (!accountCredit) {
+        throw new AppError("Credit account not found", 404);
+      }
+
+      // @ts-ignore
+      transaction.credit = accountCredit._id;
+
+      const accountDebt = await db
+        .collection(accountingRepository.collection)
+        .findOne({
+          account: "Cash",
+        });
+
+      if (!accountDebt) {
+        throw new AppError("Debt account not found", 404);
+      }
+
+      // @ts-ignore
+      transaction.debt = accountDebt._id;
+
+      await db
+        .collection(transactionsRepository.collection)
+        .insertOne(transaction);
+
+      await db.collection(accountingRepository.collection).updateOne(
+        {
+          account: "Cash",
+        },
+        {
+          $set: {
+            value:
+              parseFloat(String(accountDebt.value)) +
+              parseFloat(
+                String(
+                  productForSaleExists.pricePerLiter *
+                    (1 - productForSaleExists._promo / 100) *
+                    _newSale.liters
+                )
+              ),
+          },
+        }
+      );
+
+      await db.collection(accountingRepository.collection).updateOne(
+        {
+          account: "Storage",
+        },
+        {
+          $set: {
+            value:
+              parseFloat(String(accountCredit.value)) -
+              parseFloat(
+                String(
+                  productForSaleExists.pricePerLiter *
+                    (1 - productForSaleExists._promo / 100) *
+                    _newSale.liters
+                )
+              ),
+          },
+        }
+      );
     } catch (error) {
       await db.collection(salesRepository.collection).deleteOne({
         _id: new ObjectId(insertedId),
